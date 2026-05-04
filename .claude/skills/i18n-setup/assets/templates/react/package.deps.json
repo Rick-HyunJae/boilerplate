@@ -1,0 +1,7 @@
+{
+	"_comment": "기존 package.json 의 dependencies 와 머지. 버전은 AI_Flow 와 동일하되 호환되는 더 최신 버전으로 올려도 무방.",
+	"dependencies": {
+		"i18next": "^22.4.11",
+		"react-i18next": "^12.2.0"
+	}
+}

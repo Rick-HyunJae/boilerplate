@@ -1,0 +1,33 @@
+name: CI
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    verify:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10.33.2
+
+            - name: Use Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 24.15.0
+                  cache: pnpm
+
+            - name: Install
+              run: pnpm install --frozen-lockfile
+
+            - name: Verify agent mirror
+              run: pnpm verify:agents
+
+            - name: Test
+              run: pnpm test:coverage
