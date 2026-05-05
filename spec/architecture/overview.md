@@ -21,7 +21,7 @@ app → pages → widgets → features → entities → shared
 
 레이어별 책임/슬라이스 규칙 → [fsd-layers.md](./fsd-layers.md)
 빌드 / 실행 흐름 → [bundle-and-execution.md](./bundle-and-execution.md)
-import 제약 → [.claude/rules/manual/fsd-imports.md](/.claude/rules/manual/fsd-imports.md)
+import 제약 → [.claude/rules/fsd-imports.md](.claude/rules/fsd-imports.md)
 
 ## Path Alias
 

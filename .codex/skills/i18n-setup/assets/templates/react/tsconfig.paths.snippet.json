@@ -1,0 +1,10 @@
+{
+	"_comment": "기존 tsconfig.json 의 compilerOptions.paths 에 머지. baseUrl 이 없으면 추가.",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"~language/*": ["src/static/language/*"],
+			"~hooks/*": ["src/hooks/*"]
+		}
+	}
+}

@@ -11,22 +11,19 @@ User scope (`~/.claude/`) 의 공통 설정을 보강(extend)하며, 충돌 시 
 | `settings.local.json` | 개인 로컬 설정 (gitignored)                                                 |
 | `agents/`             | Project 전용 sub-agent 정의 + `AGENTS.md` 인덱스                            |
 | `hooks/`              | Lifecycle hook scripts (PreToolUse / PostToolUse / Stop / UserPromptSubmit) |
-| `rules/`              | `INDEX.md` 진입점 + `manual/` (항상 로드) + `auto/` (키워드 조건부 주입)    |
+| `rules/`              | `INDEX.md` 진입점 + `guidelines/` (항상 로드) + `architecture/` (설계 제약) + `development/` (개발 규칙) |
 | `skills/`             | Skill packages (`SKILL.md` + 옵션 `ref/` `scripts/` `templates/`)           |
 
 ## Agent / Skill Workflow
 
 - `.claude/` is the source of truth (skills, agents)
-- `.agents/` is a generated mirror for Codex consumption
-- Run `pnpm sync:agents` after changing Claude-owned agents or skills
-- `pnpm verify:agents` checks the mirror matches
-- 직접 `.agents/` 편집은 PreToolUse hook 으로 차단됨
+- Update Claude-owned agents or skills directly under `.claude/`
 
 ## Frontmatter 표준
 
 세 종류의 파일이 frontmatter 를 가지며, 형식은 각각 다음과 같이 단일화합니다.
 
-### `rules/auto/*.md` 와 `spec/**/*.md` (hook 매칭)
+### `spec/**/*.md` (hook 매칭)
 
 ```yaml
 ---
@@ -58,14 +55,15 @@ description: <한 줄, when-to-use 명시>
 ---
 ```
 
-## Manual 추가 기준 (rules/manual/)
+## Rules 분류 기준
 
-다음 두 조건을 모두 만족할 때만 manual 로 둡니다.
+| 폴더 | 로드 방식 | 기준 |
+| ---- | --------- | ---- |
+| `guidelines/` | 항상 로드 | 모든 코드 변경에 일관되게 적용, 위반 시 즉시 리뷰 차단 수준의 원칙 |
+| `architecture/` | 경로 범위 로드 | 설계 구조 제약 — FSD 레이어, React 패턴 |
+| `development/` | 경로 범위 로드 | 개발 단계 규칙 — 작성 관례, API, 테스트, 환경 설정 |
 
-1. 모든 코드 변경에 일관되게 적용되어야 한다
-2. 위반 시 즉시 빌드/리뷰가 차단될 정도의 강제력이 필요하다
-
-그 외는 `auto/` 또는 skill 로 분류. 항상-로드 컨텍스트 비대화를 막기 위한 가드.
+항상-로드 컨텍스트 비대화 방지를 위해 `guidelines/` 진입 기준을 엄격히 유지. 그 외는 경로 범위 로드 또는 skill 로 분류.
 
 ## Plan / Memory
 

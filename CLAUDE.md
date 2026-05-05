@@ -2,36 +2,48 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Rules
+@spec/architecture/overview.md
+@spec/architecture/fsd-layers.md
 
-@.claude/rules/INDEX.md
+## Project Overview
 
-`.claude/` 가 agent / skill / hook 의 진실 소스. `.agents/` 는 Codex 용 mirror — `pnpm sync:agents` 로만 갱신, 직접 편집 금지.
+**React 19 + TypeScript CSR** template using **Feature-Sliced Design (FSD)** architecture.
 
-## Repository Layout
+- **Code Standards**: Rules — `.claude/rules/INDEX.md`; Specs — `spec/INDEX.md`
+- **Package Manager**: pnpm (Node `24.15.0` pinned via Volta)
 
-React 19 + TypeScript CSR 템플릿 (Feature-Sliced Design).
-구조 상세 → [spec/architecture/overview.md](./spec/architecture/overview.md)
+## Quick Start Commands
 
-## Commands
+| Command                             | Purpose                                     |
+| ----------------------------------- | ------------------------------------------- |
+| `pnpm start:dev`                    | Dev server (http, port 3000, `.env.dev`)    |
+| `pnpm start:prod`                   | Prod server (https, port 3000, `.env.prod`) |
+| `pnpm build:dev`                    | Dev build (sourcemap: true, noindex)        |
+| `pnpm build:prod`                   | Prod build (sourcemap: hidden, SEO meta)    |
+| `pnpm preview`                      | Serve build output                          |
+| `pnpm test`                         | Vitest watch mode                           |
+| `pnpm test:ui`                      | Vitest UI dashboard                         |
+| `pnpm test:coverage`                | Coverage report (enforces **80%** minimum)  |
+| `pnpm lint` / `pnpm lint:fix`       | ESLint (flat config)                        |
+| `pnpm format` / `pnpm format:check` | Prettier code formatting                    |
 
-Package manager: **pnpm** (Node pinned to `24.15.0` via Volta).
+## Test Execution
 
-| Command                             | Purpose                                                     |
-| ----------------------------------- | ----------------------------------------------------------- |
-| `pnpm start:dev`                    | 개발기 dev server (http, port 3000, `.env.dev`)             |
-| `pnpm start:prod`                   | 운영기 dev server (https, port 3000, `.env.prod`)           |
-| `pnpm build:dev`                    | 개발기 배포 빌드 (`.env.dev`, sourcemap: true, noindex)     |
-| `pnpm build:prod`                   | 운영기 배포 빌드 (`.env.prod`, sourcemap: hidden, SEO meta) |
-| `pnpm preview`                      | 빌드 산출물 서빙                                            |
-| `pnpm test`                         | Vitest watch mode                                           |
-| `pnpm test:ui`                      | Vitest UI                                                   |
-| `pnpm test:coverage`                | Run with coverage; thresholds enforced at **80%**           |
-| `pnpm lint` / `pnpm lint:fix`       | ESLint flat config                                          |
-| `pnpm format` / `pnpm format:check` | Prettier                                                    |
-| `pnpm gen:env-example`              | schema → `config/env/.env.example` 자동 생성                |
+```bash
+# Watch mode
+pnpm test
 
-단일 테스트 실행: `pnpm vitest --config config/vite/vitest.config.ts run <파일경로>`
-이름으로 실행: `pnpm vitest --config config/vite/vitest.config.ts run -t "test name"`
+# Single file
+pnpm vitest --config config/vite/vitest.config.ts run <filepath>
 
-Spec 목차 → [spec/INDEX.md](./spec/INDEX.md). 프로젝트 코드 규약은 [.claude/rules/INDEX.md](./.claude/rules/INDEX.md) 가 단일 진입점.
+# By test name
+pnpm vitest --config config/vite/vitest.config.ts run -t "test name"
+
+# Coverage with threshold checks
+pnpm test:coverage
+```
+
+## Code Style
+
+- 파일 편집 직후 `pnpm format` 실행 — 수동 포맷 금지, 항상 `prettier --write` 로 일관성 유지
+- 대량 포맷 변경은 의미 있는 변경과 분리하여 `chore: format` 커밋으로 처리

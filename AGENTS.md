@@ -6,10 +6,10 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Project Rules & Memory
 
-@.claude/rules/INDEX.md
+Rules: `.claude/rules/` 디렉토리 (자동 로드)
+Specs: `spec/INDEX.md`
 
 ## Workflow Notes
 
 - `.claude/` 가 agent / skill / rule / hook 의 진실 소스
-- `.agents/` 는 Codex 소비용 mirror — 직접 편집 금지, `pnpm sync:agents` 로만 갱신
 - 프로젝트 명령어 / Conventions / Key Specs → `CLAUDE.md` 참조

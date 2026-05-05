@@ -1,37 +1,21 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/block-import-meta-env.sh"
-          }
+    "hooks": {
+        "PreToolUse": [
+            {
+                "matcher": "Edit|Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": ".claude/hooks/block-import-meta-env.sh"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/block-generated-agents-edit.sh"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/auto-rules-inject.sh"
-          }
-        ]
-      }
-    ]
-  },
-  "enabledPlugins": {
-    "context7@claude-plugins-official": true
-  }
+    },
+    "enabledPlugins": {
+        "context7@claude-plugins-official": true,
+        "frontend-design@claude-plugins-official": true,
+        "code-review@claude-plugins-official": true,
+        "commit-commands@claude-plugins-official": true
+    }
 }

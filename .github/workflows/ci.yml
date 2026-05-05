@@ -26,8 +26,5 @@ jobs:
             - name: Install
               run: pnpm install --frozen-lockfile
 
-            - name: Verify agent mirror
-              run: pnpm verify:agents
-
             - name: Test
               run: pnpm test:coverage
