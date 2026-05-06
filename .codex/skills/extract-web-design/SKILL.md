@@ -1,9 +1,11 @@
 ---
-name: extract-design
+name: extract-web-design
 description: |
+  웹사이트URL에서 완전한 디자인 언어를 추출합니다. 컬러, 타이포그래피, 스페이싱, 섀도우, 컴포넌트, 반응형 브레이크포인트, 애니메이션, 접근성을 포함한 8가지 출력 파일을 생성합니다.
+  
   Extract the full design language from any website URL. Produces 8 output files including AI-optimized markdown, visual HTML preview, Tailwind config, React theme, shadcn/ui theme, Figma variables, W3C design tokens, and CSS variables.
-  Use when the user says "extract design", "get design system", "design language", "design tokens", "what colors/fonts does this site use", or "/extract-design".
-  한국어 예시: "디자인 시스템 뽑아줘", "이 사이트 색상/폰트 추출해줘", "디자인 토큰 알려줘", "이 사이트 디자인 언어 분석해줘".
+  
+  Use when: "디자인 시스템 뽑아줘", "이 사이트 색상/폰트 추출해줘", "디자인 토큰 알려줘", "이 사이트 디자인 언어 분석해줘", or "extract design", "get design system", "design language", "design tokens", "what colors/fonts does this site use", or "/extract-web-design".
 allowed-tools: Bash, Read, Write, Glob
 ---
 
