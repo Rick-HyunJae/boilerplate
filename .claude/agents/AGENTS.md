@@ -4,15 +4,7 @@ Project scope 에 정의된 sub-agent 모음. User scope agent (planner, code-re
 
 ## Available Agents
 
-| Agent                                             | Trigger                             | Output                | Model |
-| ------------------------------------------------- | ----------------------------------- | --------------------- | ----- |
-| [fsd-boundary-checker](./fsd-boundary-checker.md) | import 변경 또는 신규 slice 추가 시 | FSD layer 위반 리포트 | haiku |
-
-## Selection Rules
-
-1. **신규 slice/feature 추가** → User scope `planner` 로 plan → 작성 후 `fsd-boundary-checker`
-2. **import 경로 변경 이후** → `fsd-boundary-checker` 자동 호출 권장
-3. **일반 코드 리뷰** → User scope `code-reviewer` 사용 (project 에서 재정의 X)
+현재 프로젝트 전용 agent 는 없다. 필요한 경우 이 디렉토리에 새 agent 를 추가하고 `.codex/agents/` 에도 동일하게 반영한다.
 
 ## Frontmatter 표준
 
