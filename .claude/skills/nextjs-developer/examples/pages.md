@@ -18,6 +18,7 @@ Copy and adapt these patterns for your pages.
 ## Static Pages
 
 ### Basic Static Page
+
 ```typescript
 // app/about/page.tsx
 export default function Page() {
@@ -31,6 +32,7 @@ export default function Page() {
 ```
 
 ### Static Page with Metadata
+
 ```typescript
 // app/about/page.tsx
 import type { Metadata } from 'next'
@@ -51,6 +53,7 @@ export default function Page() {
 ```
 
 ### Static Page with Complete SEO
+
 ```typescript
 // app/about/page.tsx
 import type { Metadata } from 'next'
@@ -59,14 +62,14 @@ export const metadata: Metadata = {
   title: 'About Us - Company Name',
   description: 'Learn about our company, mission, and the team behind our success',
   keywords: ['about', 'company', 'team', 'mission'],
-  
+
   openGraph: {
     title: 'About Us',
     description: 'Learn about our company and mission',
     images: ['/og-about.png'],
     type: 'website',
   },
-  
+
   twitter: {
     card: 'summary_large_image',
     title: 'About Us',
@@ -78,14 +81,14 @@ export default function Page() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-6">About Us</h1>
-      
+
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
         <p className="text-lg">
           We are building the future of web development with cutting-edge technology.
         </p>
       </section>
-      
+
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Our Team</h2>
         <p className="text-lg">
@@ -102,20 +105,21 @@ export default function Page() {
 ## Dynamic Pages
 
 ### Single Dynamic Segment
+
 ```typescript
 // app/blog/[slug]/page.tsx
 import { notFound } from 'next/navigation'
 
 export default async function Page(props: PageProps<'/blog/[slug]'>) {
   const { slug } = await props.params
-  
+
   // Fetch post
   const post = await getPost(slug)
-  
+
   if (!post) {
     notFound()
   }
-  
+
   return (
     <article>
       <h1>{post.title}</h1>
@@ -134,6 +138,7 @@ async function getPost(slug: string) {
 ```
 
 ### Dynamic Page with Static Generation
+
 ```typescript
 // app/blog/[slug]/page.tsx
 import { notFound } from 'next/navigation'
@@ -146,7 +151,7 @@ type Props = {
 // Generate static params at build time
 export async function generateStaticParams() {
   const posts = await getAllPosts()
-  
+
   return posts.map((post) => ({
     slug: post.slug,
   }))
@@ -156,11 +161,11 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { slug } = await props.params
   const post = await getPost(slug)
-  
+
   if (!post) {
     return { title: 'Post Not Found' }
   }
-  
+
   return {
     title: post.title,
     description: post.excerpt,
@@ -175,11 +180,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function Page(props: Props) {
   const { slug } = await props.params
   const post = await getPost(slug)
-  
+
   if (!post) {
     notFound()
   }
-  
+
   return (
     <article className="container mx-auto px-4 py-8">
       <header className="mb-8">
@@ -187,10 +192,10 @@ export default async function Page(props: Props) {
         <time className="text-gray-600">{post.publishedAt}</time>
         <p className="text-xl text-gray-700 mt-4">{post.excerpt}</p>
       </header>
-      
-      <div 
+
+      <div
         className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: post.content }} 
+        dangerouslySetInnerHTML={{ __html: post.content }}
       />
     </article>
   )
@@ -209,18 +214,19 @@ async function getPost(slug: string) {
 ```
 
 ### Multiple Dynamic Segments
+
 ```typescript
 // app/shop/[category]/[product]/page.tsx
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   const categories = await getCategories()
-  
+
   const params = []
-  
+
   for (const category of categories) {
     const products = await getProductsByCategory(category.slug)
-    
+
     for (const product of products) {
       params.push({
         category: category.slug,
@@ -228,7 +234,7 @@ export async function generateStaticParams() {
       })
     }
   }
-  
+
   return params
 }
 
@@ -236,35 +242,35 @@ export default async function Page(
   props: PageProps<'/shop/[category]/[product]'>
 ) {
   const { category, product } = await props.params
-  
+
   const productData = await getProduct(category, product)
-  
+
   if (!productData) {
     notFound()
   }
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <nav className="text-sm mb-4">
-        <a href="/shop">Shop</a> / 
-        <a href={`/shop/${category}`}>{category}</a> / 
+        <a href="/shop">Shop</a> /
+        <a href={`/shop/${category}`}>{category}</a> /
         {productData.name}
       </nav>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <img 
-            src={productData.image} 
+          <img
+            src={productData.image}
             alt={productData.name}
             className="w-full rounded-lg"
           />
         </div>
-        
+
         <div>
           <h1 className="text-3xl font-bold mb-4">{productData.name}</h1>
           <p className="text-2xl font-semibold mb-4">${productData.price}</p>
           <p className="text-gray-700 mb-6">{productData.description}</p>
-          
+
           <button className="bg-blue-600 text-white px-6 py-3 rounded-lg">
             Add to Cart
           </button>
@@ -292,32 +298,33 @@ async function getProduct(category: string, product: string) {
 ```
 
 ### Catch-All Route
+
 ```typescript
 // app/docs/[...slug]/page.tsx
 import { notFound } from 'next/navigation'
 
 export default async function Page(props: PageProps<'/docs/[...slug]'>) {
   const { slug } = await props.params
-  
+
   // slug is string[]
   const path = slug.join('/')
   const doc = await getDoc(path)
-  
+
   if (!doc) {
     notFound()
   }
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <aside className="w-64 fixed left-0 top-0 h-full">
         {/* Sidebar navigation */}
       </aside>
-      
+
       <main className="ml-64 pl-8">
         <h1 className="text-4xl font-bold mb-6">{doc.title}</h1>
-        <div 
+        <div
           className="prose"
-          dangerouslySetInnerHTML={{ __html: doc.content }} 
+          dangerouslySetInnerHTML={{ __html: doc.content }}
         />
       </main>
     </div>
@@ -335,6 +342,7 @@ async function getDoc(path: string) {
 ## Data Fetching Pages
 
 ### Parallel Data Fetching
+
 ```typescript
 // app/dashboard/page.tsx
 async function getUser() {
@@ -359,11 +367,11 @@ export default async function Page() {
     getPosts(),
     getStats(),
   ])
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1>Welcome, {user.name}</h1>
-      
+
       <div className="grid grid-cols-3 gap-4 my-8">
         <div className="bg-white p-6 rounded-lg shadow">
           <h3>Posts</h3>
@@ -378,7 +386,7 @@ export default async function Page() {
           <p className="text-3xl font-bold">{stats.likeCount}</p>
         </div>
       </div>
-      
+
       <div>
         <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
         <ul>
@@ -395,17 +403,18 @@ export default async function Page() {
 ```
 
 ### Sequential Data Fetching
+
 ```typescript
 // app/profile/[id]/page.tsx
 export default async function Page(props: PageProps<'/profile/[id]'>) {
   const { id } = await props.params
-  
+
   // Fetch user first
   const user = await getUser(id)
-  
+
   // Then fetch user's posts (depends on user data)
   const posts = await getUserPosts(user.id)
-  
+
   return (
     <div>
       <h1>{user.name}</h1>
@@ -420,13 +429,14 @@ export default async function Page(props: PageProps<'/profile/[id]'>) {
 ```
 
 ### With Suspense Streaming
+
 ```typescript
 // app/dashboard/page.tsx
 import { Suspense } from 'react'
 
 async function UserStats() {
   const stats = await fetch('https://api.example.com/stats').then(r => r.json())
-  
+
   return (
     <div className="grid grid-cols-3 gap-4">
       <div className="bg-white p-6 rounded-lg shadow">
@@ -447,7 +457,7 @@ async function UserStats() {
 
 async function RecentPosts() {
   const posts = await fetch('https://api.example.com/posts').then(r => r.json())
-  
+
   return (
     <ul>
       {posts.map((post) => (
@@ -461,12 +471,12 @@ export default function Page() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-      
+
       {/* Stats load independently */}
       <Suspense fallback={<div>Loading stats...</div>}>
         <UserStats />
       </Suspense>
-      
+
       {/* Posts load independently */}
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
@@ -484,6 +494,7 @@ export default function Page() {
 ## Search Params Pages
 
 ### Basic Search Params
+
 ```typescript
 // app/shop/page.tsx
 export default async function Page({
@@ -494,16 +505,16 @@ export default async function Page({
   const params = await searchParams
   const category = params.category || 'all'
   const sort = params.sort || 'popular'
-  
+
   const products = await getProducts({ category, sort })
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Shop</h1>
-        
+
         <div className="flex gap-4">
-          <select 
+          <select
             defaultValue={category}
             onChange={(e) => {
               const url = new URL(window.location.href)
@@ -515,8 +526,8 @@ export default async function Page({
             <option value="electronics">Electronics</option>
             <option value="clothing">Clothing</option>
           </select>
-          
-          <select 
+
+          <select
             defaultValue={sort}
             onChange={(e) => {
               const url = new URL(window.location.href)
@@ -530,7 +541,7 @@ export default async function Page({
           </select>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-3 gap-6">
         {products.map((product) => (
           <div key={product.id} className="border rounded-lg p-4">
@@ -553,6 +564,7 @@ async function getProducts({ category, sort }) {
 ```
 
 ### Pagination with Search Params
+
 ```typescript
 // app/blog/page.tsx
 const POSTS_PER_PAGE = 10
@@ -564,14 +576,14 @@ export default async function Page({
 }) {
   const params = await searchParams
   const page = parseInt(params.page || '1')
-  
+
   const { posts, total } = await getPosts(page, POSTS_PER_PAGE)
   const totalPages = Math.ceil(total / POSTS_PER_PAGE)
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Blog</h1>
-      
+
       <div className="space-y-6">
         {posts.map((post) => (
           <article key={post.id} className="border-b pb-6">
@@ -582,20 +594,20 @@ export default async function Page({
           </article>
         ))}
       </div>
-      
+
       {/* Pagination */}
       <div className="flex justify-center gap-2 mt-8">
         {page > 1 && (
-          <a 
+          <a
             href={`/blog?page=${page - 1}`}
             className="px-4 py-2 border rounded"
           >
             Previous
           </a>
         )}
-        
+
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-          
+
             key={p}
             href={`/blog?page=${p}`}
             className={`px-4 py-2 border rounded ${
@@ -605,9 +617,9 @@ export default async function Page({
             {p}
           </a>
         ))}
-        
+
         {page < totalPages && (
-          <a 
+          <a
             href={`/blog?page=${page + 1}`}
             className="px-4 py-2 border rounded"
           >
@@ -624,7 +636,7 @@ async function getPosts(page: number, perPage: number) {
     `https://api.example.com/posts?page=${page}&per_page=${perPage}`
   )
   const data = await res.json()
-  
+
   return {
     posts: data.posts,
     total: data.total,
@@ -637,6 +649,7 @@ async function getPosts(page: number, perPage: number) {
 ## Error Handling
 
 ### With notFound()
+
 ```typescript
 // app/posts/[id]/page.tsx
 import { notFound } from 'next/navigation'
@@ -644,11 +657,11 @@ import { notFound } from 'next/navigation'
 export default async function Page(props: PageProps<'/posts/[id]'>) {
   const { id } = await props.params
   const post = await getPost(id)
-  
+
   if (!post) {
     notFound() // Shows not-found.tsx
   }
-  
+
   return <article>{post.title}</article>
 }
 
@@ -660,7 +673,7 @@ export default function NotFound() {
       <p className="text-gray-600 mb-6">
         The post you're looking for doesn't exist.
       </p>
-      <a 
+      <a
         href="/posts"
         className="bg-blue-600 text-white px-6 py-3 rounded-lg"
       >
@@ -672,17 +685,18 @@ export default function NotFound() {
 ```
 
 ### With Error Boundary
+
 ```typescript
 // app/posts/[id]/page.tsx
 export default async function Page(props: PageProps<'/posts/[id]'>) {
   const { id } = await props.params
-  
+
   const post = await getPost(id)
-  
+
   if (!post) {
     throw new Error('Post not found')
   }
-  
+
   return <article>{post.title}</article>
 }
 
@@ -700,7 +714,7 @@ export default function Error({
     <div className="container mx-auto px-4 py-8 text-center">
       <h1 className="text-4xl font-bold mb-4">Something went wrong!</h1>
       <p className="text-gray-600 mb-6">{error.message}</p>
-      <button 
+      <button
         onClick={reset}
         className="bg-blue-600 text-white px-6 py-3 rounded-lg"
       >
@@ -716,6 +730,7 @@ export default function Error({
 ## Loading States
 
 ### Route-Level Loading
+
 ```typescript
 // app/dashboard/loading.tsx
 export default function Loading() {
@@ -723,13 +738,13 @@ export default function Loading() {
     <div className="container mx-auto px-4 py-8">
       <div className="animate-pulse">
         <div className="h-8 bg-gray-300 rounded w-1/4 mb-8"></div>
-        
+
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="h-32 bg-gray-300 rounded"></div>
           <div className="h-32 bg-gray-300 rounded"></div>
           <div className="h-32 bg-gray-300 rounded"></div>
         </div>
-        
+
         <div className="space-y-4">
           <div className="h-4 bg-gray-300 rounded"></div>
           <div className="h-4 bg-gray-300 rounded"></div>

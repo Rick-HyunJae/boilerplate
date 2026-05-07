@@ -1,18 +1,18 @@
 ---
 name: i18n-setup
 description: |
-  Bootstrap an i18n system (React / Vue / Vanilla JS) into a project using the AI_Flow convention
-  (i18next + TypeScript bundling + per-namespace files + i18n-ally), and assist during ongoing
-  development by extracting hardcoded strings into t() calls and keeping ko/en/ja files in sync.
+    Bootstrap an i18n system (React / Vue / Vanilla JS) into a project using the AI_Flow convention
+    (i18next + TypeScript bundling + per-namespace files + i18n-ally), and assist during ongoing
+    development by extracting hardcoded strings into t() calls and keeping ko/en/ja files in sync.
 
-  TRIGGER when the user says any of:
-  - "i18n 세팅", "다국어 환경 구축", "translation setup", "다국어 추가"
-  - "translate this component", "하드코딩 문자열 다국어로", "다국어로 변경"
-  - "새 네임스페이스 추가", "namespace 추가"
-  - "ko/en/ja 동기화", "다국어 동기화", "translation sync"
-  - "setup vue-i18n", "i18next vanilla", "react i18n"
+    TRIGGER when the user says any of:
+    - "i18n 세팅", "다국어 환경 구축", "translation setup", "다국어 추가"
+    - "translate this component", "하드코딩 문자열 다국어로", "다국어로 변경"
+    - "새 네임스페이스 추가", "namespace 추가"
+    - "ko/en/ja 동기화", "다국어 동기화", "translation sync"
+    - "setup vue-i18n", "i18next vanilla", "react i18n"
 
-  SKIP for trivial value-only edits to existing translations (typo fixes in a single locale file).
+    SKIP for trivial value-only edits to existing translations (typo fixes in a single locale file).
 ---
 
 # i18n-setup
@@ -45,9 +45,9 @@ test -f package.json && grep -q '"i18next"' package.json && echo APPLY || echo S
 
 - 사용자가 명시 → 그대로 사용.
 - 미명시 → `package.json` 의 dependencies 로 판별.
-  - `react`, `react-dom` → React (1순위, AI_Flow 정밀 복제본)
-  - `vue` → Vue (vue-i18n 9, Composition API)
-  - 둘 다 없음 → Vanilla JS (i18next only)
+    - `react`, `react-dom` → React (1순위, AI_Flow 정밀 복제본)
+    - `vue` → Vue (vue-i18n 9, Composition API)
+    - 둘 다 없음 → Vanilla JS (i18next only)
 
 ### 2. 템플릿 복사
 
@@ -97,10 +97,10 @@ test -f package.json && grep -q '"i18next"' package.json && echo APPLY || echo S
 4. **변수 보간** — 동적 부분은 `{{var}}` 로 추출 후 `t('ns:key', { var })`.
 5. **ko 파일에만 키 추가** — `src/static/language/ko/<ns>.ts` 를 편집.
 6. **마지막에 동기화 호출**
-   ```bash
-   python ~/.claude/skills/i18n-setup/scripts/sync_keys.py <project-root>
-   ```
-   → en/ja 파일에 누락 키 + `// 한국어 원문: "..."` 주석 자동 삽입.
+    ```bash
+    python ~/.claude/skills/i18n-setup/scripts/sync_keys.py <project-root>
+    ```
+    → en/ja 파일에 누락 키 + `// 한국어 원문: "..."` 주석 자동 삽입.
 
 ### 기존 코드의 하드코딩 문자열을 다국어로 변환 시
 

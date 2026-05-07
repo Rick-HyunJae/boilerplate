@@ -1,11 +1,11 @@
 ---
 name: create-build-system
 description: |
-  Use primarily when invoked by the `/create-build-system` command to inspect,
-  design, create, or complete a frontend/CSR build environment. This skill is
-  command-backed: prefer explicit command invocation over broad phrase matching.
-  Do not use for narrow existing-config bug fixes, dependency upgrades, CI log
-  debugging, or one-line tweaks to an already working build setup.
+    Use primarily when invoked by the `/create-build-system` command to inspect,
+    design, create, or complete a frontend/CSR build environment. This skill is
+    command-backed: prefer explicit command invocation over broad phrase matching.
+    Do not use for narrow existing-config bug fixes, dependency upgrades, CI log
+    debugging, or one-line tweaks to an already working build setup.
 ---
 
 # Build System Setup
@@ -45,37 +45,37 @@ If a choice is discoverable from the repo, read first and do not ask.
 Discover before asking. Treat these fields by priority:
 
 - Required to decide the setup:
-  - `project_type`
-  - `framework`
-  - `language`
-  - `package_manager`
-  - `build_tool`
-  - `html_entry`
+    - `project_type`
+    - `framework`
+    - `language`
+    - `package_manager`
+    - `build_tool`
+    - `html_entry`
 - Required only when the request or repo facts make them relevant:
-  - `needs_dev_server`
-  - `needs_alias`
-  - `needs_env`
-  - `needs_assets`
-  - `needs_obfuscation`
+    - `needs_dev_server`
+    - `needs_alias`
+    - `needs_env`
+    - `needs_assets`
+    - `needs_obfuscation`
 - Ask only when the answer changes the setup and cannot be inferred safely:
-  - mode choice
-  - tool choice when repo facts are ambiguous
-  - entry point choice when multiple candidates exist
-  - opt-in features such as obfuscation or HTTPS
+    - mode choice
+    - tool choice when repo facts are ambiguous
+    - entry point choice when multiple candidates exist
+    - opt-in features such as obfuscation or HTTPS
 
-| Field | Examples | How to infer |
-|---|---|---|
-| `project_type` | `app`, `library` | package metadata, entry files, command input |
-| `framework` | `react`, `vue`, `svelte`, `vanilla` | dependencies and source files |
-| `language` | `ts`, `js` | tsconfig, source extensions, dependencies |
-| `package_manager` | `pnpm`, `npm`, `yarn`, `bun` | lockfiles, `packageManager`, Volta |
-| `build_tool` | `vite`, `webpack`, `rollup`, `esbuild`, `undecided` | config files and scripts |
-| `html_entry` | `index.html`, `public/index.html`, custom | repo files and build config |
-| `needs_dev_server` | boolean | app vs library, command input |
-| `needs_alias` | boolean | imports, tsconfig paths |
-| `needs_env` | boolean | env files, runtime config usage |
-| `needs_assets` | boolean | public/imported assets |
-| `needs_obfuscation` | boolean | explicit source-protection request |
+| Field               | Examples                                            | How to infer                                 |
+| ------------------- | --------------------------------------------------- | -------------------------------------------- |
+| `project_type`      | `app`, `library`                                    | package metadata, entry files, command input |
+| `framework`         | `react`, `vue`, `svelte`, `vanilla`                 | dependencies and source files                |
+| `language`          | `ts`, `js`                                          | tsconfig, source extensions, dependencies    |
+| `package_manager`   | `pnpm`, `npm`, `yarn`, `bun`                        | lockfiles, `packageManager`, Volta           |
+| `build_tool`        | `vite`, `webpack`, `rollup`, `esbuild`, `undecided` | config files and scripts                     |
+| `html_entry`        | `index.html`, `public/index.html`, custom           | repo files and build config                  |
+| `needs_dev_server`  | boolean                                             | app vs library, command input                |
+| `needs_alias`       | boolean                                             | imports, tsconfig paths                      |
+| `needs_env`         | boolean                                             | env files, runtime config usage              |
+| `needs_assets`      | boolean                                             | public/imported assets                       |
+| `needs_obfuscation` | boolean                                             | explicit source-protection request           |
 
 Defaults:
 
@@ -137,16 +137,16 @@ If a referenced file is missing, unreadable, or clearly irrelevant to the
 detected request, fall back to the overview and the final checklist instead of
 blocking on the missing card.
 
-| Feature | Reference |
-|---|---|
-| Env/runtime config | `references/01-environment.md` |
-| Alias/module paths | `references/02-module-resolution.md` |
-| TS/JSX/CSS/HTML transform | `references/03-source-transformation.md` |
-| Public/imported assets | `references/04-asset-handling.md` |
-| Output/chunks/sourcemaps | `references/05-output-bundling.md` |
-| Dev server/proxy/HTTPS | `references/06-dev-server.md` |
-| Minify/tree shaking/cache | `references/07-optimization.md` |
-| Source obfuscation | `references/08-obfuscation.md` |
+| Feature                      | Reference                                   |
+| ---------------------------- | ------------------------------------------- |
+| Env/runtime config           | `references/01-environment.md`              |
+| Alias/module paths           | `references/02-module-resolution.md`        |
+| TS/JSX/CSS/HTML transform    | `references/03-source-transformation.md`    |
+| Public/imported assets       | `references/04-asset-handling.md`           |
+| Output/chunks/sourcemaps     | `references/05-output-bundling.md`          |
+| Dev server/proxy/HTTPS       | `references/06-dev-server.md`               |
+| Minify/tree shaking/cache    | `references/07-optimization.md`             |
+| Source obfuscation           | `references/08-obfuscation.md`              |
 | Final verification/reporting | `references/09-feature-parity-checklist.md` |
 
 ## Execution Rules

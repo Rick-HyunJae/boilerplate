@@ -110,25 +110,25 @@ Images from external domains.
 
 ```typescript
 // next.config.ts
-import type { NextConfig } from 'next'
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.example.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.example.com',
-        pathname: '/images/**',
-      },
-    ],
-  },
-}
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'images.example.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'cdn.example.com',
+                pathname: '/images/**',
+            },
+        ],
+    },
+};
 
-export default nextConfig
+export default nextConfig;
 ```
 
 ### Usage
@@ -383,15 +383,15 @@ export function ImageGrid({ images }: { images: string[] }) {
 import Image from 'next/image'
 import { useState } from 'react'
 
-export function ProductImage({ 
-  src, 
-  alt 
-}: { 
+export function ProductImage({
+  src,
+  alt
+}: {
   src: string
   alt: string
 }) {
   const [error, setError] = useState(false)
-  
+
   if (error) {
     return (
       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -399,7 +399,7 @@ export function ProductImage({
       </div>
     )
   }
-  
+
   return (
     <Image
       src={src}
@@ -427,7 +427,7 @@ export function Section() {
         quality={85}
         priority
       />
-      
+
       {/* Content */}
       <div className="relative z-10 p-8">
         <h1>Content over image</h1>
@@ -447,7 +447,7 @@ import { useState } from 'react'
 
 export function Carousel({ images }: { images: string[] }) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  
+
   return (
     <div className="relative w-full h-96">
       <Image
@@ -457,14 +457,14 @@ export function Carousel({ images }: { images: string[] }) {
         className="object-cover"
         priority={currentIndex === 0}
       />
-      
+
       <button
         onClick={() => setCurrentIndex((i) => (i > 0 ? i - 1 : images.length - 1))}
         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded"
       >
         Previous
       </button>
-      
+
       <button
         onClick={() => setCurrentIndex((i) => (i < images.length - 1 ? i + 1 : 0))}
         className="absolute right-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded"
@@ -486,7 +486,7 @@ import { db } from '@/lib/db'
 export default async function BlogPost({ params }: PageProps<'/blog/[slug]'>) {
   const { slug } = await params
   const post = await db.post.findUnique({ where: { slug } })
-  
+
   return (
     <article className="max-w-4xl mx-auto">
       {/* Featured image */}
@@ -499,7 +499,7 @@ export default async function BlogPost({ params }: PageProps<'/blog/[slug]'>) {
           className="object-cover rounded-lg"
         />
       </div>
-      
+
       {/* Content */}
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
       <div className="prose">{post.content}</div>
@@ -518,7 +518,7 @@ import { useState } from 'react'
 
 export function ImageWithLoading({ src, alt }: { src: string; alt: string }) {
   const [loading, setLoading] = useState(true)
-  
+
   return (
     <div className="relative">
       {loading && (
@@ -653,10 +653,10 @@ images: {
 ```typescript
 // next.config.ts
 const nextConfig: NextConfig = {
-  images: {
-    formats: ['image/avif', 'image/webp'],
-  },
-}
+    images: {
+        formats: ['image/avif', 'image/webp'],
+    },
+};
 ```
 
 ### Device Sizes
@@ -664,10 +664,10 @@ const nextConfig: NextConfig = {
 ```typescript
 // next.config.ts
 const nextConfig: NextConfig = {
-  images: {
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-  },
-}
+    images: {
+        deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    },
+};
 ```
 
 ### Image Sizes (for responsive images)
@@ -675,10 +675,10 @@ const nextConfig: NextConfig = {
 ```typescript
 // next.config.ts
 const nextConfig: NextConfig = {
-  images: {
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-  },
-}
+    images: {
+        imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    },
+};
 ```
 
 ### Minimize Allowed Widths
@@ -686,10 +686,10 @@ const nextConfig: NextConfig = {
 ```typescript
 // next.config.ts
 const nextConfig: NextConfig = {
-  images: {
-    minimumCacheTTL: 60,
-  },
-}
+    images: {
+        minimumCacheTTL: 60,
+    },
+};
 ```
 
 ---
@@ -735,6 +735,7 @@ const nextConfig: NextConfig = {
 ---
 
 **Related Documentation:**
+
 - [Font Optimization](16-font-optimization.md)
 - [CSS Styling](14-css.md)
 - [Next.js Image Docs](https://nextjs.org/docs/app/api-reference/components/image)

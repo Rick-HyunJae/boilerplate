@@ -25,14 +25,14 @@ UI 에 노출되는 모든 문자열. 다음 모두 변환 대상:
 
 파일 경로 도메인 우선 매핑:
 
-| 경로 패턴 | NS |
-|---|---|
-| `src/views/Studio/...`, `src/components/Studio/...` | `studio` |
-| `src/views/Artboard/...`, `src/components/Artboard/...` | `artboard` |
-| `src/views/Deployment/...` | `deployment` |
-| `src/views/Knowledge/...`, `src/components/Knowledge/...` | `knowledge` |
-| 다이얼로그 / 모달 전용 | `dialogs` |
-| 위 어디에도 안 맞고 전역 공통 (button.save 같은) | `common` |
+| 경로 패턴                                                 | NS           |
+| --------------------------------------------------------- | ------------ |
+| `src/views/Studio/...`, `src/components/Studio/...`       | `studio`     |
+| `src/views/Artboard/...`, `src/components/Artboard/...`   | `artboard`   |
+| `src/views/Deployment/...`                                | `deployment` |
+| `src/views/Knowledge/...`, `src/components/Knowledge/...` | `knowledge`  |
+| 다이얼로그 / 모달 전용                                    | `dialogs`    |
+| 위 어디에도 안 맞고 전역 공통 (button.save 같은)          | `common`     |
 
 해당 NS 가 프로젝트에 없으면 [scripts/add_namespace.py](../scripts/add_namespace.py) 로 먼저 생성.
 
@@ -40,10 +40,10 @@ UI 에 노출되는 모든 문자열. 다음 모두 변환 대상:
 
 - camelCase + 카테고리 prefix.
 - 카테고리 우선순위:
-  1. 전역 공통 단어 → `common.button.<verb>`, `common.unit.<unit>`
-  2. 화면 섹션 → `<feature>.<section>.<item>` (예: `studio.header.toolBox.add`)
-  3. 메시지 → `<feature>.messages.<event>` (예: `knowledge.messages.uploadSuccess`)
-  4. 에러 → `common:errors.<code>` 또는 `<feature>:errors.<code>`
+    1. 전역 공통 단어 → `common.button.<verb>`, `common.unit.<unit>`
+    2. 화면 섹션 → `<feature>.<section>.<item>` (예: `studio.header.toolBox.add`)
+    3. 메시지 → `<feature>.messages.<event>` (예: `knowledge.messages.uploadSuccess`)
+    4. 에러 → `common:errors.<code>` 또는 `<feature>:errors.<code>`
 
 **기존 키 재사용 우선** — 새 키 만들기 전에 ko 파일에서 의미상 동일한 키 검색.
 
@@ -55,8 +55,8 @@ UI 에 노출되는 모든 문자열. 다음 모두 변환 대상:
 import { useTranslation } from 'react-i18next';
 
 const Component = () => {
-  const { t } = useTranslation('<ns>');   // step 1 에서 결정한 NS
-  // ...
+    const { t } = useTranslation('<ns>'); // step 1 에서 결정한 NS
+    // ...
 };
 ```
 
@@ -102,12 +102,12 @@ const Component = () => {
 ```ts
 // 추가 전 ko/common.ts
 export default {
-  button: { confirm: '확인', cancel: '취소' }
+    button: { confirm: '확인', cancel: '취소' },
 };
 
 // 추가 후
 export default {
-  button: { confirm: '확인', cancel: '취소', save: '저장' }
+    button: { confirm: '확인', cancel: '취소', save: '저장' },
 };
 ```
 
@@ -134,19 +134,21 @@ python ~/.claude/skills/i18n-setup/scripts/sync_keys.py <project-root> --check
 ```tsx
 // Before
 const TYPES = [
-  { id: 1, label: '일별' },
-  { id: 2, label: '월별' }
+    { id: 1, label: '일별' },
+    { id: 2, label: '월별' },
 ];
 
 // After
 // ko/common.ts: calendar: { day: '일별', month: '월별' }
 const TYPES = [
-  { id: 1, labelKey: 'common:calendar.day' },
-  { id: 2, labelKey: 'common:calendar.month' }
+    { id: 1, labelKey: 'common:calendar.day' },
+    { id: 2, labelKey: 'common:calendar.month' },
 ] as const;
 
 // 렌더에서
-{TYPES.map(t => <li key={t.id}>{tFn(t.labelKey)}</li>)}
+{
+    TYPES.map((t) => <li key={t.id}>{tFn(t.labelKey)}</li>);
+}
 ```
 
 ## React 외부 변환 패턴
@@ -166,8 +168,8 @@ export const formatError = (code: string) => i18n.t('common:errors.formatted', {
 ```tsx
 // Snackbar 가 임의의 메시지 코드를 받음
 const Snackbar = ({ msgKey }: { msgKey: string }) => {
-  const { looseT } = useLooseTranslation();
-  return <div>{looseT(msgKey)}</div>;
+    const { looseT } = useLooseTranslation();
+    return <div>{looseT(msgKey)}</div>;
 };
 ```
 

@@ -5,14 +5,14 @@ User scope (`~/.claude/`) 의 공통 설정을 보강(extend)하며, 충돌 시 
 
 ## Layout
 
-| Path                  | Purpose                                                                     |
-| --------------------- | --------------------------------------------------------------------------- |
-| `settings.json`       | 팀 공유 설정 (committed)                                                    |
-| `settings.local.json` | 개인 로컬 설정 (gitignored)                                                 |
-| `agents/`             | Project 전용 sub-agent 정의 + `AGENTS.md` 인덱스                            |
-| `hooks/`              | Lifecycle hook scripts (PreToolUse / PostToolUse / Stop / UserPromptSubmit) |
+| Path                  | Purpose                                                                                                  |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
+| `settings.json`       | 팀 공유 설정 (committed)                                                                                 |
+| `settings.local.json` | 개인 로컬 설정 (gitignored)                                                                              |
+| `agents/`             | Project 전용 sub-agent 정의 + `AGENTS.md` 인덱스                                                         |
+| `hooks/`              | Lifecycle hook scripts (PreToolUse / PostToolUse / Stop / UserPromptSubmit)                              |
 | `rules/`              | `INDEX.md` 진입점 + `guidelines/` (항상 로드) + `architecture/` (설계 제약) + `development/` (개발 규칙) |
-| `skills/`             | Skill packages (`SKILL.md` + 옵션 `ref/` `scripts/` `templates/`)           |
+| `skills/`             | Skill packages (`SKILL.md` + 옵션 `ref/` `scripts/` `templates/`)                                        |
 
 ## Agent / Skill Workflow
 
@@ -21,19 +21,7 @@ User scope (`~/.claude/`) 의 공통 설정을 보강(extend)하며, 충돌 시 
 
 ## Frontmatter 표준
 
-세 종류의 파일이 frontmatter 를 가지며, 형식은 각각 다음과 같이 단일화합니다.
-
-### `spec/**/*.md` (hook 매칭)
-
-```yaml
----
-trigger_keywords: ['domain-specific-word', '도메인-특화-단어']
-trigger_globs: ['src/**/specific/**'] # optional
----
-```
-
-- 일반어(`api`, `test`, `mock`, `render` 등) 금지 — false positive 다발
-- 미사용 메타필드(`priority`, `related`, `scope`, `applies_to` 등) 금지
+두 종류의 파일이 frontmatter 를 가지며, 형식은 각각 다음과 같이 단일화합니다.
 
 ### `agents/*.md`
 
@@ -57,11 +45,11 @@ description: <한 줄, when-to-use 명시>
 
 ## Rules 분류 기준
 
-| 폴더 | 로드 방식 | 기준 |
-| ---- | --------- | ---- |
-| `guidelines/` | 항상 로드 | 모든 코드 변경에 일관되게 적용, 위반 시 즉시 리뷰 차단 수준의 원칙 |
-| `architecture/` | 경로 범위 로드 | 설계 구조 제약 — FSD 레이어, React 패턴 |
-| `development/` | 경로 범위 로드 | 개발 단계 규칙 — 작성 관례, API, 테스트, 환경 설정 |
+| 폴더            | 로드 방식      | 기준                                                               |
+| --------------- | -------------- | ------------------------------------------------------------------ |
+| `guidelines/`   | 항상 로드      | 모든 코드 변경에 일관되게 적용, 위반 시 즉시 리뷰 차단 수준의 원칙 |
+| `architecture/` | 경로 범위 로드 | 설계 구조 제약 — FSD 레이어, React 패턴                            |
+| `development/`  | 경로 범위 로드 | 개발 단계 규칙 — 작성 관례, API, 테스트, 환경 설정                 |
 
 항상-로드 컨텍스트 비대화 방지를 위해 `guidelines/` 진입 기준을 엄격히 유지. 그 외는 경로 범위 로드 또는 skill 로 분류.
 

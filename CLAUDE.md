@@ -2,14 +2,13 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-@spec/architecture/overview.md
-@spec/architecture/fsd-layers.md
+@docs/spec/architecture.md
 
 ## Project Overview
 
 **React 19 + TypeScript CSR** template using **Feature-Sliced Design (FSD)** architecture.
 
-- **Code Standards**: Rules — `.claude/rules/INDEX.md`; Specs — `spec/INDEX.md`
+- **Code Standards**: Rules — `.claude/rules/INDEX.md`; Specs — `docs/spec/`
 - **Package Manager**: pnpm (Node `24.15.0` pinned via Volta)
 
 ## Quick Start Commands

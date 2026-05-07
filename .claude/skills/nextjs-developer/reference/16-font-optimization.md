@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
 ```css
 /* app/globals.css */
 body {
-  font-family: var(--font-inter), sans-serif;
+    font-family: var(--font-inter), sans-serif;
 }
 ```
 
@@ -102,53 +102,53 @@ export default function RootLayout({ children }) {
 ```css
 /* app/globals.css */
 body {
-  font-family: var(--font-inter), sans-serif;
+    font-family: var(--font-inter), sans-serif;
 }
 
 code {
-  font-family: var(--font-roboto-mono), monospace;
+    font-family: var(--font-roboto-mono), monospace;
 }
 ```
 
 ### Font Weights
 
 ```typescript
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
 
 // Single weight
 const inter = Inter({
-  subsets: ['latin'],
-  weight: '400',
-})
+    subsets: ['latin'],
+    weight: '400',
+});
 
 // Multiple weights
 const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-})
+    subsets: ['latin'],
+    weight: ['400', '700'],
+});
 
 // Variable font (all weights)
 const inter = Inter({
-  subsets: ['latin'],
-  // No weight needed for variable fonts
-})
+    subsets: ['latin'],
+    // No weight needed for variable fonts
+});
 ```
 
 ### Preload
 
 ```typescript
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
 
 const inter = Inter({
-  subsets: ['latin'],
-  preload: true,  // Default is true
-})
+    subsets: ['latin'],
+    preload: true, // Default is true
+});
 
 // Disable preload (not recommended)
 const inter = Inter({
-  subsets: ['latin'],
-  preload: false,
-})
+    subsets: ['latin'],
+    preload: false,
+});
 ```
 
 ---
@@ -177,28 +177,28 @@ export default function RootLayout({ children }) {
 ### Multiple Files (Weights)
 
 ```typescript
-import localFont from 'next/font/local'
+import localFont from 'next/font/local';
 
 const myFont = localFont({
-  src: [
-    {
-      path: './fonts/my-font-regular.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: './fonts/my-font-bold.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: './fonts/my-font-italic.woff2',
-      weight: '400',
-      style: 'italic',
-    },
-  ],
-  variable: '--font-my-font',
-})
+    src: [
+        {
+            path: './fonts/my-font-regular.woff2',
+            weight: '400',
+            style: 'normal',
+        },
+        {
+            path: './fonts/my-font-bold.woff2',
+            weight: '700',
+            style: 'normal',
+        },
+        {
+            path: './fonts/my-font-italic.woff2',
+            weight: '400',
+            style: 'italic',
+        },
+    ],
+    variable: '--font-my-font',
+});
 ```
 
 ### From Public Folder
@@ -211,20 +211,20 @@ public/
 ```
 
 ```typescript
-import localFont from 'next/font/local'
+import localFont from 'next/font/local';
 
 const customFont = localFont({
-  src: [
-    {
-      path: '../public/fonts/custom-font.woff2',
-      weight: '400',
-    },
-    {
-      path: '../public/fonts/custom-font-bold.woff2',
-      weight: '700',
-    },
-  ],
-})
+    src: [
+        {
+            path: '../public/fonts/custom-font.woff2',
+            weight: '400',
+        },
+        {
+            path: '../public/fonts/custom-font-bold.woff2',
+            weight: '700',
+        },
+    ],
+});
 ```
 
 ---
@@ -234,24 +234,24 @@ const customFont = localFont({
 ### Google Variable Font
 
 ```typescript
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
 
 // Inter is a variable font (supports all weights)
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
+    subsets: ['latin'],
+    variable: '--font-inter',
+});
 ```
 
 ### Local Variable Font
 
 ```typescript
-import localFont from 'next/font/local'
+import localFont from 'next/font/local';
 
 const myVariableFont = localFont({
-  src: './fonts/my-variable-font.woff2',
-  variable: '--font-variable',
-})
+    src: './fonts/my-variable-font.woff2',
+    variable: '--font-variable',
+});
 ```
 
 ### Using Variable Font Weights
@@ -259,23 +259,23 @@ const myVariableFont = localFont({
 ```css
 /* Any weight between 100-900 */
 .light {
-  font-weight: 300;
+    font-weight: 300;
 }
 
 .regular {
-  font-weight: 400;
+    font-weight: 400;
 }
 
 .medium {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 .bold {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 .custom {
-  font-weight: 650;  /* Variable fonts support any value */
+    font-weight: 650; /* Variable fonts support any value */
 }
 ```
 
@@ -286,33 +286,33 @@ const myVariableFont = localFont({
 ### Font Display Strategies
 
 ```typescript
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
 
 // Default: 'swap' (recommended)
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-})
+    subsets: ['latin'],
+    display: 'swap',
+});
 
 // Other options
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'optional',   // Fallback if font takes too long
-  display: 'auto',       // Browser decides
-  display: 'block',      // Wait for font (not recommended)
-  display: 'fallback',   // Brief blocking, then swap
-})
+    subsets: ['latin'],
+    display: 'optional', // Fallback if font takes too long
+    display: 'auto', // Browser decides
+    display: 'block', // Wait for font (not recommended)
+    display: 'fallback', // Brief blocking, then swap
+});
 ```
 
 ### Fallback Fonts
 
 ```typescript
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
 
 const inter = Inter({
-  subsets: ['latin'],
-  fallback: ['system-ui', 'arial'],
-})
+    subsets: ['latin'],
+    fallback: ['system-ui', 'arial'],
+});
 ```
 
 ---
@@ -351,13 +351,13 @@ export default function RootLayout({ children }) {
 @tailwind utilities;
 
 @layer base {
-  body {
-    font-family: var(--font-sans), sans-serif;
-  }
-  
-  code {
-    font-family: var(--font-mono), monospace;
-  }
+    body {
+        font-family: var(--font-sans), sans-serif;
+    }
+
+    code {
+        font-family: var(--font-mono), monospace;
+    }
 }
 ```
 
@@ -389,11 +389,16 @@ export default function RootLayout({ children }) {
 ```css
 /* app/globals.css */
 body {
-  font-family: var(--font-body), sans-serif;
+    font-family: var(--font-body), sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display), serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display), serif;
 }
 ```
 
@@ -441,8 +446,8 @@ const notoSansJP = Noto_Sans_JP({
 
 export default function RootLayout({ children }) {
   return (
-    <html 
-      lang="en" 
+    <html
+      lang="en"
       className={`${notoSans.variable} ${notoSansKR.variable} ${notoSansJP.variable}`}
     >
       <body>{children}</body>
@@ -454,7 +459,7 @@ export default function RootLayout({ children }) {
 ```css
 /* app/globals.css */
 body {
-  font-family: var(--font-latin), var(--font-korean), var(--font-japanese), sans-serif;
+    font-family: var(--font-latin), var(--font-korean), var(--font-japanese), sans-serif;
 }
 ```
 
@@ -489,11 +494,11 @@ export default function RootLayout({ children }) {
 ```css
 /* app/globals.css */
 body {
-  font-family: var(--font-body), sans-serif;
+    font-family: var(--font-body), sans-serif;
 }
 
 .brand {
-  font-family: var(--font-brand), sans-serif;
+    font-family: var(--font-brand), sans-serif;
 }
 ```
 
@@ -520,14 +525,14 @@ export default function RootLayout({ children }) {
 ```javascript
 // tailwind.config.js
 module.exports = {
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['var(--font-sans)', 'sans-serif'],
-      },
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['var(--font-sans)', 'sans-serif'],
+            },
+        },
     },
-  },
-}
+};
 ```
 
 ```typescript
@@ -549,17 +554,17 @@ export function Page() {
 
 ```typescript
 // ✅ GOOD - Variable font (all weights)
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 // ❌ BAD - Loading multiple font files
-import { Roboto } from 'next/font/google'
+import { Roboto } from 'next/font/google';
 
 const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['400', '500', '700', '900'],
-})
+    subsets: ['latin'],
+    weight: ['400', '500', '700', '900'],
+});
 ```
 
 ### 2. Load Only Required Subsets
@@ -567,13 +572,13 @@ const roboto = Roboto({
 ```typescript
 // ✅ GOOD - Only Latin subset
 const inter = Inter({
-  subsets: ['latin'],
-})
+    subsets: ['latin'],
+});
 
 // ❌ BAD - All subsets (larger bundle)
 const inter = Inter({
-  subsets: ['latin', 'latin-ext', 'cyrillic', 'greek'],
-})
+    subsets: ['latin', 'latin-ext', 'cyrillic', 'greek'],
+});
 ```
 
 ### 3. Use CSS Variables for Flexibility
@@ -581,14 +586,14 @@ const inter = Inter({
 ```typescript
 // ✅ GOOD - Flexible with CSS variables
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
+    subsets: ['latin'],
+    variable: '--font-inter',
+});
 
 // ❌ BAD - Direct className only
 const inter = Inter({
-  subsets: ['latin'],
-})
+    subsets: ['latin'],
+});
 ```
 
 ### 4. Preload Critical Fonts
@@ -596,15 +601,15 @@ const inter = Inter({
 ```typescript
 // ✅ GOOD - Preload default (true)
 const inter = Inter({
-  subsets: ['latin'],
-  preload: true,
-})
+    subsets: ['latin'],
+    preload: true,
+});
 
 // ❌ BAD - Disabling preload
 const inter = Inter({
-  subsets: ['latin'],
-  preload: false,
-})
+    subsets: ['latin'],
+    preload: false,
+});
 ```
 
 ### 5. Use display: 'swap' (Default)
@@ -612,14 +617,14 @@ const inter = Inter({
 ```typescript
 // ✅ GOOD - Swap (default, no need to specify)
 const inter = Inter({
-  subsets: ['latin'],
-})
+    subsets: ['latin'],
+});
 
 // ❌ BAD - Block display
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'block',
-})
+    subsets: ['latin'],
+    display: 'block',
+});
 ```
 
 ---
@@ -650,34 +655,34 @@ Full list: https://fonts.google.com/variablefonts
 
 ```typescript
 const inter = Inter({
-  subsets: ['latin'],          // Basic Latin
-  subsets: ['latin', 'latin-ext'],  // Extended Latin
-  subsets: ['cyrillic'],       // Cyrillic
-  subsets: ['greek'],          // Greek
-})
+    subsets: ['latin'], // Basic Latin
+    subsets: ['latin', 'latin-ext'], // Extended Latin
+    subsets: ['cyrillic'], // Cyrillic
+    subsets: ['greek'], // Greek
+});
 ```
 
 ### Custom Font Display
 
 ```typescript
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',      // Show fallback immediately (default)
-  display: 'optional',  // Use fallback if font loads slowly
-  display: 'fallback',  // Brief blocking, then swap
-  display: 'block',     // Wait for font (not recommended)
-  display: 'auto',      // Browser decides
-})
+    subsets: ['latin'],
+    display: 'swap', // Show fallback immediately (default)
+    display: 'optional', // Use fallback if font loads slowly
+    display: 'fallback', // Brief blocking, then swap
+    display: 'block', // Wait for font (not recommended)
+    display: 'auto', // Browser decides
+});
 ```
 
 ### Axes for Variable Fonts
 
 ```typescript
 const inter = Inter({
-  subsets: ['latin'],
-  axes: ['wght'],  // Weight axis only
-  // Default includes all available axes
-})
+    subsets: ['latin'],
+    axes: ['wght'], // Weight axis only
+    // Default includes all available axes
+});
 ```
 
 ---
@@ -724,6 +729,7 @@ const font2 = Font2({ variable: '--font-2' })
 ---
 
 **Related Documentation:**
+
 - [CSS Styling](14-css.md)
 - [Image Optimization](15-image-optimization.md)
 - [Google Fonts](https://fonts.google.com)

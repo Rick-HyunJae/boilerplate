@@ -8,7 +8,7 @@ setup 모드 마지막 단계에서, 대상 프로젝트의 루트 `CLAUDE.md` �
 
 ## 주입할 블록 (이 펜스 사이를 그대로 복사)
 
-```markdown
+````markdown
 ## i18n 규칙
 
 이 프로젝트는 i18next 기반 다국어 시스템을 사용한다 (ko / en / ja). 코드 작성·수정 시 다음을 엄수:
@@ -18,9 +18,11 @@ setup 모드 마지막 단계에서, 대상 프로젝트의 루트 `CLAUDE.md` �
 - **키 작명** — camelCase + 카테고리 prefix (`button.save`, `messages.saveSuccess`). 의미상 동일한 기존 키가 있으면 재사용.
 - **ko 만 편집** — `src/static/language/ko/<ns>.ts` 또는 `src/i18n/ko/<ns>.ts` 에만 키 추가. en/ja 는 직접 손대지 말 것.
 - **작업 종료 직전 동기화** — 새 키를 추가했다면 반드시 다음 명령을 실행해 en/ja 동기화:
-  ```bash
-  python ~/.claude/skills/i18n-setup/scripts/sync_keys.py .
-  ```
+    ```bash
+    python ~/.claude/skills/i18n-setup/scripts/sync_keys.py .
+    ```
+````
+
 - **변수 보간** — 동적 부분은 `{{var}}` 로 추출 후 `t('ns:key', { var })`. 문자열 합성 금지.
 - **상수 파일** — 번역값이 아니라 `'ns:key'` 형태의 키 문자열만 저장. 렌더링 시점에 `t(item.labelKey)`.
 - **React 외부** — utils/axios 등에서 i18n.t 호출 시, 모듈 최상단이 아니라 함수 내부에서. `import i18n from '~language/i18n'`.
@@ -28,6 +30,7 @@ setup 모드 마지막 단계에서, 대상 프로젝트의 루트 `CLAUDE.md` �
 - **하드코딩 탐지** — 기존 코드 정리 시 `python ~/.claude/skills/i18n-setup/scripts/scan_hardcoded.py .` 로 후보를 확인.
 
 자세한 컨벤션은 `~/.claude/skills/i18n-setup/references/conventions.md` 참고.
+
 ```
 
 ---
@@ -38,3 +41,4 @@ setup 모드 마지막 단계에서, 대상 프로젝트의 루트 `CLAUDE.md` �
 2. 있으면: 파일 끝에 빈 줄 1개 + 위 블록을 append.
 3. 없으면: `CLAUDE.md` 를 새로 만들고 첫 줄에 프로젝트명을 # 헤더로, 그 다음에 위 블록.
 4. 이미 `## i18n 규칙` 섹션이 있으면 덮어쓰지 말고 사용자에게 diff 안내 후 합치기 여부 확인.
+```

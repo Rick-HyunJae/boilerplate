@@ -20,17 +20,17 @@ environment. It is backed by the `create-build-system` skill.
 
 1. Load `.codex/skills/create-build-system/SKILL.md`.
 2. Inspect the repository before asking questions:
-   - `package.json`, lockfiles, package manager metadata
-   - existing build configs and package scripts
-   - tsconfig files, HTML entry files, source entry files
-   - env files, public/static assets, test config if relevant
+    - `package.json`, lockfiles, package manager metadata
+    - existing build configs and package scripts
+    - tsconfig files, HTML entry files, source entry files
+    - env files, public/static assets, test config if relevant
 3. Build an internal working prompt with:
-   - detected state
-   - decisions made
-   - missing build-environment features, grouped by priority
-   - references to read
-   - planned changes
-   - verification commands
+    - detected state
+    - decisions made
+    - missing build-environment features, grouped by priority
+    - references to read
+    - planned changes
+    - verification commands
 4. Ask only for missing choices that materially affect the setup.
 5. Read only the relevant `references/*.md` files from the skill.
 6. Apply the smallest project-shaped change needed to satisfy the command.

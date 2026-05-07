@@ -1,12 +1,12 @@
 ---
 paths:
-  - "**/*.test.{ts,tsx}"
-  - "src/shared/test/**"
+    - '**/*.test.{ts,tsx}'
+    - 'src/shared/test/**'
 ---
 
 # Testing Rules
 
-사실(프레임워크, 커버리지 기준, 유틸) → [spec/testing/strategy.md](/spec/testing/strategy.md)
+사실(프레임워크, 커버리지 기준, 유틸) → [docs/spec/testing.md](/docs/spec/testing.md)
 이 파일은 코드 작성 시 따라야 할 제약입니다.
 
 ## MUST

@@ -1,12 +1,12 @@
 ---
 paths:
-  - "config/env/**"
-  - "src/shared/config/**"
+    - 'config/env/**'
+    - 'src/shared/config/**'
 ---
 
 # Environment Rules
 
-사실(스키마, 파일 위치, 빌드 모드별 차이) → [spec/env/config.md](/spec/env/config.md)
+사실(스키마, 파일 위치, 빌드 모드별 차이) → [docs/spec/build.md](/docs/spec/build.md)
 이 파일은 코드 작성 시 따라야 할 제약입니다.
 
 ## MUST
@@ -27,5 +27,5 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 1. `config/env/index.ts` 에 Zod 필드 추가
 2. `src/shared/config/env.ts` 의 `ENV` 객체에 추가
-3. `spec/env/config.md` 스키마 표 갱신
+3. `docs/spec/build.md` 스키마 표 갱신
 4. `.env.dev` / `.env.prod` 실제 값 추가

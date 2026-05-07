@@ -11,6 +11,7 @@ Construct this internal prompt before editing:
 
 ```md
 Detected State:
+
 - project_type:
 - framework:
 - language:
@@ -20,20 +21,25 @@ Detected State:
 - existing_scripts:
 
 Decisions:
+
 - mode:
 - tool:
 - required_features:
 
 Needed References:
+
 - references/...
 
 Planned Changes:
+
 - ...
 
 Verification:
+
 - ...
 
 Open Questions:
+
 - ...
 ```
 

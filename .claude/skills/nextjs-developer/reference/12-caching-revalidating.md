@@ -46,7 +46,7 @@ export default async function Page() {
   const data1 = await getData()  // Fetches from API
   const data2 = await getData()  // Uses memoized result
   const data3 = await getData()  // Uses memoized result
-  
+
   return <div>...</div>
 }
 ```
@@ -99,11 +99,11 @@ Persistent cache for `fetch` results across requests and deployments.
 
 ```typescript
 // Cached until manually revalidated
-const data = await fetch('https://api.example.com/data')
+const data = await fetch('https://api.example.com/data');
 // OR explicitly
 const data = await fetch('https://api.example.com/data', {
-  cache: 'force-cache'
-})
+    cache: 'force-cache',
+});
 ```
 
 ### No Cache
@@ -111,8 +111,8 @@ const data = await fetch('https://api.example.com/data', {
 ```typescript
 // Always fetch fresh data
 const data = await fetch('https://api.example.com/data', {
-  cache: 'no-store'
-})
+    cache: 'no-store',
+});
 ```
 
 ### Time-Based Revalidation
@@ -120,8 +120,8 @@ const data = await fetch('https://api.example.com/data', {
 ```typescript
 // Revalidate after 1 hour
 const data = await fetch('https://api.example.com/data', {
-  next: { revalidate: 3600 }
-})
+    next: { revalidate: 3600 },
+});
 ```
 
 ### Tag-Based Revalidation
@@ -129,15 +129,15 @@ const data = await fetch('https://api.example.com/data', {
 ```typescript
 // Tag for selective revalidation
 const data = await fetch('https://api.example.com/posts', {
-  next: { 
-    tags: ['posts'],
-    revalidate: 3600 
-  }
-})
+    next: {
+        tags: ['posts'],
+        revalidate: 3600,
+    },
+});
 
 // Later, revalidate all 'posts' requests
-import { revalidateTag } from 'next/cache'
-revalidateTag('posts')
+import { revalidateTag } from 'next/cache';
+revalidateTag('posts');
 ```
 
 ---
@@ -163,7 +163,7 @@ export default function AboutPage() {
 export async function generateStaticParams() {
   const posts = await fetch('https://api.example.com/posts')
     .then(r => r.json())
-  
+
   return posts.map(post => ({
     slug: post.slug
   }))
@@ -173,7 +173,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
   const { slug } = await params
   const post = await fetch(`https://api.example.com/posts/${slug}`)
     .then(r => r.json())
-  
+
   return <article>{post.title}</article>
 }
 ```
@@ -214,8 +214,8 @@ export default async function Page() {
 ```typescript
 // Per-fetch revalidation
 const data = await fetch('https://api.example.com/data', {
-  next: { revalidate: 3600 }
-})
+    next: { revalidate: 3600 },
+});
 ```
 
 ### 2. On-Demand Revalidation
@@ -231,10 +231,10 @@ import { revalidatePath } from 'next/cache'
 
 export async function createPost(formData: FormData) {
   await db.post.create({...})
-  
+
   // Revalidate specific path
   revalidatePath('/posts')
-  
+
   // Revalidate with type
   revalidatePath('/posts', 'page')     // Single page
   revalidatePath('/posts', 'layout')   // Layout + nested pages
@@ -250,7 +250,7 @@ import { revalidateTag } from 'next/cache'
 
 export async function createPost(formData: FormData) {
   await db.post.create({...})
-  
+
   // Revalidate all requests with tag 'posts'
   revalidateTag('posts')
 }
@@ -271,10 +271,10 @@ import { redirect } from 'next/navigation'
 
 export async function createPost(formData: FormData) {
   const post = await db.post.create({...})
-  
+
   // Immediately expire cache
   updateTag('posts')
-  
+
   // User sees new post immediately
   redirect(`/posts/${post.id}`)
 }
@@ -312,52 +312,52 @@ export default function Page() {
 
 ```typescript
 // No cache
-fetch(url, { cache: 'no-store' })
+fetch(url, { cache: 'no-store' });
 
 // Cache forever
-fetch(url, { cache: 'force-cache' })
+fetch(url, { cache: 'force-cache' });
 
 // Default (cache + revalidate)
-fetch(url, { 
-  next: { 
-    revalidate: 3600,
-    tags: ['posts']
-  }
-})
+fetch(url, {
+    next: {
+        revalidate: 3600,
+        tags: ['posts'],
+    },
+});
 ```
 
 ### Route Segment Config
 
 ```typescript
 // Force dynamic (no cache)
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 // Force static (cache)
-export const dynamic = 'force-static'
+export const dynamic = 'force-static';
 
 // Time-based revalidation
-export const revalidate = 3600
+export const revalidate = 3600;
 
 // Fetch cache config
-export const fetchCache = 'default-cache'
-export const fetchCache = 'force-cache'
-export const fetchCache = 'default-no-store'
-export const fetchCache = 'only-cache'
-export const fetchCache = 'force-no-store'
-export const fetchCache = 'only-no-store'
+export const fetchCache = 'default-cache';
+export const fetchCache = 'force-cache';
+export const fetchCache = 'default-no-store';
+export const fetchCache = 'only-cache';
+export const fetchCache = 'force-no-store';
+export const fetchCache = 'only-no-store';
 ```
 
 ### Database Query Caching (with `use cache`)
 
 ```typescript
-'use cache'
-import { cacheLife, cacheTag } from 'next/cache'
+'use cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 export async function getPosts() {
-  cacheLife('hours')
-  cacheTag('posts')
-  
-  return await db.post.findMany()
+    cacheLife('hours');
+    cacheTag('posts');
+
+    return await db.post.findMany();
 }
 ```
 
@@ -375,7 +375,7 @@ export const revalidate = 300
 export default async function BlogPage() {
   const posts = await fetch('https://api.example.com/posts')
     .then(r => r.json())
-  
+
   return <PostList posts={posts} />
 }
 
@@ -385,7 +385,7 @@ export const revalidate = 300
 export async function generateStaticParams() {
   const posts = await fetch('https://api.example.com/posts')
     .then(r => r.json())
-  
+
   return posts.map(post => ({ slug: post.slug }))
 }
 
@@ -393,7 +393,7 @@ export default async function PostPage({ params }: PageProps<'/blog/[slug]'>) {
   const { slug } = await params
   const post = await fetch(`https://api.example.com/posts/${slug}`)
     .then(r => r.json())
-  
+
   return <article>{post.title}</article>
 }
 ```
@@ -406,7 +406,7 @@ export default async function ProductsPage() {
   const products = await fetch('https://api.example.com/products', {
     next: { tags: ['products'] }
   })
-  
+
   return <ProductList products={products} />
 }
 
@@ -416,7 +416,7 @@ import { revalidateTag } from 'next/cache'
 
 export async function updateProduct(id: string, data: any) {
   await db.product.update({ where: { id }, data })
-  
+
   // Revalidate all product pages
   revalidateTag('products')
 }
@@ -433,7 +433,7 @@ export default async function DashboardPage() {
   const stats = await fetch('https://api.example.com/stats', {
     cache: 'no-store'
   })
-  
+
   return <DashboardStats stats={stats} />
 }
 ```
@@ -447,12 +447,12 @@ export default async function HomePage() {
   const posts = await fetch('https://api.example.com/posts', {
     next: { revalidate: 3600 }
   })
-  
+
   // Always fresh
   const stats = await fetch('https://api.example.com/stats', {
     cache: 'no-store'
   })
-  
+
   return (
     <>
       <PostList posts={posts} />
@@ -474,10 +474,10 @@ export default function HomePage() {
     <>
       {/* Static */}
       <header><h1>Home</h1></header>
-      
+
       {/* Cached dynamic */}
       <RecentPosts />
-      
+
       {/* Runtime dynamic */}
       <Suspense fallback={<div>Loading...</div>}>
         <UserContent />
@@ -491,7 +491,7 @@ async function RecentPosts() {
   'use cache'
   cacheLife('hours')
   cacheTag('posts')
-  
+
   const posts = await db.post.findMany({ take: 5 })
   return <PostList posts={posts} />
 }
@@ -512,18 +512,18 @@ async function UserContent() {
 ```typescript
 // ✅ GOOD - Cache static content
 const posts = await fetch('https://api.example.com/posts', {
-  next: { revalidate: 3600 }
-})
+    next: { revalidate: 3600 },
+});
 
 // ✅ GOOD - No cache for user-specific data
 const user = await fetch('https://api.example.com/user', {
-  cache: 'no-store'
-})
+    cache: 'no-store',
+});
 
 // ❌ BAD - Caching user-specific data
 const user = await fetch('https://api.example.com/user', {
-  cache: 'force-cache'  // Other users might see this!
-})
+    cache: 'force-cache', // Other users might see this!
+});
 ```
 
 ### 2. Tag Related Data Together
@@ -531,18 +531,18 @@ const user = await fetch('https://api.example.com/user', {
 ```typescript
 // ✅ GOOD - Related data has same tags
 const posts = await fetch('https://api.example.com/posts', {
-  next: { tags: ['posts', 'content'] }
-})
+    next: { tags: ['posts', 'content'] },
+});
 
 const comments = await fetch('https://api.example.com/comments', {
-  next: { tags: ['comments', 'content'] }
-})
+    next: { tags: ['comments', 'content'] },
+});
 
 // Revalidate all content at once
-revalidateTag('content')
+revalidateTag('content');
 
 // ❌ BAD - No tags, can't revalidate selectively
-const posts = await fetch('https://api.example.com/posts')
+const posts = await fetch('https://api.example.com/posts');
 ```
 
 ### 3. Revalidate After Mutations
@@ -550,14 +550,14 @@ const posts = await fetch('https://api.example.com/posts')
 ```typescript
 // ✅ GOOD - Revalidates after update
 export async function updatePost(id: string, data: any) {
-  await db.post.update({ where: { id }, data })
-  revalidatePath('/posts')
-  revalidateTag('posts')
+    await db.post.update({ where: { id }, data });
+    revalidatePath('/posts');
+    revalidateTag('posts');
 }
 
 // ❌ BAD - No revalidation, stale cache
 export async function updatePost(id: string, data: any) {
-  await db.post.update({ where: { id }, data })
+    await db.post.update({ where: { id }, data });
 }
 ```
 
@@ -601,8 +601,8 @@ Route (app)                              Size     First Load JS
 
 ```typescript
 // Add cache headers to see what's cached
-const res = await fetch('https://api.example.com/data')
-console.log(res.headers.get('cache-control'))
+const res = await fetch('https://api.example.com/data');
+console.log(res.headers.get('cache-control'));
 ```
 
 ### Check in Development
@@ -623,45 +623,46 @@ npm run start
 
 ```typescript
 // No cache
-fetch(url, { cache: 'no-store' })
-export const dynamic = 'force-dynamic'
+fetch(url, { cache: 'no-store' });
+export const dynamic = 'force-dynamic';
 
 // Cache forever
-fetch(url, { cache: 'force-cache' })
+fetch(url, { cache: 'force-cache' });
 
 // Time-based revalidation
-fetch(url, { next: { revalidate: 3600 } })
-export const revalidate = 3600
+fetch(url, { next: { revalidate: 3600 } });
+export const revalidate = 3600;
 
 // Tag-based revalidation
-fetch(url, { next: { tags: ['posts'] } })
+fetch(url, { next: { tags: ['posts'] } });
 ```
 
 ### Revalidation Methods
 
 ```typescript
 // Revalidate path
-revalidatePath('/posts')
+revalidatePath('/posts');
 
 // Revalidate tag
-revalidateTag('posts')
+revalidateTag('posts');
 
 // Update tag (immediate)
-updateTag('posts')
+updateTag('posts');
 ```
 
 ### Route Segment Options
 
 ```typescript
-export const dynamic = 'force-dynamic'  // No cache
-export const dynamic = 'force-static'   // Cache
-export const revalidate = 3600          // ISR
-export const fetchCache = 'force-cache' // Force all fetches to cache
+export const dynamic = 'force-dynamic'; // No cache
+export const dynamic = 'force-static'; // Cache
+export const revalidate = 3600; // ISR
+export const fetchCache = 'force-cache'; // Force all fetches to cache
 ```
 
 ---
 
 **Related Documentation:**
+
 - [Fetching Data](10-fetching-data.md)
 - [Updating Data](11-updating-data.md)
 - [Cache Components](08-cache-components.md)

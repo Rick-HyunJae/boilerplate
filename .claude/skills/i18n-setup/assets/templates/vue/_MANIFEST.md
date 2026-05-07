@@ -4,12 +4,12 @@ vue-i18n@9 (Composition API) 기반.
 
 ## 복사 대상
 
-| 출처 | 대상 |
-|---|---|
-| `src/i18n/index.ts` | 동일 경로 |
+| 출처                            | 대상      |
+| ------------------------------- | --------- |
+| `src/i18n/index.ts`             | 동일 경로 |
 | `src/i18n/{ko,en,ja}/common.ts` | 동일 경로 |
-| `src/types/vue-i18n.d.ts` | 동일 경로 |
-| `.vscode/settings.json` | 머지 |
+| `src/types/vue-i18n.d.ts`       | 동일 경로 |
+| `.vscode/settings.json`         | 머지      |
 
 ## 진입점 (main.ts)
 
@@ -30,7 +30,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <button>{{ t('common.button.save') }}</button>
+    <button>{{ t('common.button.save') }}</button>
 </template>
 ```
 

@@ -44,7 +44,7 @@ Server Components can use `async/await` to fetch data directly.
 export default async function PostsPage() {
   const posts = await fetch('https://api.example.com/posts')
     .then(res => res.json())
-  
+
   return (
     <ul>
       {posts.map(post => (
@@ -63,7 +63,7 @@ import { db } from '@/lib/db'
 
 export default async function PostsPage() {
   const posts = await db.posts.findMany()
-  
+
   return (
     <ul>
       {posts.map(post => (
@@ -83,8 +83,7 @@ Next.js extends the native `fetch` with caching and revalidation options.
 ### Basic fetch
 
 ```typescript
-const data = await fetch('https://api.example.com/data')
-  .then(res => res.json())
+const data = await fetch('https://api.example.com/data').then((res) => res.json());
 ```
 
 ### With Cache Control
@@ -92,8 +91,8 @@ const data = await fetch('https://api.example.com/data')
 ```typescript
 // Cache for 1 hour (3600 seconds)
 const data = await fetch('https://api.example.com/data', {
-  next: { revalidate: 3600 }
-})
+    next: { revalidate: 3600 },
+});
 ```
 
 ### Force Dynamic (No Cache)
@@ -101,8 +100,8 @@ const data = await fetch('https://api.example.com/data', {
 ```typescript
 // Always fetch fresh data
 const data = await fetch('https://api.example.com/data', {
-  cache: 'no-store'
-})
+    cache: 'no-store',
+});
 ```
 
 ### Force Static (Cache Forever)
@@ -110,19 +109,19 @@ const data = await fetch('https://api.example.com/data', {
 ```typescript
 // Cache until manually revalidated
 const data = await fetch('https://api.example.com/data', {
-  cache: 'force-cache'
-})
+    cache: 'force-cache',
+});
 ```
 
 ### With Tags for Revalidation
 
 ```typescript
 const data = await fetch('https://api.example.com/posts', {
-  next: { 
-    tags: ['posts'],
-    revalidate: 3600 
-  }
-})
+    next: {
+        tags: ['posts'],
+        revalidate: 3600,
+    },
+});
 ```
 
 ---
@@ -138,11 +137,11 @@ Requests happen one after another - **slower but simpler**.
 export default async function Page() {
   const user = await fetch('https://api.example.com/user/1')
     .then(res => res.json())
-  
+
   // Waits for user before fetching posts
   const posts = await fetch('https://api.example.com/posts')
     .then(res => res.json())
-  
+
   return (
     <div>
       <h1>{user.name}</h1>
@@ -164,10 +163,10 @@ export default async function Page() {
     .then(res => res.json())
   const postsPromise = fetch('https://api.example.com/posts')
     .then(res => res.json())
-  
+
   // Wait for both to complete
   const [user, posts] = await Promise.all([userPromise, postsPromise])
-  
+
   return (
     <div>
       <h1>{user.name}</h1>
@@ -196,7 +195,7 @@ import { preloadUser, getUserById } from '@/lib/data'
 export default async function UserPage({ params }: PageProps<'/user/[id]'>) {
   const { id } = await params
   preloadUser(id) // Start fetching early
-  
+
   const user = await getUserById(id) // Already in progress
   return <UserProfile user={user} />
 }
@@ -228,7 +227,7 @@ export default async function PostsPage() {
     orderBy: { createdAt: 'desc' },
     take: 10
   })
-  
+
   return <PostList posts={posts} />
 }
 ```
@@ -250,7 +249,7 @@ import { desc } from 'drizzle-orm'
 
 export default async function PostsPage() {
   const allPosts = await db.select().from(posts).orderBy(desc(posts.createdAt))
-  
+
   return <PostList posts={allPosts} />
 }
 ```
@@ -262,11 +261,11 @@ import { sql } from '@vercel/postgres'
 
 export default async function PostsPage() {
   const { rows } = await sql`
-    SELECT * FROM posts 
-    ORDER BY created_at DESC 
+    SELECT * FROM posts
+    ORDER BY created_at DESC
     LIMIT 10
   `
-  
+
   return <PostList posts={rows} />
 }
 ```
@@ -282,7 +281,7 @@ import axios from 'axios'
 
 export default async function Page() {
   const { data } = await axios.get('https://api.example.com/data')
-  
+
   return <div>{data.title}</div>
 }
 ```
@@ -309,7 +308,7 @@ export default async function Page() {
       }
     `
   })
-  
+
   return <PostList posts={data.posts} />
 }
 ```
@@ -335,7 +334,7 @@ import { getPosts } from '@/lib/api'
 
 export default async function PostsPage() {
   const posts = await getPosts()
-  
+
   return <PostList posts={posts} />
 }
 ```
@@ -351,7 +350,7 @@ export default async function Page() {
   try {
     const data = await fetch('https://api.example.com/data')
       .then(res => res.json())
-    
+
     return <div>{data.title}</div>
   } catch (error) {
     return <div>Error loading data</div>
@@ -364,12 +363,12 @@ export default async function Page() {
 ```typescript
 export default async function Page() {
   const res = await fetch('https://api.example.com/data')
-  
+
   if (!res.ok) {
     // This will activate the closest error boundary
     throw new Error('Failed to fetch data')
   }
-  
+
   const data = await res.json()
   return <div>{data.title}</div>
 }
@@ -381,11 +380,11 @@ export default async function Page() {
 // app/posts/page.tsx
 export default async function PostsPage() {
   const res = await fetch('https://api.example.com/posts')
-  
+
   if (!res.ok) {
     throw new Error('Failed to fetch posts')
   }
-  
+
   const posts = await res.json()
   return <PostList posts={posts} />
 }
@@ -415,18 +414,18 @@ export default function Error({
 ```typescript
 export default async function Page() {
   let data = null
-  
+
   try {
     data = await fetch('https://api.example.com/data')
       .then(res => res.json())
   } catch (error) {
     console.error('Failed to fetch data:', error)
   }
-  
+
   if (!data) {
     return <div>No data available</div>
   }
-  
+
   return <div>{data.title}</div>
 }
 ```
@@ -455,7 +454,7 @@ export default async function BlogPage() {
       }
     }
   })
-  
+
   return (
     <div>
       <h1>Blog</h1>
@@ -480,7 +479,7 @@ import { notFound } from 'next/navigation'
 
 export default async function PostPage({ params }: PageProps<'/blog/[slug]'>) {
   const { slug } = await params
-  
+
   // Parallel fetch
   const [post, comments] = await Promise.all([
     db.post.findUnique({
@@ -492,9 +491,9 @@ export default async function PostPage({ params }: PageProps<'/blog/[slug]'>) {
       orderBy: { createdAt: 'desc' }
     })
   ])
-  
+
   if (!post) notFound()
-  
+
   return (
     <article>
       <h1>{post.title}</h1>
@@ -516,7 +515,7 @@ export default async function DashboardPage() {
     fetch('/api/stats').then(r => r.json()),
     fetch('/api/notifications').then(r => r.json())
   ])
-  
+
   return (
     <div>
       <UserProfile user={user} />
@@ -539,7 +538,7 @@ export default async function PostsPage({ searchParams }: Props) {
   const { page = '1' } = await searchParams
   const currentPage = parseInt(page)
   const perPage = 10
-  
+
   const [posts, total] = await Promise.all([
     db.post.findMany({
       skip: (currentPage - 1) * perPage,
@@ -548,9 +547,9 @@ export default async function PostsPage({ searchParams }: Props) {
     }),
     db.post.count()
   ])
-  
+
   const totalPages = Math.ceil(total / perPage)
-  
+
   return (
     <div>
       <PostList posts={posts} />
@@ -570,11 +569,11 @@ type Props = {
 
 export default async function SearchPage({ searchParams }: Props) {
   const { q = '' } = await searchParams
-  
+
   if (!q) {
     return <div>Enter a search query</div>
   }
-  
+
   const results = await db.post.findMany({
     where: {
       OR: [
@@ -584,7 +583,7 @@ export default async function SearchPage({ searchParams }: Props) {
     },
     take: 20
   })
-  
+
   return (
     <div>
       <h1>Search Results for "{q}"</h1>
@@ -603,21 +602,21 @@ export default async function SearchPage({ searchParams }: Props) {
 
 ```typescript
 type Post = {
-  id: number
-  title: string
-  content: string
-}
+    id: number;
+    title: string;
+    content: string;
+};
 
 // ✅ GOOD - Type-safe
 async function getPosts(): Promise<Post[]> {
-  const res = await fetch('https://api.example.com/posts')
-  if (!res.ok) throw new Error('Failed to fetch')
-  return res.json()
+    const res = await fetch('https://api.example.com/posts');
+    if (!res.ok) throw new Error('Failed to fetch');
+    return res.json();
 }
 
 // ❌ BAD - No types
 async function getPosts() {
-  return fetch('https://api.example.com/posts').then(r => r.json())
+    return fetch('https://api.example.com/posts').then((r) => r.json());
 }
 ```
 
@@ -650,11 +649,11 @@ export default async function Page() {
 // ✅ GOOD - Clear error handling
 export default async function Page() {
   const res = await fetch('https://api.example.com/data')
-  
+
   if (!res.ok) {
     throw new Error(`Failed to fetch: ${res.status}`)
   }
-  
+
   const data = await res.json()
   return <div>{data.title}</div>
 }
@@ -664,7 +663,7 @@ export default async function Page() {
   const data = await fetch('https://api.example.com/data')
     .then(r => r.json())
     .catch(() => null)
-  
+
   return <div>{data?.title}</div>
 }
 ```
@@ -673,14 +672,11 @@ export default async function Page() {
 
 ```typescript
 // ✅ GOOD - Parallel (faster)
-const [user, posts] = await Promise.all([
-  getUser(),
-  getPosts()
-])
+const [user, posts] = await Promise.all([getUser(), getPosts()]);
 
 // ❌ BAD - Sequential (slower)
-const user = await getUser()
-const posts = await getPosts()
+const user = await getUser();
+const posts = await getPosts();
 ```
 
 ---
@@ -691,36 +687,37 @@ const posts = await getPosts()
 
 ```typescript
 fetch(url, {
-  cache: 'force-cache',     // Cache forever
-  cache: 'no-store',        // Never cache
-  next: { 
-    revalidate: 3600,       // Revalidate after 1 hour
-    tags: ['posts']         // Tag for revalidation
-  }
-})
+    cache: 'force-cache', // Cache forever
+    cache: 'no-store', // Never cache
+    next: {
+        revalidate: 3600, // Revalidate after 1 hour
+        tags: ['posts'], // Tag for revalidation
+    },
+});
 ```
 
 ### Common Patterns
 
 ```typescript
 // Basic fetch
-const data = await fetch(url).then(r => r.json())
+const data = await fetch(url).then((r) => r.json());
 
 // With error handling
-const res = await fetch(url)
-if (!res.ok) throw new Error('Failed')
-const data = await res.json()
+const res = await fetch(url);
+if (!res.ok) throw new Error('Failed');
+const data = await res.json();
 
 // Parallel fetch
-const [a, b] = await Promise.all([fetchA(), fetchB()])
+const [a, b] = await Promise.all([fetchA(), fetchB()]);
 
 // Database query
-const posts = await db.post.findMany()
+const posts = await db.post.findMany();
 ```
 
 ---
 
 **Related Documentation:**
+
 - [Updating Data](11-updating-data.md)
 - [Caching and Revalidating](12-caching-revalidating.md)
 - [Error Handling](13-error-handling.md)

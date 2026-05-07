@@ -1,6 +1,6 @@
 ---
-trigger_keywords: ['axios', 'apiClient', '인터셉터', 'interceptor']
-trigger_globs: ['src/**/api/**', 'src/shared/api/**']
+title: API Client
+description: 공통 axios 인스턴스 설정과 인터셉터 동작
 ---
 
 # API Client
@@ -9,7 +9,7 @@ trigger_globs: ['src/**/api/**', 'src/shared/api/**']
 
 `src/shared/api/client.ts` — 프로젝트의 **유일한** axios 인스턴스.
 
-Public API: `@/shared/api` 에서 `apiClient` 를 import.
+Public API: `@/shared/api` 에서 `apiClient` 를 import 한다.
 
 ## 설정
 
@@ -21,7 +21,7 @@ axios.create({
 });
 ```
 
-`baseURL` 은 `VITE_API_BASE_URL` 환경변수에서 주입 (없으면 `/api` fallback).
+`baseURL` 은 `VITE_API_BASE_URL` 환경변수에서 주입된다 (없으면 `/api` fallback).
 
 ## 인터셉터
 
@@ -44,7 +44,7 @@ const message = error.response?.data?.message ?? error.message;
 return Promise.reject(new Error(message));
 ```
 
-에러 처리 시 `error.message` 로 메시지를 꺼내면 됨.
+에러 처리 시 `error.message` 로 메시지를 꺼내면 된다.
 
 ## 사용 패턴
 
@@ -61,4 +61,4 @@ export async function login(credentials: LoginDto) {
 ## 금지
 
 - `axios.create()` 를 feature/page 등에서 직접 호출하여 새 인스턴스 생성 금지.
-- `import.meta.env` 를 client.ts 이외에서 직접 접근 금지 (→ `ENV` 객체 사용).
+- `import.meta.env` 를 `client.ts` 이외에서 직접 접근 금지 (→ `ENV` 객체 사용).

@@ -26,10 +26,10 @@
 ```jsonc
 // tsconfig.json
 {
-  "compilerOptions": {
-    "paths": { "~language/*": ["src/static/language/*"] }
-  },
-  "include": ["src/**/*", "src/@types/**/*"]
+    "compilerOptions": {
+        "paths": { "~language/*": ["src/static/language/*"] },
+    },
+    "include": ["src/**/*", "src/@types/**/*"],
 }
 ```
 
@@ -39,13 +39,13 @@
 
 - TS paths 만 설정하고 webpack/vite alias 누락. 둘 다 필요.
 - webpack:
-  ```js
-  resolve: { alias: { '~language': path.resolve(__dirname, 'src/static/language') } }
-  ```
+    ```js
+    resolve: { alias: { '~language': path.resolve(__dirname, 'src/static/language') } }
+    ```
 - vite:
-  ```ts
-  resolve: { alias: { '~language': '/src/static/language' } }
-  ```
+    ```ts
+    resolve: { alias: { '~language': '/src/static/language' } }
+    ```
 
 ## 4. `i18n.t` 가 키를 그대로 반환함
 

@@ -38,17 +38,17 @@ Next.js 16 uses **Server Actions** as the primary method for updating data. Serv
 
 ```typescript
 // app/actions.ts
-'use server'
+'use server';
 
 export async function createPost(formData: FormData) {
-  const title = formData.get('title') as string
-  
-  // Save to database
-  await db.post.create({
-    data: { title }
-  })
-  
-  // No return needed for form actions
+    const title = formData.get('title') as string;
+
+    // Save to database
+    await db.post.create({
+        data: { title },
+    });
+
+    // No return needed for form actions
 }
 ```
 
@@ -56,24 +56,24 @@ export async function createPost(formData: FormData) {
 
 ```typescript
 // app/actions.ts
-'use server'
+'use server';
 
-import { z } from 'zod'
+import { z } from 'zod';
 
 const PostSchema = z.object({
-  title: z.string().min(1).max(100),
-  content: z.string().min(1),
-})
+    title: z.string().min(1).max(100),
+    content: z.string().min(1),
+});
 
 export async function createPost(formData: FormData) {
-  const validated = PostSchema.parse({
-    title: formData.get('title'),
-    content: formData.get('content'),
-  })
-  
-  await db.post.create({
-    data: validated
-  })
+    const validated = PostSchema.parse({
+        title: formData.get('title'),
+        content: formData.get('content'),
+    });
+
+    await db.post.create({
+        data: validated,
+    });
 }
 ```
 
@@ -84,11 +84,11 @@ export async function createPost(formData: FormData) {
 export default function NewPost() {
   async function handleSubmit(formData: FormData) {
     'use server'
-    
+
     const title = formData.get('title') as string
     await db.post.create({ data: { title } })
   }
-  
+
   return (
     <form action={handleSubmit}>
       <input name="title" required />
@@ -111,11 +111,11 @@ import { revalidatePath } from 'next/cache'
 
 export async function createPost(formData: FormData) {
   const title = formData.get('title') as string
-  
+
   await db.post.create({
     data: { title, published: true }
   })
-  
+
   revalidatePath('/posts')
 }
 
@@ -148,11 +148,11 @@ export async function createPost(
   formData: FormData
 ): Promise<State> {
   const title = formData.get('title') as string
-  
+
   if (!title) {
     return { error: 'Title is required' }
   }
-  
+
   try {
     await db.post.create({ data: { title } })
     return { success: true }
@@ -168,7 +168,7 @@ import { createPost } from '@/app/actions'
 
 export default function NewPost() {
   const [state, formAction, isPending] = useActionState(createPost, {})
-  
+
   return (
     <form action={formAction}>
       <input name="title" required />
@@ -191,13 +191,13 @@ import { createPost } from '@/app/actions'
 
 export default function NewPost() {
   const [state, formAction, isPending] = useActionState(createPost, {})
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     formAction(formData)
   }
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <input name="title" required />
@@ -233,13 +233,13 @@ export default function TodoList({ todos }: { todos: Todo[] }) {
       { id: crypto.randomUUID(), text: newTodo }
     ]
   )
-  
+
   async function formAction(formData: FormData) {
     const text = formData.get('text') as string
     addOptimisticTodo(text)
     await addTodo(text)
   }
-  
+
   return (
     <>
       <ul>
@@ -271,12 +271,12 @@ type Todo = {
 
 export default function TodoItem({ todo }: { todo: Todo }) {
   const [optimisticTodo, setOptimisticTodo] = useOptimistic(todo)
-  
+
   async function handleToggle() {
     setOptimisticTodo({ ...todo, completed: !todo.completed })
     await toggleComplete(todo.id)
   }
-  
+
   return (
     <li>
       <input
@@ -299,28 +299,28 @@ export default function TodoItem({ todo }: { todo: Todo }) {
 Revalidate all pages at a specific path.
 
 ```typescript
-'use server'
-import { revalidatePath } from 'next/cache'
+'use server';
+import { revalidatePath } from 'next/cache';
 
 export async function createPost(formData: FormData) {
-  await db.post.create({
-    data: { title: formData.get('title') as string }
-  })
-  
-  // Revalidate the posts list page
-  revalidatePath('/posts')
+    await db.post.create({
+        data: { title: formData.get('title') as string },
+    });
+
+    // Revalidate the posts list page
+    revalidatePath('/posts');
 }
 
 // Revalidate dynamic routes
 export async function updatePost(id: string, formData: FormData) {
-  await db.post.update({
-    where: { id },
-    data: { title: formData.get('title') as string }
-  })
-  
-  // Revalidate both list and detail pages
-  revalidatePath('/posts')
-  revalidatePath(`/posts/${id}`)
+    await db.post.update({
+        where: { id },
+        data: { title: formData.get('title') as string },
+    });
+
+    // Revalidate both list and detail pages
+    revalidatePath('/posts');
+    revalidatePath(`/posts/${id}`);
 }
 ```
 
@@ -329,22 +329,22 @@ export async function updatePost(id: string, formData: FormData) {
 Revalidate by cache tag.
 
 ```typescript
-'use server'
-import { revalidateTag } from 'next/cache'
+'use server';
+import { revalidateTag } from 'next/cache';
 
 export async function createPost(formData: FormData) {
-  await db.post.create({
-    data: { title: formData.get('title') as string }
-  })
-  
-  // Revalidate all requests tagged with 'posts'
-  revalidateTag('posts')
+    await db.post.create({
+        data: { title: formData.get('title') as string },
+    });
+
+    // Revalidate all requests tagged with 'posts'
+    revalidateTag('posts');
 }
 
 // The corresponding fetch with tag
 const posts = await fetch('https://api.example.com/posts', {
-  next: { tags: ['posts'] }
-})
+    next: { tags: ['posts'] },
+});
 ```
 
 ### updateTag (Immediate)
@@ -352,20 +352,20 @@ const posts = await fetch('https://api.example.com/posts', {
 Use in Server Actions for read-your-own-writes.
 
 ```typescript
-'use server'
-import { updateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
+'use server';
+import { updateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export async function createPost(formData: FormData) {
-  const post = await db.post.create({
-    data: { title: formData.get('title') as string }
-  })
-  
-  // Immediately expire cache
-  updateTag('posts')
-  
-  // User sees their new post immediately
-  redirect(`/posts/${post.id}`)
+    const post = await db.post.create({
+        data: { title: formData.get('title') as string },
+    });
+
+    // Immediately expire cache
+    updateTag('posts');
+
+    // User sees their new post immediately
+    redirect(`/posts/${post.id}`);
 }
 ```
 
@@ -376,90 +376,84 @@ export async function createPost(formData: FormData) {
 ### Try-Catch in Server Action
 
 ```typescript
-'use server'
+'use server';
 
 export async function createPost(formData: FormData) {
-  try {
-    await db.post.create({
-      data: { title: formData.get('title') as string }
-    })
-  } catch (error) {
-    console.error('Failed to create post:', error)
-    throw new Error('Failed to create post')
-  }
+    try {
+        await db.post.create({
+            data: { title: formData.get('title') as string },
+        });
+    } catch (error) {
+        console.error('Failed to create post:', error);
+        throw new Error('Failed to create post');
+    }
 }
 ```
 
 ### Return Error State
 
 ```typescript
-'use server'
+'use server';
 
 type State = {
-  error?: string
-  success?: boolean
-}
+    error?: string;
+    success?: boolean;
+};
 
-export async function createPost(
-  prevState: State,
-  formData: FormData
-): Promise<State> {
-  try {
-    const title = formData.get('title') as string
-    
-    if (!title) {
-      return { error: 'Title is required' }
+export async function createPost(prevState: State, formData: FormData): Promise<State> {
+    try {
+        const title = formData.get('title') as string;
+
+        if (!title) {
+            return { error: 'Title is required' };
+        }
+
+        await db.post.create({ data: { title } });
+        return { success: true };
+    } catch (error) {
+        return { error: 'Failed to create post' };
     }
-    
-    await db.post.create({ data: { title } })
-    return { success: true }
-  } catch (error) {
-    return { error: 'Failed to create post' }
-  }
 }
 ```
 
 ### With Zod Validation
 
 ```typescript
-'use server'
+'use server';
 
-import { z } from 'zod'
+import { z } from 'zod';
 
 const PostSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title too long'),
-  content: z.string().min(1, 'Content is required'),
-})
+    title: z.string().min(1, 'Title is required').max(100, 'Title too long'),
+    content: z.string().min(1, 'Content is required'),
+});
 
 type State = {
-  errors?: {
-    title?: string[]
-    content?: string[]
-  }
-  success?: boolean
-}
+    errors?: {
+        title?: string[];
+        content?: string[];
+    };
+    success?: boolean;
+};
 
-export async function createPost(
-  prevState: State,
-  formData: FormData
-): Promise<State> {
-  const result = PostSchema.safeParse({
-    title: formData.get('title'),
-    content: formData.get('content'),
-  })
-  
-  if (!result.success) {
-    return {
-      errors: result.error.flatten().fieldErrors,
+export async function createPost(prevState: State, formData: FormData): Promise<State> {
+    const result = PostSchema.safeParse({
+        title: formData.get('title'),
+        content: formData.get('content'),
+    });
+
+    if (!result.success) {
+        return {
+            errors: result.error.flatten().fieldErrors,
+        };
     }
-  }
-  
-  try {
-    await db.post.create({ data: result.data })
-    return { success: true }
-  } catch (error) {
-    return { errors: { title: ['Failed to create post'] } }
-  }
+
+    try {
+        await db.post.create({ data: result.data });
+        return { success: true };
+    } catch (error) {
+        return { errors: { title: ['Failed to create post'] } };
+    }
 }
 ```
 
@@ -483,7 +477,7 @@ export async function createPost(formData: FormData) {
       authorId: formData.get('authorId') as string,
     }
   })
-  
+
   revalidatePath('/posts')
   redirect(`/posts/${post.id}`)
 }
@@ -518,7 +512,7 @@ export async function updatePost(id: string, formData: FormData) {
       content: formData.get('content') as string,
     }
   })
-  
+
   revalidatePath('/posts')
   revalidatePath(`/posts/${id}`)
 }
@@ -530,7 +524,7 @@ import { db } from '@/lib/db'
 export default async function EditPost({ params }: PageProps<'/posts/[id]/edit'>) {
   const { id } = await params
   const post = await db.post.findUnique({ where: { id } })
-  
+
   return (
     <form action={updatePost.bind(null, id)}>
       <input name="title" defaultValue={post.title} required />
@@ -551,7 +545,7 @@ import { redirect } from 'next/navigation'
 
 export async function deletePost(id: string) {
   await db.post.delete({ where: { id } })
-  
+
   revalidatePath('/posts')
   redirect('/posts')
 }
@@ -562,7 +556,7 @@ import { deletePost } from '@/app/actions'
 export default async function PostPage({ params }: PageProps<'/posts/[id]'>) {
   const { id } = await params
   const post = await db.post.findUnique({ where: { id } })
-  
+
   return (
     <article>
       <h1>{post.title}</h1>
@@ -583,12 +577,12 @@ import { revalidatePath } from 'next/cache'
 
 export async function togglePublished(id: string) {
   const post = await db.post.findUnique({ where: { id } })
-  
+
   await db.post.update({
     where: { id },
     data: { published: !post.published }
   })
-  
+
   revalidatePath('/posts')
 }
 
@@ -597,7 +591,7 @@ import { togglePublished } from '@/app/actions'
 
 export default async function PostsPage() {
   const posts = await db.post.findMany()
-  
+
   return (
     <ul>
       {posts.map(post => (
@@ -625,17 +619,17 @@ import { join } from 'path'
 
 export async function uploadFile(formData: FormData) {
   const file = formData.get('file') as File
-  
+
   if (!file) {
     throw new Error('No file uploaded')
   }
-  
+
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
-  
+
   const path = join('/tmp', file.name)
   await writeFile(path, buffer)
-  
+
   return { success: true, path }
 }
 
@@ -646,7 +640,7 @@ import { uploadFile } from '@/app/actions'
 
 export default function UploadPage() {
   const [state, formAction, isPending] = useActionState(uploadFile, null)
-  
+
   return (
     <form action={formAction}>
       <input type="file" name="file" required />
@@ -672,7 +666,7 @@ export async function bulkDelete(ids: string[]) {
       id: { in: ids }
     }
   })
-  
+
   revalidatePath('/posts')
 }
 
@@ -683,12 +677,12 @@ import { bulkDelete } from '@/app/actions'
 
 export default function PostsPage({ posts }) {
   const [selected, setSelected] = useState<string[]>([])
-  
+
   async function handleDelete() {
     await bulkDelete(selected)
     setSelected([])
   }
-  
+
   return (
     <>
       <button onClick={handleDelete} disabled={selected.length === 0}>
@@ -742,20 +736,20 @@ export async function createPost(formData: FormData) {
 ```typescript
 // ✅ GOOD - Type-safe with Zod
 const PostSchema = z.object({
-  title: z.string().min(1),
-})
+    title: z.string().min(1),
+});
 
 export async function createPost(formData: FormData) {
-  const data = PostSchema.parse({
-    title: formData.get('title')
-  })
-  await db.post.create({ data })
+    const data = PostSchema.parse({
+        title: formData.get('title'),
+    });
+    await db.post.create({ data });
 }
 
 // ❌ BAD - No validation
 export async function createPost(formData: FormData) {
-  const title = formData.get('title') as string
-  await db.post.create({ data: { title } })
+    const title = formData.get('title') as string;
+    await db.post.create({ data: { title } });
 }
 ```
 
@@ -782,17 +776,17 @@ export async function createPost(formData: FormData) {
 
 ```typescript
 // ✅ GOOD - Immediate UI feedback
-const [optimisticTodos, addOptimisticTodo] = useOptimistic(todos)
+const [optimisticTodos, addOptimisticTodo] = useOptimistic(todos);
 
 async function addTodo(text: string) {
-  addOptimisticTodo(text) // Instant UI update
-  await createTodo(text)    // Confirm on server
+    addOptimisticTodo(text); // Instant UI update
+    await createTodo(text); // Confirm on server
 }
 
 // ❌ BAD - Wait for server
 async function addTodo(text: string) {
-  await createTodo(text) // User waits
-  // UI updates after response
+    await createTodo(text); // User waits
+    // UI updates after response
 }
 ```
 
@@ -803,21 +797,21 @@ async function addTodo(text: string) {
 ### Server Action Template
 
 ```typescript
-'use server'
-import { revalidatePath } from 'next/cache'
+'use server';
+import { revalidatePath } from 'next/cache';
 
 export async function actionName(formData: FormData) {
-  // 1. Get data
-  const data = formData.get('field') as string
-  
-  // 2. Validate
-  if (!data) throw new Error('Invalid data')
-  
-  // 3. Mutate
-  await db.model.create({ data: { field: data } })
-  
-  // 4. Revalidate
-  revalidatePath('/path')
+    // 1. Get data
+    const data = formData.get('field') as string;
+
+    // 2. Validate
+    if (!data) throw new Error('Invalid data');
+
+    // 3. Mutate
+    await db.model.create({ data: { field: data } });
+
+    // 4. Revalidate
+    revalidatePath('/path');
 }
 ```
 
@@ -829,7 +823,7 @@ import { useActionState } from 'react'
 
 export default function Form() {
   const [state, formAction, isPending] = useActionState(serverAction, {})
-  
+
   return (
     <form action={formAction}>
       <input name="field" />
@@ -843,6 +837,7 @@ export default function Form() {
 ---
 
 **Related Documentation:**
+
 - [Fetching Data](10-fetching-data.md)
 - [Server Actions](06-server-actions.md)
 - [Caching and Revalidating](12-caching-revalidating.md)

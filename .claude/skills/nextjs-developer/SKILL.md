@@ -14,6 +14,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ## 🚨 CRITICAL RULES (Always Enforce)
 
 ### 1. params are Promise
+
 ```typescript
 // ❌ WRONG
 export default function Page({ params }: { params: { slug: string } }) {
@@ -28,32 +29,35 @@ export default async function Page(props: PageProps<'/blog/[slug]'>) {
 ```
 
 ### 2. Use useActionState (NOT useFormState)
+
 ```typescript
 // ❌ DEPRECATED
-import { useFormState } from 'react-dom'
+import { useFormState } from 'react-dom';
 
 // ✅ CORRECT
-import { useActionState } from 'react'
+import { useActionState } from 'react';
 ```
 
 ### 3. Form Actions Return Void
+
 ```typescript
 // ❌ WRONG - Form actions can't return data
 export async function submitForm(formData: FormData) {
-  'use server'
-  return { success: true }  // Type error!
+    'use server';
+    return { success: true }; // Type error!
 }
 
 // ✅ CORRECT - Use revalidation
 export async function submitForm(formData: FormData) {
-  'use server'
-  await saveData(formData)
-  revalidatePath('/posts')
-  // No return
+    'use server';
+    await saveData(formData);
+    revalidatePath('/posts');
+    // No return
 }
 ```
 
 ### 4. NO `any` Types
+
 ```typescript
 // ❌ WRONG
 const data: any = await fetch(...)
@@ -63,14 +67,16 @@ const data: Post[] = await fetch(...).then(r => r.json())
 ```
 
 ### 5. Use PageProps/LayoutProps Helpers
+
 ```typescript
 // ✅ Type-safe with auto-completion
 export default async function Page(props: PageProps<'/blog/[slug]'>) {
-  const { slug } = await props.params
+    const { slug } = await props.params;
 }
 ```
 
 ### 6. Use 'use cache' for Cached Dynamic Content
+
 ```typescript
 // ❌ WRONG - Dynamic data without caching
 export default async function Page() {
@@ -94,6 +100,7 @@ export default async function Page() {
 ## ⚡ Essential Patterns
 
 ### Static Page
+
 ```typescript
 // app/about/page.tsx
 export default function Page() {
@@ -107,6 +114,7 @@ export const metadata = {
 ```
 
 ### Dynamic Page
+
 ```typescript
 // app/blog/[slug]/page.tsx
 export default async function Page(props: PageProps<'/blog/[slug]'>) {
@@ -122,6 +130,7 @@ export async function generateStaticParams() {
 ```
 
 ### Root Layout
+
 ```typescript
 // app/layout.tsx
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -137,6 +146,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 ### Server Action (Form - Void Return)
+
 ```typescript
 // app/actions.ts
 'use server'
@@ -162,6 +172,7 @@ export default function NewPost() {
 ```
 
 ### Server Action (With State - Returns Data)
+
 ```typescript
 // app/actions.ts
 'use server'
@@ -180,7 +191,7 @@ import { updateProfile } from '@/app/actions'
 
 export default function Profile() {
   const [state, action, isPending] = useActionState(updateProfile, null)
-  
+
   return (
     <form action={action}>
       <input name="name" required />
@@ -192,6 +203,7 @@ export default function Profile() {
 ```
 
 ### Client Component
+
 ```typescript
 // app/components/counter.tsx
 'use client'
@@ -208,6 +220,7 @@ export default function Counter() {
 ```
 
 ### Cache Components (PPR)
+
 ```typescript
 // app/page.tsx
 import { Suspense } from 'react'
@@ -233,7 +246,7 @@ async function BlogPosts() {
   'use cache'
   cacheLife('hours')
   cacheTag('posts')
-  
+
   const posts = await db.posts.findMany()
   return <PostList posts={posts} />
 }
@@ -246,28 +259,29 @@ async function UserPreferences() {
 ```
 
 ### Proxy (Middleware)
+
 ```typescript
 // proxy.ts (root level)
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 export function proxy(request: NextRequest) {
-  // Redirect
-  if (request.nextUrl.pathname === '/old') {
-    return NextResponse.redirect(new URL('/new', request.url))
-  }
-  
-  // Modify headers
-  const response = NextResponse.next()
-  response.headers.set('X-Custom-Header', 'value')
-  
-  return response
+    // Redirect
+    if (request.nextUrl.pathname === '/old') {
+        return NextResponse.redirect(new URL('/new', request.url));
+    }
+
+    // Modify headers
+    const response = NextResponse.next();
+    response.headers.set('X-Custom-Header', 'value');
+
+    return response;
 }
 
 // Run on specific paths
 export const config = {
-  matcher: ['/api/:path*', '/dashboard/:path*']
-}
+    matcher: ['/api/:path*', '/dashboard/:path*'],
+};
 ```
 
 ---
@@ -275,47 +289,61 @@ export const config = {
 ## 📚 When to Read Additional Files
 
 ### Project Setup
+
 **Starting new project?** → [reference/01-project-structure.md](reference/01-project-structure.md)
+
 - Folder conventions (app/, pages/, public/, src/)
 - File conventions (page.tsx, layout.tsx, route.ts)
 - Route groups `(marketing)`, private folders `_lib`
 
 ### Creating Routes
+
 **Creating pages/layouts?** → [reference/02-routing-pages.md](reference/02-routing-pages.md)
+
 - Static and dynamic pages
 - Nested routes and layouts
 - Dynamic segments `[slug]`, catch-all `[...slug]`
 - Parallel routes `@modal`, intercepting routes `(.)`
 
 ### Navigation
+
 **Implementing links?** → [reference/03-navigation.md](reference/03-navigation.md)
+
 - `<Link>` component usage
 - Prefetching strategies
 - Streaming with `loading.tsx`
 - `useLinkStatus` hook for slow networks
 
 ### Server/Client Components
+
 **Choosing component type?** → [reference/04-server-client.md](reference/04-server-client.md)
+
 - When to use Server vs Client Components
 - Data fetching patterns
 - Context providers
 - Third-party component integration
 
 ### TypeScript
+
 **Type issues?** → [reference/05-typescript.md](reference/05-typescript.md)
+
 - PageProps/LayoutProps helpers
 - Common type patterns
 - Avoiding `any`
 
 ### Server Actions
+
 **Form handling?** → [reference/06-server-actions.md](reference/06-server-actions.md)
+
 - Form action patterns
 - useActionState usage
 - Error handling
 - Progressive enhancement
 
 ### SEO/Metadata
+
 **Adding metadata?** → [reference/07-metadata-seo.md](reference/07-metadata-seo.md)
+
 - Static & dynamic metadata
 - generateMetadata function
 - OpenGraph, Twitter cards
@@ -324,7 +352,9 @@ export const config = {
 - File-based metadata (favicon, sitemap, robots)
 
 ### Cache Components & PPR
+
 **Need caching/prerendering?** → [reference/08-cache-components.md](reference/08-cache-components.md)
+
 - Partial Prerendering (PPR)
 - `use cache` directive
 - `cacheLife` and cache profiles
@@ -332,7 +362,9 @@ export const config = {
 - Static shell + dynamic content patterns
 
 ### Proxy (Middleware)
+
 **Request/response modification?** → [reference/09-proxy.md](reference/09-proxy.md)
+
 - Authentication checks
 - A/B testing
 - Redirects and rewrites
@@ -341,7 +373,9 @@ export const config = {
 - Bot detection
 
 ### Data Fetching
+
 **Fetching data?** → [reference/10-fetching-data.md](reference/10-fetching-data.md)
+
 - Server Components data fetching
 - fetch API with caching
 - Parallel vs sequential fetching
@@ -349,7 +383,9 @@ export const config = {
 - Third-party libraries (Axios, GraphQL)
 
 ### Data Updating
+
 **Updating data?** → [reference/11-updating-data.md](reference/11-updating-data.md)
+
 - Server Actions patterns
 - Form handling with useActionState
 - Optimistic updates with useOptimistic
@@ -357,7 +393,9 @@ export const config = {
 - CRUD operations
 
 ### Caching & Revalidation
+
 **Configuring cache?** → [reference/12-caching-revalidating.md](reference/12-caching-revalidating.md)
+
 - Request memoization
 - Data cache (fetch options)
 - Full route cache (ISR)
@@ -365,7 +403,9 @@ export const config = {
 - Cache configuration
 
 ### Error Handling
+
 **Handling errors?** → [reference/13-error-handling.md](reference/13-error-handling.md)
+
 - Error boundaries (error.tsx)
 - Not found pages (not-found.tsx)
 - Loading states (loading.tsx)
@@ -373,7 +413,9 @@ export const config = {
 - API route error responses
 
 ### CSS & Styling
+
 **Styling components?** → [reference/14-css.md](reference/14-css.md)
+
 - CSS Modules
 - Tailwind CSS setup
 - Global styles
@@ -381,7 +423,9 @@ export const config = {
 - Sass/SCSS
 
 ### Image Optimization
+
 **Working with images?** → [reference/15-image-optimization.md](reference/15-image-optimization.md)
+
 - Image component usage
 - Local vs remote images
 - Responsive images (fill, sizes)
@@ -389,7 +433,9 @@ export const config = {
 - Placeholder strategies
 
 ### Font Optimization
+
 **Adding custom fonts?** → [reference/16-font-optimization.md](reference/16-font-optimization.md)
+
 - Google Fonts integration
 - Local fonts setup
 - Variable fonts
@@ -397,7 +443,9 @@ export const config = {
 - Multiple fonts configuration
 
 ### API Routes
+
 **Creating APIs?** → [reference/17-route-handlers.md](reference/17-route-handlers.md)
+
 - Route handlers (route.ts)
 - HTTP methods (GET, POST, PUT, DELETE)
 - Request/response handling
@@ -405,7 +453,9 @@ export const config = {
 - CRUD API patterns
 
 ### Templates/Examples
+
 **Need templates?**
+
 - [examples/pages.md](examples/pages.md) - Page templates
 - [examples/layouts.md](examples/layouts.md) - Layout patterns
 - [examples/actions.md](examples/actions.md) - Server Action examples
@@ -414,6 +464,7 @@ export const config = {
 ---
 
 ### Quick Validation
+
 ```bash
 # Check params without await
 grep -rn "params\." app/ | grep -v "await" | grep -v "props.params"
@@ -430,6 +481,7 @@ npx eslint app/ --ext .ts,.tsx --rule '@typescript-eslint/no-explicit-any: error
 ## ✅ Pre-Coding Checklist
 
 Copy and check before starting:
+
 ```
 Next.js 16 Requirements:
 - [ ] Using PageProps/LayoutProps helpers?
@@ -455,6 +507,7 @@ Next.js 16 Requirements:
 ## 🎯 Common Workflows
 
 ### Create New Page Workflow
+
 1. Determine route type (static/dynamic)
 2. Create page.tsx in appropriate directory
 3. Add PageProps if dynamic: `PageProps<'/path/[param]'>`
@@ -466,6 +519,7 @@ Next.js 16 Requirements:
 **Detailed guide:** [reference/02-routing-pages.md](reference/02-routing-pages.md)
 
 ### Server Action Workflow
+
 1. Create actions.ts with 'use server'
 2. Decide: Form action (void) or useActionState (returns data)?
 3. Implement function with appropriate return type
@@ -476,6 +530,7 @@ Next.js 16 Requirements:
 **Detailed guide:** [reference/06-server-actions.md](reference/06-server-actions.md)
 
 ### Layout Creation Workflow
+
 1. Identify shared UI elements
 2. Create layout.tsx at appropriate level
 3. Add LayoutProps if using parallel routes
@@ -485,6 +540,7 @@ Next.js 16 Requirements:
 **Detailed guide:** [reference/02-routing-pages.md](reference/02-routing-pages.md)
 
 ### Cache Components Workflow
+
 1. Enable in next.config.ts: `cacheComponents: true`
 2. Identify cacheable vs runtime content
 3. Add 'use cache' to cacheable components
@@ -496,6 +552,7 @@ Next.js 16 Requirements:
 **Detailed guide:** [reference/08-cache-components.md](reference/08-cache-components.md)
 
 ### Proxy Setup Workflow
+
 1. Create proxy.ts in project root
 2. Export proxy function
 3. Add matcher config for specific routes
@@ -506,6 +563,7 @@ Next.js 16 Requirements:
 **Detailed guide:** [reference/09-proxy.md](reference/09-proxy.md)
 
 ### Data Fetching Workflow
+
 1. Identify data requirements
 2. Use Server Component for data fetching
 3. Choose fetch strategy (cached, no-cache, revalidate)
@@ -517,6 +575,7 @@ Next.js 16 Requirements:
 **Detailed guide:** [reference/10-fetching-data.md](reference/10-fetching-data.md)
 
 ### Error Handling Setup Workflow
+
 1. Create error.tsx at appropriate level
 2. Add 'use client' directive
 3. Implement error and reset props
@@ -528,6 +587,7 @@ Next.js 16 Requirements:
 **Detailed guide:** [reference/13-error-handling.md](reference/13-error-handling.md)
 
 ### Image Optimization Workflow
+
 1. Replace <img> with next/image
 2. Add required props (src, alt, width, height)
 3. Configure remotePatterns for external images
@@ -542,15 +602,15 @@ Next.js 16 Requirements:
 
 ## 🔍 File Conventions Quick Ref
 
-| File | Purpose | Extensions |
-|------|---------|------------|
-| `page.tsx` | Public route | `.js` `.jsx` `.tsx` |
-| `layout.tsx` | Shared wrapper | `.js` `.jsx` `.tsx` |
-| `loading.tsx` | Loading state | `.js` `.jsx` `.tsx` |
-| `error.tsx` | Error boundary | `.js` `.jsx` `.tsx` |
-| `not-found.tsx` | 404 page | `.js` `.jsx` `.tsx` |
-| `route.ts` | API endpoint | `.js` `.ts` |
-| `proxy.ts` | Middleware | `.js` `.ts` |
+| File            | Purpose        | Extensions          |
+| --------------- | -------------- | ------------------- |
+| `page.tsx`      | Public route   | `.js` `.jsx` `.tsx` |
+| `layout.tsx`    | Shared wrapper | `.js` `.jsx` `.tsx` |
+| `loading.tsx`   | Loading state  | `.js` `.jsx` `.tsx` |
+| `error.tsx`     | Error boundary | `.js` `.jsx` `.tsx` |
+| `not-found.tsx` | 404 page       | `.js` `.jsx` `.tsx` |
+| `route.ts`      | API endpoint   | `.js` `.ts`         |
+| `proxy.ts`      | Middleware     | `.js` `.ts`         |
 
 **Full reference:** [reference/01-project-structure.md](reference/01-project-structure.md)
 
@@ -559,39 +619,42 @@ Next.js 16 Requirements:
 ## 🚫 Common Mistakes
 
 ### Mistake 1: Not Awaiting params
+
 ```typescript
 // ❌ Type Error
-const post = await getPost(params.slug)
+const post = await getPost(params.slug);
 
 // ✅ Correct
-const { slug } = await params
-const post = await getPost(slug)
+const { slug } = await params;
+const post = await getPost(slug);
 ```
 
 ### Mistake 2: Form Action Returns Data
+
 ```typescript
 // ❌ Type Error
 export async function action(formData: FormData) {
-  'use server'
-  return { success: true }
+    'use server';
+    return { success: true };
 }
 
 // ✅ Option 1: Void + revalidate
 export async function action(formData: FormData) {
-  'use server'
-  await save(formData)
-  revalidatePath('/data')
+    'use server';
+    await save(formData);
+    revalidatePath('/data');
 }
 
 // ✅ Option 2: useActionState
 export async function action(prev: any, formData: FormData) {
-  'use server'
-  await save(formData)
-  return { success: true }
+    'use server';
+    await save(formData);
+    return { success: true };
 }
 ```
 
 ### Mistake 3: Client Component for Data Fetching
+
 ```typescript
 // ❌ Wrong
 'use client'
@@ -608,6 +671,7 @@ export default async function Page() {
 ```
 
 ### Mistake 4: Not Using Cache Components
+
 ```typescript
 // ❌ Slow - Fetches on every request
 export default async function Page() {
@@ -625,6 +689,7 @@ export default async function Page() {
 ```
 
 ### Mistake 5: Using <img> Instead of <Image>
+
 ```typescript
 // ❌ Wrong - No optimization
 <img src="/photo.jpg" alt="Photo" />
@@ -635,6 +700,7 @@ import Image from 'next/image'
 ```
 
 ### Mistake 6: Missing Error Boundaries
+
 ```typescript
 // ❌ Wrong - No error handling
 export default async function Page() {
@@ -655,6 +721,7 @@ export default function Error({ error, reset }) {
 ## 📖 Full Documentation Links
 
 ### Core Features
+
 - **Project Structure** → [reference/01-project-structure.md](reference/01-project-structure.md)
 - **Routing & Pages** → [reference/02-routing-pages.md](reference/02-routing-pages.md)
 - **Navigation** → [reference/03-navigation.md](reference/03-navigation.md)
@@ -664,6 +731,7 @@ export default function Error({ error, reset }) {
 - **Metadata & SEO** → [reference/07-metadata-seo.md](reference/07-metadata-seo.md)
 
 ### Performance & Optimization
+
 - **Cache Components (PPR)** → [reference/08-cache-components.md](reference/08-cache-components.md)
 - **Proxy (Middleware)** → [reference/09-proxy.md](reference/09-proxy.md)
 - **Data Fetching** → [reference/10-fetching-data.md](reference/10-fetching-data.md)
@@ -673,10 +741,12 @@ export default function Error({ error, reset }) {
 - **Font Optimization** → [reference/16-font-optimization.md](reference/16-font-optimization.md)
 
 ### Error Handling & Styling
+
 - **Error Handling** → [reference/13-error-handling.md](reference/13-error-handling.md)
 - **CSS & Styling** → [reference/14-css.md](reference/14-css.md)
 
 ### API Development
+
 - **Route Handlers (API)** → [reference/17-route-handlers.md](reference/17-route-handlers.md)
 
 ---

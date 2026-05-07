@@ -24,14 +24,15 @@
 
 ### Use Client Components When You Need
 
-| Feature | Example |
-|---------|---------|
-| **Interactivity** | `onClick`, `onChange`, `onSubmit` |
-| **State** | `useState`, `useReducer` |
-| **Lifecycle** | `useEffect`, `useLayoutEffect` |
-| **Browser APIs** | `window`, `localStorage`, `navigator` |
-| **Custom Hooks** | `useAuth`, `useCart` |
-| **Event Handlers** | Click, hover, focus handlers |
+| Feature            | Example                               |
+| ------------------ | ------------------------------------- |
+| **Interactivity**  | `onClick`, `onChange`, `onSubmit`     |
+| **State**          | `useState`, `useReducer`              |
+| **Lifecycle**      | `useEffect`, `useLayoutEffect`        |
+| **Browser APIs**   | `window`, `localStorage`, `navigator` |
+| **Custom Hooks**   | `useAuth`, `useCart`                  |
+| **Event Handlers** | Click, hover, focus handlers          |
+
 ```typescript
 // Client Component needed
 'use client'
@@ -40,7 +41,7 @@ import { useState } from 'react'
 
 export default function Counter() {
   const [count, setCount] = useState(0)
-  
+
   return (
     <button onClick={() => setCount(count + 1)}>
       Clicks: {count}
@@ -51,20 +52,21 @@ export default function Counter() {
 
 ### Use Server Components When You Need
 
-| Feature | Example |
-|---------|---------|
-| **Data Fetching** | Direct database access, API calls |
-| **Backend Resources** | Database, filesystem, Redis |
-| **Secrets** | API keys, tokens kept server-side |
+| Feature                | Example                                |
+| ---------------------- | -------------------------------------- |
+| **Data Fetching**      | Direct database access, API calls      |
+| **Backend Resources**  | Database, filesystem, Redis            |
+| **Secrets**            | API keys, tokens kept server-side      |
 | **Large Dependencies** | Heavy libraries kept off client bundle |
-| **SEO** | Pre-rendered content for crawlers |
+| **SEO**                | Pre-rendered content for crawlers      |
+
 ```typescript
 // Server Component (default)
 import { db } from '@/lib/db'
 
 export default async function PostList() {
   const posts = await db.posts.findMany()
-  
+
   return (
     <ul>
       {posts.map((post) => (
@@ -76,6 +78,7 @@ export default async function PostList() {
 ```
 
 ### Decision Tree
+
 ```
 Need interactivity or browser APIs?
 ├─ YES → Client Component ('use client')
@@ -100,22 +103,25 @@ Need interactivity or browser APIs?
 Next.js renders components on the server before sending to client.
 
 **Server Components:**
+
 - Rendered into React Server Component Payload (RSC Payload)
 - Compact binary format
 - Contains rendered result + placeholders for Client Components
 
 **Client Components:**
+
 - Pre-rendered to HTML on server
 - JavaScript sent to client for hydration
 
 **Example:**
+
 ```typescript
 // app/page.tsx (Server Component)
 import LikeButton from './like-button' // Client Component
 
 export default async function Page() {
   const post = await getPost() // Runs on server
-  
+
   return (
     <article>
       <h1>{post.title}</h1>
@@ -127,6 +133,7 @@ export default async function Page() {
 ```
 
 **What gets sent to client:**
+
 1. HTML for initial render
 2. RSC Payload with Client Component placeholders
 3. JavaScript bundles for Client Components
@@ -140,6 +147,7 @@ export default async function Page() {
 **What is hydration?**
 
 Hydration attaches event handlers to static HTML.
+
 ```typescript
 // Before hydration
 <button>Click me</button> // Static HTML, no onClick
@@ -163,6 +171,7 @@ On navigation after initial load:
 ### Add 'use client' Directive
 
 Place at top of file, above imports.
+
 ```typescript
 // app/components/counter.tsx
 'use client'
@@ -171,7 +180,7 @@ import { useState } from 'react'
 
 export default function Counter() {
   const [count, setCount] = useState(0)
-  
+
   return (
     <div>
       <p>{count} clicks</p>
@@ -188,6 +197,7 @@ export default function Counter() {
 `'use client'` creates a boundary.
 
 **Everything imported into a Client Component becomes client-side:**
+
 ```typescript
 // counter.tsx
 'use client'
@@ -202,6 +212,7 @@ export default function Counter() {
 ```
 
 **Child components are automatically client-side:**
+
 ```typescript
 // counter.tsx
 'use client'
@@ -227,6 +238,7 @@ export default function CounterDisplay({ count }) {
 ### Keep 'use client' Low in Tree
 
 ❌ **Bad: Large client boundary**
+
 ```typescript
 // app/layout.tsx
 'use client' // ⚠️ Everything is now client-side!
@@ -250,6 +262,7 @@ export default function Layout({ children }) {
 ```
 
 ✅ **Good: Small client boundary**
+
 ```typescript
 // app/layout.tsx
 // Server Component (default)
@@ -282,13 +295,14 @@ export default function Search() {
 ```
 
 ### Pattern: Extract Interactive Parts
+
 ```typescript
 // ❌ Bad: Entire component is client
 'use client'
 
 export default function Article({ post }) {
   const [liked, setLiked] = useState(false)
-  
+
   return (
     <article>
       <h1>{post.title}</h1>
@@ -321,7 +335,7 @@ import { useState } from 'react'
 
 export default function LikeButton() {
   const [liked, setLiked] = useState(false)
-  
+
   return (
     <button onClick={() => setLiked(!liked)}>
       {liked ? '❤️' : '🤍'}
@@ -335,13 +349,14 @@ export default function LikeButton() {
 ## Passing Data Server to Client
 
 ### Props Are the Bridge
+
 ```typescript
 // app/page.tsx (Server Component)
 import LikeButton from './like-button'
 
 export default async function Page({ params }) {
   const post = await getPost(params.id)
-  
+
   return (
     <article>
       <h1>{post.title}</h1>
@@ -356,20 +371,20 @@ export default async function Page({ params }) {
 
 import { useState } from 'react'
 
-export default function LikeButton({ 
-  likes, 
-  postId 
-}: { 
+export default function LikeButton({
+  likes,
+  postId
+}: {
   likes: number
-  postId: string 
+  postId: string
 }) {
   const [count, setCount] = useState(likes)
-  
+
   const handleLike = async () => {
     await likePost(postId)
     setCount(count + 1)
   }
-  
+
   return (
     <button onClick={handleLike}>
       ❤️ {count}
@@ -381,26 +396,29 @@ export default function LikeButton({
 ### Props Must Be Serializable
 
 ✅ **Serializable (OK):**
+
 - Primitives: string, number, boolean
 - Objects, arrays
 - Dates (converted to ISO string)
 - Plain objects
 
 ❌ **Not Serializable (Error):**
+
 - Functions
 - Class instances
 - Symbols
 - `undefined` (use `null` instead)
+
 ```typescript
 // ❌ Bad: Non-serializable props
-<ClientComponent 
+<ClientComponent
   onClick={() => {}}        // ❌ Function
   date={new Date()}         // ⚠️ Converted to string
   user={new User()}         // ❌ Class instance
 />
 
 // ✅ Good: Serializable props
-<ClientComponent 
+<ClientComponent
   postId="123"              // ✅ String
   likes={42}                // ✅ Number
   tags={['next', 'react']}  // ✅ Array
@@ -411,13 +429,14 @@ export default function LikeButton({
 ### Stream Data with use Hook
 
 For streaming data from Server to Client:
+
 ```typescript
 // app/page.tsx (Server Component)
 import Comments from './comments'
 
 export default async function Page() {
   const commentsPromise = getComments() // Don't await
-  
+
   return (
     <article>
       <h1>Post</h1>
@@ -432,13 +451,13 @@ export default async function Page() {
 
 import { use } from 'react'
 
-export default function Comments({ 
-  commentsPromise 
-}: { 
-  commentsPromise: Promise<Comment[]> 
+export default function Comments({
+  commentsPromise
+}: {
+  commentsPromise: Promise<Comment[]>
 }) {
   const comments = use(commentsPromise) // Unwrap promise
-  
+
   return (
     <ul>
       {comments.map((c) => (
@@ -456,19 +475,20 @@ export default function Comments({
 ### Server Components as Children
 
 You can pass Server Components as props to Client Components.
+
 ```typescript
 // modal.tsx (Client Component)
 'use client'
 
 import { useState } from 'react'
 
-export default function Modal({ 
-  children 
-}: { 
-  children: React.ReactNode 
+export default function Modal({
+  children
+}: {
+  children: React.ReactNode
 }) {
   const [isOpen, setIsOpen] = useState(false)
-  
+
   return (
     <>
       <button onClick={() => setIsOpen(true)}>Open</button>
@@ -499,6 +519,7 @@ export default function Page() {
 Server Components render on server first, result passed as RSC Payload to Client Component.
 
 ### Common Pattern: Slots
+
 ```typescript
 // client-layout.tsx (Client Component)
 'use client'
@@ -540,6 +561,7 @@ export default function Page() {
 Context is Client-only. Create Client Component wrapper.
 
 ### Create Provider
+
 ```typescript
 // theme-provider.tsx
 'use client'
@@ -562,6 +584,7 @@ export default function ThemeProvider({
 ```
 
 ### Use in Root Layout
+
 ```typescript
 // app/layout.tsx (Server Component)
 import ThemeProvider from './theme-provider'
@@ -584,6 +607,7 @@ export default function RootLayout({
 ```
 
 ### Consume Context
+
 ```typescript
 // theme-toggle.tsx
 'use client'
@@ -602,6 +626,7 @@ export default function ThemeToggle() {
 Place providers as deep as possible.
 
 ❌ **Bad: Wraps everything**
+
 ```typescript
 // app/layout.tsx
 <html>
@@ -616,6 +641,7 @@ Place providers as deep as possible.
 ```
 
 ✅ **Good: Only wraps what needs it**
+
 ```typescript
 // app/layout.tsx
 <html>
@@ -636,16 +662,18 @@ Place providers as deep as possible.
 ### Wrap Client-Only Libraries
 
 Many npm packages don't have `'use client'` yet.
+
 ```typescript
 // carousel.tsx (Your wrapper)
-'use client'
+'use client';
 
-import { Carousel } from 'acme-carousel' // No 'use client'
+import { Carousel } from 'acme-carousel'; // No 'use client'
 
-export default Carousel
+export default Carousel;
 ```
 
 **Now safe to use in Server Components:**
+
 ```typescript
 // page.tsx (Server Component)
 import Carousel from './carousel'
@@ -661,6 +689,7 @@ export default function Page() {
 ```
 
 ### Pattern: Lazy Load Heavy Libraries
+
 ```typescript
 // heavy-chart.tsx
 'use client'
@@ -684,86 +713,95 @@ export default function HeavyChart({ data }) {
 ### The Problem
 
 JavaScript modules can leak server-only code to client.
+
 ```typescript
 // lib/data.ts
 export async function getData() {
-  const res = await fetch('https://api.example.com/data', {
-    headers: {
-      authorization: process.env.API_KEY, // ⚠️ Secret!
-    },
-  })
-  
-  return res.json()
+    const res = await fetch('https://api.example.com/data', {
+        headers: {
+            authorization: process.env.API_KEY, // ⚠️ Secret!
+        },
+    });
+
+    return res.json();
 }
 ```
 
 **Risk:** If imported into Client Component, `API_KEY` becomes empty string (not exposed to client).
 
 ### Solution 1: server-only Package
+
 ```bash
 npm install server-only
 ```
+
 ```typescript
 // lib/data.ts
-import 'server-only' // Build error if imported into Client Component
+import 'server-only'; // Build error if imported into Client Component
 
 export async function getData() {
-  const res = await fetch('https://api.example.com/data', {
-    headers: {
-      authorization: process.env.API_KEY, // Safe
-    },
-  })
-  
-  return res.json()
+    const res = await fetch('https://api.example.com/data', {
+        headers: {
+            authorization: process.env.API_KEY, // Safe
+        },
+    });
+
+    return res.json();
 }
 ```
 
 **Result:**
+
 ```typescript
 // counter.tsx
-'use client'
+'use client';
 
-import { getData } from '@/lib/data' // ❌ Build error!
+import { getData } from '@/lib/data'; // ❌ Build error!
 ```
 
 ### Solution 2: client-only Package
 
 For browser-only code:
+
 ```bash
 npm install client-only
 ```
+
 ```typescript
 // lib/analytics.ts
-import 'client-only' // Build error if imported into Server Component
+import 'client-only'; // Build error if imported into Server Component
 
 export function trackEvent(name: string) {
-  window.gtag('event', name) // Uses window
+    window.gtag('event', name); // Uses window
 }
 ```
 
 ### Environment Variable Rules
 
 **Server-only (default):**
+
 ```bash
 DATABASE_URL=postgresql://...
 API_KEY=secret123
 ```
 
-**Client-accessible (NEXT_PUBLIC_ prefix):**
+**Client-accessible (NEXT*PUBLIC* prefix):**
+
 ```bash
 NEXT_PUBLIC_API_URL=https://api.example.com
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 ```
+
 ```typescript
 // Server Component - All vars accessible
-const dbUrl = process.env.DATABASE_URL // ✅ Works
-const apiKey = process.env.API_KEY // ✅ Works
-const publicUrl = process.env.NEXT_PUBLIC_API_URL // ✅ Works
+const dbUrl = process.env.DATABASE_URL; // ✅ Works
+const apiKey = process.env.API_KEY; // ✅ Works
+const publicUrl = process.env.NEXT_PUBLIC_API_URL; // ✅ Works
 
 // Client Component - Only NEXT_PUBLIC_ accessible
-const dbUrl = process.env.DATABASE_URL // ❌ Empty string
-const apiKey = process.env.API_KEY // ❌ Empty string
-const publicUrl = process.env.NEXT_PUBLIC_API_URL // ✅ Works
+const dbUrl = process.env.DATABASE_URL; // ❌ Empty string
+const apiKey = process.env.API_KEY; // ❌ Empty string
+const publicUrl = process.env.NEXT_PUBLIC_API_URL; // ✅ Works
 ```
 
 ---
@@ -771,6 +809,7 @@ const publicUrl = process.env.NEXT_PUBLIC_API_URL // ✅ Works
 ## Common Patterns
 
 ### Pattern 1: Form with Server Action + Client State
+
 ```typescript
 // app/actions.ts (Server)
 'use server'
@@ -788,7 +827,7 @@ import { createPost } from './actions'
 
 export default function PostForm() {
   const [state, action, isPending] = useActionState(createPost, null)
-  
+
   return (
     <form action={action}>
       <input name="title" required />
@@ -801,11 +840,12 @@ export default function PostForm() {
 ```
 
 ### Pattern 2: Data Fetching + Interactive UI
+
 ```typescript
 // page.tsx (Server)
 export default async function Page() {
   const posts = await getPosts() // Server data fetching
-  
+
   return (
     <div>
       <h1>Posts</h1>
@@ -821,15 +861,15 @@ import { useState } from 'react'
 
 export default function PostList({ posts }) {
   const [filter, setFilter] = useState('')
-  
-  const filtered = posts.filter(p => 
+
+  const filtered = posts.filter(p =>
     p.title.includes(filter)
   )
-  
+
   return (
     <>
-      <input 
-        value={filter} 
+      <input
+        value={filter}
         onChange={(e) => setFilter(e.target.value)}
         placeholder="Filter..."
       />
@@ -844,6 +884,7 @@ export default function PostList({ posts }) {
 ```
 
 ### Pattern 3: Loading State + Error Boundary
+
 ```typescript
 // page.tsx (Server)
 import { Suspense } from 'react'
@@ -867,16 +908,16 @@ import { Component } from 'react'
 
 export default class ErrorBoundary extends Component {
   state = { hasError: false }
-  
+
   static getDerivedStateFromError(error) {
     return { hasError: true }
   }
-  
+
   render() {
     if (this.state.hasError) {
       return <h2>Something went wrong</h2>
     }
-    
+
     return this.props.children
   }
 }
@@ -887,6 +928,7 @@ export default class ErrorBoundary extends Component {
 ## Quick Reference
 
 ### Server vs Client Decision
+
 ```typescript
 // Server Component (default)
 // ✓ Fetch data
@@ -913,32 +955,34 @@ function ClientComponent() {
 ```
 
 ### Common Client-Side Hooks
+
 ```typescript
-'use client'
+'use client';
 
-import { 
-  useState,        // State
-  useEffect,       // Side effects
-  useContext,      // Context
-  useReducer,      // Complex state
-  useCallback,     // Memoized functions
-  useMemo,         // Memoized values
-  useRef,          // DOM refs
-  useTransition,   // Transitions
-  useDeferredValue // Deferred values
-} from 'react'
+import {
+    useState, // State
+    useEffect, // Side effects
+    useContext, // Context
+    useReducer, // Complex state
+    useCallback, // Memoized functions
+    useMemo, // Memoized values
+    useRef, // DOM refs
+    useTransition, // Transitions
+    useDeferredValue, // Deferred values
+} from 'react';
 
-import { 
-  useRouter,       // Navigation
-  usePathname,     // Current path
-  useSearchParams, // Query params
-  useParams        // Route params (client)
-} from 'next/navigation'
+import {
+    useRouter, // Navigation
+    usePathname, // Current path
+    useSearchParams, // Query params
+    useParams, // Route params (client)
+} from 'next/navigation';
 ```
 
 ---
 
 **Related Documentation:**
+
 - [Project Structure](01-project-structure.md)
 - [Routing & Pages](02-routing-pages.md)
 - [Navigation](03-navigation.md)

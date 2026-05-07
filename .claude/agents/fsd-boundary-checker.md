@@ -12,7 +12,7 @@ tools: [Read, Grep, Glob, Bash]
 ## Layer 순서 (high → low)
 
 ```
-app → pages → widgets → features → entities → shared
+app → pages → widgets → features → shared
 ```
 
 ## Violation Categories
@@ -45,5 +45,4 @@ app → pages → widgets → features → entities → shared
 
 ## Reference
 
-- 규칙 상세: [`spec/architecture/fsd-layers.md`](../../spec/architecture/fsd-layers.md)
-- 프로젝트 전체 구조: [`spec/architecture/overview.md`](../../spec/architecture/overview.md)
+- 규칙 상세: [`docs/spec/fsd-architecture/02-dependency-rules.md`](../../docs/spec/fsd-architecture/02-dependency-rules.md)

@@ -12,18 +12,15 @@ type Namespace = keyof (typeof resources)['ko'];
  *
  * 정적 키에는 표준 `useTranslation` 을 사용. (자동완성·타입체크 보존)
  */
-const useLooseTranslation = (
-	ns?: Namespace | Namespace[] | readonly Namespace[],
-	options?: UseTranslationOptions
-) => {
-	const { t, ...rest } = useTranslation(ns, options);
+const useLooseTranslation = (ns?: Namespace | Namespace[] | readonly Namespace[], options?: UseTranslationOptions) => {
+    const { t, ...rest } = useTranslation(ns, options);
 
-	type StrictT = typeof t;
-	type LooseT = StrictT & ((key: string, opts?: unknown) => string);
-	const runtimeT = t as unknown as (key: string, opts?: unknown) => string;
-	const looseT = ((key: string, opts?: unknown) => runtimeT(key, opts)) as LooseT;
+    type StrictT = typeof t;
+    type LooseT = StrictT & ((key: string, opts?: unknown) => string);
+    const runtimeT = t as unknown as (key: string, opts?: unknown) => string;
+    const looseT = ((key: string, opts?: unknown) => runtimeT(key, opts)) as LooseT;
 
-	return { looseT, t, ...rest };
+    return { looseT, t, ...rest };
 };
 
 export { useLooseTranslation };

@@ -134,11 +134,11 @@ import { db } from '@/lib/db'
 export default async function PostPage({ params }: PageProps<'/posts/[id]'>) {
   const { id } = await params
   const post = await db.post.findUnique({ where: { id } })
-  
+
   if (!post) {
     notFound()  // Triggers not-found.tsx
   }
-  
+
   return <article>{post.title}</article>
 }
 ```
@@ -177,12 +177,12 @@ export default function Page() {
   return (
     <>
       <h1>Dashboard</h1>
-      
+
       {/* Suspense with custom fallback */}
       <Suspense fallback={<div>Loading stats...</div>}>
         <Stats />
       </Suspense>
-      
+
       <Suspense fallback={<div>Loading posts...</div>}>
         <Posts />
       </Suspense>
@@ -212,12 +212,12 @@ export default function DashboardPage() {
     <>
       {/* Instant shell */}
       <header><h1>Dashboard</h1></header>
-      
+
       {/* Streams independently */}
       <Suspense fallback={<Skeleton />}>
         <UserData />
       </Suspense>
-      
+
       <Suspense fallback={<Skeleton />}>
         <Analytics />
       </Suspense>
@@ -234,20 +234,20 @@ export default function DashboardPage() {
 
 ```typescript
 // app/actions.ts
-'use server'
+'use server';
 
 export async function createPost(formData: FormData) {
-  const title = formData.get('title') as string
-  
-  if (!title) {
-    throw new Error('Title is required')
-  }
-  
-  try {
-    await db.post.create({ data: { title } })
-  } catch (error) {
-    throw new Error('Failed to create post')
-  }
+    const title = formData.get('title') as string;
+
+    if (!title) {
+        throw new Error('Title is required');
+    }
+
+    try {
+        await db.post.create({ data: { title } });
+    } catch (error) {
+        throw new Error('Failed to create post');
+    }
 }
 ```
 
@@ -267,11 +267,11 @@ export async function createPost(
   formData: FormData
 ): Promise<State> {
   const title = formData.get('title') as string
-  
+
   if (!title) {
     return { error: 'Title is required' }
   }
-  
+
   try {
     await db.post.create({ data: { title } })
     return { success: true }
@@ -287,7 +287,7 @@ import { createPost } from '@/app/actions'
 
 export default function NewPost() {
   const [state, formAction, isPending] = useActionState(createPost, {})
-  
+
   return (
     <form action={formAction}>
       <input name="title" />
@@ -329,13 +329,13 @@ export async function createPost(
     title: formData.get('title'),
     content: formData.get('content'),
   })
-  
+
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
     }
   }
-  
+
   try {
     await db.post.create({ data: result.data })
     return { success: true }
@@ -355,7 +355,7 @@ import { createPost } from '@/app/actions'
 
 export default function NewPost() {
   const [state, formAction] = useActionState(createPost, {})
-  
+
   return (
     <form action={formAction}>
       <div>
@@ -364,18 +364,18 @@ export default function NewPost() {
           <p className="error">{state.errors.title[0]}</p>
         )}
       </div>
-      
+
       <div>
         <textarea name="content" />
         {state.errors?.content && (
           <p className="error">{state.errors.content[0]}</p>
         )}
       </div>
-      
+
       {state.errors?._form && (
         <p className="error">{state.errors._form[0]}</p>
       )}
-      
+
       <button type="submit">Create Post</button>
     </form>
   )
@@ -390,18 +390,15 @@ export default function NewPost() {
 
 ```typescript
 // app/api/posts/route.ts
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 export async function GET() {
-  try {
-    const posts = await db.post.findMany()
-    return NextResponse.json(posts)
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to fetch posts' },
-      { status: 500 }
-    )
-  }
+    try {
+        const posts = await db.post.findMany();
+        return NextResponse.json(posts);
+    } catch (error) {
+        return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+    }
 }
 ```
 
@@ -409,44 +406,29 @@ export async function GET() {
 
 ```typescript
 // app/api/posts/[id]/route.ts
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const { id } = await params
-  
-  const post = await db.post.findUnique({ where: { id } })
-  
-  if (!post) {
-    return NextResponse.json(
-      { error: 'Post not found' },
-      { status: 404 }
-    )
-  }
-  
-  return NextResponse.json(post)
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+
+    const post = await db.post.findUnique({ where: { id } });
+
+    if (!post) {
+        return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(post);
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params
-    await db.post.delete({ where: { id } })
-    
-    return NextResponse.json(
-      { success: true },
-      { status: 200 }
-    )
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to delete post' },
-      { status: 500 }
-    )
-  }
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+    try {
+        const { id } = await params;
+        await db.post.delete({ where: { id } });
+
+        return NextResponse.json({ success: true }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+    }
 }
 ```
 
@@ -454,36 +436,30 @@ export async function DELETE(
 
 ```typescript
 // app/api/posts/route.ts
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const PostSchema = z.object({
-  title: z.string().min(1),
-  content: z.string().min(1),
-})
+    title: z.string().min(1),
+    content: z.string().min(1),
+});
 
 export async function POST(request: Request) {
-  try {
-    const body = await request.json()
-    
-    const result = PostSchema.safeParse(body)
-    
-    if (!result.success) {
-      return NextResponse.json(
-        { errors: result.error.flatten().fieldErrors },
-        { status: 400 }
-      )
+    try {
+        const body = await request.json();
+
+        const result = PostSchema.safeParse(body);
+
+        if (!result.success) {
+            return NextResponse.json({ errors: result.error.flatten().fieldErrors }, { status: 400 });
+        }
+
+        const post = await db.post.create({ data: result.data });
+
+        return NextResponse.json(post, { status: 201 });
+    } catch (error) {
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
-    
-    const post = await db.post.create({ data: result.data })
-    
-    return NextResponse.json(post, { status: 201 })
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
-  }
 }
 ```
 
@@ -509,11 +485,11 @@ export default function Error({
   useEffect(() => {
     // Log error to external service
     console.error('Error:', error)
-    
+
     // Example: Send to Sentry
     // Sentry.captureException(error)
   }, [error])
-  
+
   return (
     <div>
       <h2>Something went wrong!</h2>
@@ -567,14 +543,14 @@ export default function DashboardPage() {
   return (
     <>
       <h1>Dashboard</h1>
-      
+
       {/* If Stats fails, show fallback */}
       <Suspense fallback={<div>Loading...</div>}>
         <ErrorBoundary fallback={<div>Stats unavailable</div>}>
           <Stats />
         </ErrorBoundary>
       </Suspense>
-      
+
       {/* Rest of dashboard still works */}
       <Suspense fallback={<div>Loading...</div>}>
         <Posts />
@@ -602,16 +578,16 @@ export class ErrorBoundary extends Component<Props, State> {
     super(props)
     this.state = { hasError: false }
   }
-  
+
   static getDerivedStateFromError() {
     return { hasError: true }
   }
-  
+
   render() {
     if (this.state.hasError) {
       return this.props.fallback
     }
-    
+
     return this.props.children
   }
 }
@@ -627,7 +603,7 @@ import { createPost } from '@/app/actions'
 
 export default function NewPost() {
   const [state, formAction, isPending] = useActionState(createPost, {})
-  
+
   return (
     <form action={formAction} className="space-y-4">
       <div>
@@ -643,7 +619,7 @@ export default function NewPost() {
           </p>
         )}
       </div>
-      
+
       <div>
         <label htmlFor="content">Content</label>
         <textarea
@@ -657,13 +633,13 @@ export default function NewPost() {
           </p>
         )}
       </div>
-      
+
       {state.errors?._form && (
         <div className="bg-red-50 border border-red-200 rounded p-4">
           <p className="text-red-800">{state.errors._form[0]}</p>
         </div>
       )}
-      
+
       <button
         type="submit"
         disabled={isPending}
@@ -715,15 +691,15 @@ export default function PostsPage() {
 ```typescript
 // ✅ GOOD - Specific error messages
 if (!title) {
-  return { error: 'Title is required' }
+    return { error: 'Title is required' };
 }
 if (title.length > 100) {
-  return { error: 'Title must be less than 100 characters' }
+    return { error: 'Title must be less than 100 characters' };
 }
 
 // ❌ BAD - Generic error messages
 if (!title || title.length > 100) {
-  return { error: 'Invalid input' }
+    return { error: 'Invalid input' };
 }
 ```
 
@@ -732,16 +708,16 @@ if (!title || title.length > 100) {
 ```typescript
 // ✅ GOOD - User-friendly error
 try {
-  await db.post.create({ data })
+    await db.post.create({ data });
 } catch (error) {
-  return { error: 'Failed to create post. Please try again.' }
+    return { error: 'Failed to create post. Please try again.' };
 }
 
 // ❌ BAD - Exposes internal details
 try {
-  await db.post.create({ data })
+    await db.post.create({ data });
 } catch (error) {
-  return { error: error.message }  // "Prisma error: Unique constraint..."
+    return { error: error.message }; // "Prisma error: Unique constraint..."
 }
 ```
 
@@ -825,5 +801,6 @@ export default function Error({ error, reset }) {
 ---
 
 **Related Documentation:**
+
 - [Server Actions](06-server-actions.md)
 - [API Routes](17-route-handlers.md)

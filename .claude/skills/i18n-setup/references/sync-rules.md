@@ -17,10 +17,10 @@ python ~/.claude/skills/i18n-setup/scripts/sync_keys.py <project-root> [--check]
 
 1. **언어 폴더 탐색** — `src/static/language/{ko,en,ja}` 또는 `src/i18n/{ko,en,ja}` 를 자동 인식.
 2. **NS 별 처리** — ko 의 모든 `<ns>.ts` 파일을 기준으로:
-   - ko 파일 파싱 → 키 트리 + 값 추출.
-   - en/ja 의 동일 파일을 파싱.
-   - ko 에만 있는 경로 = "추가 대상".
-   - en/ja 에만 있는 경로 = "잔재 키" (경고).
+    - ko 파일 파싱 → 키 트리 + 값 추출.
+    - en/ja 의 동일 파일을 파싱.
+    - ko 에만 있는 경로 = "추가 대상".
+    - en/ja 에만 있는 경로 = "잔재 키" (경고).
 3. **추가** — en/ja 에 누락 키를 동일 nested 위치에 삽입. 값은 ko 원문 그대로 (placeholder 표시).
 4. **주석** — 추가된 키 바로 위 라인에 `// 한국어 원문: "<원문>"` 삽입.
 5. **출력** — 변경 요약 (`<ns>: +N keys, ~M warnings`).

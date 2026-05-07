@@ -1,12 +1,12 @@
 ---
 paths:
-  - "src/**/api/**"
-  - "src/shared/api/**"
+    - 'src/**/api/**'
+    - 'src/shared/api/**'
 ---
 
 # API Client Rules
 
-사실(설정값, 인터셉터 동작) → [spec/api/client.md](/spec/api/client.md)
+사실(설정값, 인터셉터 동작) → [docs/spec/api.md](/docs/spec/api.md)
 이 파일은 코드 작성 시 따라야 할 제약입니다.
 
 ## MUST

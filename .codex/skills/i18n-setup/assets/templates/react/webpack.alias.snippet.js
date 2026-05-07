@@ -2,10 +2,10 @@
 const path = require('path');
 
 module.exports = {
-	resolve: {
-		alias: {
-			'~language': path.resolve(__dirname, 'src/static/language'),
-			'~hooks': path.resolve(__dirname, 'src/hooks')
-		}
-	}
+    resolve: {
+        alias: {
+            '~language': path.resolve(__dirname, 'src/static/language'),
+            '~hooks': path.resolve(__dirname, 'src/hooks'),
+        },
+    },
 };

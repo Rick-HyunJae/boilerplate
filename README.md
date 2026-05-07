@@ -93,21 +93,21 @@ export const ENV = {
 
 Vite 설정은 `config/vite/` 디렉토리에 위치하며, 환경별로 분리됩니다.
 
-| 파일                           | 역할                                               |
-| ------------------------------ | -------------------------------------------------- |
-| `config/vite/index.ts`         | 진입점 — mode에 따라 base + dev/prod 머지          |
-| `config/vite/vite.base.ts`     | 공통 설정 (alias, 환경 검증, HTML 처리)            |
-| `config/vite/vite.dev.ts`      | dev server 설정 (HTTPS)                            |
-| `config/vite/vite.prod.ts`     | 빌드 최적화 (난독화, chunk split)                  |
-| `config/vite/vitest.config.ts` | 테스트 전용 Vite 설정                              |
+| 파일                           | 역할                                      |
+| ------------------------------ | ----------------------------------------- |
+| `config/vite/index.ts`         | 진입점 — mode에 따라 base + dev/prod 머지 |
+| `config/vite/vite.base.ts`     | 공통 설정 (alias, 환경 검증, HTML 처리)   |
+| `config/vite/vite.dev.ts`      | dev server 설정 (HTTPS)                   |
+| `config/vite/vite.prod.ts`     | 빌드 최적화 (난독화, chunk split)         |
+| `config/vite/vitest.config.ts` | 테스트 전용 Vite 설정                     |
 
 **빌드 기능:**
 
 - **코드 난독화**: `VITE_OBFUSCATE=true` 설정 시 활성화 (운영 빌드)
 - **Vendor chunk 분리**: `vendor-react`, `vendor-router`, `vendor-query`로 자동 분리
 - **HTML 처리**: `vite-plugin-html`으로 단일 `public/index.html` 템플릿 사용
-  - dev 모드: `noindex`, prod 모드: SEO meta 자동 삽입
-  - `<%= VITE_APP_TITLE %>` 등 EJS 문법으로 env 값 주입
+    - dev 모드: `noindex`, prod 모드: SEO meta 자동 삽입
+    - `<%= VITE_APP_TITLE %>` 등 EJS 문법으로 env 값 주입
 - **HTTPS**: `start:prod` 실행 시 `@vitejs/plugin-basic-ssl`로 자동 활성화
 
 ### 1.7 경로 별칭
@@ -160,7 +160,6 @@ import { HomePage } from '@/pages/home';
     │   └── not-found/
     ├── widgets/     # 독립적인 큰 UI 블록 (헤더, 사이드바 등)
     ├── features/    # 사용자 인터랙션 단위 (로그인, 검색 등)
-    ├── entities/    # 비즈니스 엔티티 (User, Product 등) — 필요 시 생성
     └── shared/      # 재사용 가능한 인프라 / UI / 유틸 — 최하위 레이어
         ├── api/     # axios 클라이언트, 인터셉터
         ├── config/  # ENV 런타임 접근 객체
@@ -174,14 +173,13 @@ import { HomePage } from '@/pages/home';
 
 레이어는 **위에서 아래로** 의존합니다 (상위 레이어만 하위 레이어를 import할 수 있음).
 
-| 레이어     | 책임                                                 | 예시                                    |
-| ---------- | ---------------------------------------------------- | --------------------------------------- |
-| `app`      | 앱 부트스트랩, 글로벌 프로바이더, 라우팅             | `QueryClientProvider`, `RouterProvider` |
-| `pages`    | 라우트 단위 페이지. widgets/features/entities를 조립 | `HomePage`, `NotFoundPage`              |
-| `widgets`  | 페이지를 구성하는 독립적 블록                        | `Header`, `Sidebar`, `ProductList`      |
-| `features` | 비즈니스 가치를 제공하는 인터랙션                    | `auth/login`, `cart/add-to-cart`        |
-| `entities` | 비즈니스 엔티티 모델 + 기본 UI                       | `user`, `product`                       |
-| `shared`   | 도메인 비종속 인프라 / 유틸 / UI 키트                | `apiClient`, `Button`, `useDebounce`    |
+| 레이어     | 책임                                         | 예시                                    |
+| ---------- | -------------------------------------------- | --------------------------------------- |
+| `app`      | 앱 부트스트랩, 글로벌 프로바이더, 라우팅     | `QueryClientProvider`, `RouterProvider` |
+| `pages`    | 라우트 단위 페이지. widgets/features 를 조립 | `HomePage`, `NotFoundPage`              |
+| `widgets`  | 페이지를 구성하는 독립적 블록                | `Header`, `Sidebar`, `ProductList`      |
+| `features` | 비즈니스 가치를 제공하는 인터랙션            | `auth/login`, `cart/add-to-cart`        |
+| `shared`   | 도메인 비종속 인프라 / 유틸 / UI 키트        | `apiClient`, `Button`, `useDebounce`    |
 
 ### 2.3 슬라이스 내부 구조 (Segments)
 
@@ -221,7 +219,7 @@ FSD의 핵심 원칙은 **단방향 의존성**입니다. 위반 시 코드 리�
 ### 3.1 레이어 간 의존성
 
 ```
-app → pages → widgets → features → entities → shared
+app → pages → widgets → features → shared
 ```
 
 - **상위 레이어는 하위 레이어만 import 할 수 있습니다.**
@@ -257,10 +255,9 @@ import { addToCart } from '@/features/cart';
 새 기능을 추가할 때:
 
 1. **shared에 들어갈지** — 도메인과 무관한 유틸/UI인가? → `shared/`
-2. **entity인가** — 순수 도메인 모델인가? → `entities/<name>/`
-3. **feature인가** — 사용자 인터랙션을 동반한 비즈니스 가치인가? → `features/<name>/`
-4. **widget인가** — 여러 features/entities를 조합한 큰 UI 블록인가? → `widgets/<name>/`
-5. **page인가** — 라우트와 1:1 대응되는 화면인가? → `pages/<name>/`
+2. **feature인가** — 사용자 인터랙션을 동반한 비즈니스 가치인가? → `features/<name>/`
+3. **widget인가** — 여러 features를 조합한 큰 UI 블록인가? → `widgets/<name>/`
+4. **page인가** — 라우트와 1:1 대응되는 화면인가? → `pages/<name>/`
 
 각 슬라이스는 생성 즉시 `index.ts`를 만들어 Public API를 정의해야 합니다.
 

@@ -19,6 +19,7 @@ Copy and adapt these patterns for your layouts.
 ## Root Layouts
 
 ### Basic Root Layout
+
 ```typescript
 // app/layout.tsx
 export default function RootLayout({
@@ -35,6 +36,7 @@ export default function RootLayout({
 ```
 
 ### Root Layout with Font
+
 ```typescript
 // app/layout.tsx
 import { Inter } from 'next/font/google'
@@ -56,6 +58,7 @@ export default function RootLayout({
 ```
 
 ### Root Layout with Multiple Fonts
+
 ```typescript
 // app/layout.tsx
 import { Inter, Roboto_Mono } from 'next/font/google'
@@ -85,18 +88,21 @@ export default function RootLayout({
   )
 }
 ```
+
 ```css
 /* globals.css */
 body {
-  font-family: var(--font-inter);
+    font-family: var(--font-inter);
 }
 
-code, pre {
-  font-family: var(--font-roboto-mono);
+code,
+pre {
+    font-family: var(--font-roboto-mono);
 }
 ```
 
 ### Root Layout with Metadata
+
 ```typescript
 // app/layout.tsx
 import type { Metadata } from 'next'
@@ -128,6 +134,7 @@ export default function RootLayout({
 ```
 
 ### Root Layout with Header & Footer
+
 ```typescript
 // app/layout.tsx
 import type { Metadata } from 'next'
@@ -164,6 +171,7 @@ export default function RootLayout({
 ```
 
 ### Root Layout with Providers
+
 ```typescript
 // app/layout.tsx
 import type { Metadata } from 'next'
@@ -207,6 +215,7 @@ export default function RootLayout({
 ## Nested Layouts
 
 ### Basic Nested Layout
+
 ```typescript
 // app/blog/layout.tsx
 export default function BlogLayout({
@@ -224,6 +233,7 @@ export default function BlogLayout({
 ```
 
 ### Nested Layout with Sidebar
+
 ```typescript
 // app/blog/layout.tsx
 import Sidebar from './sidebar'
@@ -240,7 +250,7 @@ export default function BlogLayout({
         <aside className="w-64 flex-shrink-0">
           <Sidebar />
         </aside>
-        
+
         {/* Main content */}
         <main className="flex-1">
           {children}
@@ -257,19 +267,19 @@ export default function Sidebar() {
   return (
     <nav className="space-y-2">
       <h2 className="font-semibold mb-4">Categories</h2>
-      <Link 
+      <Link
         href="/blog?category=tech"
         className="block px-4 py-2 rounded hover:bg-gray-100"
       >
         Technology
       </Link>
-      <Link 
+      <Link
         href="/blog?category=design"
         className="block px-4 py-2 rounded hover:bg-gray-100"
       >
         Design
       </Link>
-      <Link 
+      <Link
         href="/blog?category=business"
         className="block px-4 py-2 rounded hover:bg-gray-100"
       >
@@ -281,6 +291,7 @@ export default function Sidebar() {
 ```
 
 ### Nested Layout with Navigation
+
 ```typescript
 // app/docs/layout.tsx
 import Link from 'next/link'
@@ -311,7 +322,7 @@ export default function DocsLayout({
           </div>
         </div>
       </nav>
-      
+
       {/* Content */}
       <div className="container mx-auto px-4 py-8">
         {children}
@@ -322,6 +333,7 @@ export default function DocsLayout({
 ```
 
 ### Nested Layout with Breadcrumbs
+
 ```typescript
 // app/docs/[...slug]/layout.tsx
 import Breadcrumbs from './breadcrumbs'
@@ -334,7 +346,7 @@ export default async function Layout({
   params: Promise<{ slug: string[] }>
 }) {
   const { slug } = await params
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Breadcrumbs slug={slug} />
@@ -354,11 +366,11 @@ export default function Breadcrumbs({ slug }: { slug: string[] }) {
       <Link href="/docs" className="text-gray-600 hover:text-gray-900">
         Docs
       </Link>
-      
+
       {slug.map((segment, index) => {
         const href = `/docs/${slug.slice(0, index + 1).join('/')}`
         const isLast = index === slug.length - 1
-        
+
         return (
           <span key={segment} className="flex items-center space-x-2">
             <span className="text-gray-400">/</span>
@@ -382,6 +394,7 @@ export default function Breadcrumbs({ slug }: { slug: string[] }) {
 ## Dashboard Layouts
 
 ### Basic Dashboard Layout
+
 ```typescript
 // app/dashboard/layout.tsx
 import Sidebar from './sidebar'
@@ -398,14 +411,14 @@ export default function DashboardLayout({
       <aside className="w-64 bg-gray-900 text-white">
         <Sidebar />
       </aside>
-      
+
       {/* Main area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="h-16 border-b bg-white">
           <Header />
         </header>
-        
+
         {/* Content */}
         <main className="flex-1 overflow-auto p-8 bg-gray-50">
           {children}
@@ -422,26 +435,26 @@ export default function Sidebar() {
   return (
     <nav className="p-4 space-y-2">
       <div className="text-xl font-bold mb-8">Dashboard</div>
-      
-      <Link 
+
+      <Link
         href="/dashboard"
         className="block px-4 py-2 rounded hover:bg-gray-800"
       >
         Overview
       </Link>
-      <Link 
+      <Link
         href="/dashboard/analytics"
         className="block px-4 py-2 rounded hover:bg-gray-800"
       >
         Analytics
       </Link>
-      <Link 
+      <Link
         href="/dashboard/users"
         className="block px-4 py-2 rounded hover:bg-gray-800"
       >
         Users
       </Link>
-      <Link 
+      <Link
         href="/dashboard/settings"
         className="block px-4 py-2 rounded hover:bg-gray-800"
       >
@@ -456,22 +469,22 @@ export default function Header() {
   return (
     <div className="h-full px-8 flex items-center justify-between">
       <div>
-        <input 
-          type="search" 
+        <input
+          type="search"
           placeholder="Search..."
           className="px-4 py-2 border rounded-lg"
         />
       </div>
-      
+
       <div className="flex items-center gap-4">
         <button className="relative">
           <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
           🔔
         </button>
-        
+
         <div className="flex items-center gap-2">
-          <img 
-            src="/avatar.png" 
+          <img
+            src="/avatar.png"
             alt="User"
             className="w-8 h-8 rounded-full"
           />
@@ -484,6 +497,7 @@ export default function Header() {
 ```
 
 ### Dashboard with Collapsible Sidebar
+
 ```typescript
 // app/dashboard/layout.tsx
 'use client'
@@ -497,16 +511,16 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const [collapsed, setCollapsed] = useState(false)
-  
+
   return (
     <div className="flex h-screen">
       <aside className={`${collapsed ? 'w-16' : 'w-64'} transition-all bg-gray-900 text-white`}>
         <Sidebar collapsed={collapsed} />
       </aside>
-      
+
       <div className="flex-1 flex flex-col">
         <header className="h-16 border-b bg-white px-8 flex items-center">
-          <button 
+          <button
             onClick={() => setCollapsed(!collapsed)}
             className="mr-4"
           >
@@ -514,7 +528,7 @@ export default function DashboardLayout({
           </button>
           <h1>Dashboard</h1>
         </header>
-        
+
         <main className="flex-1 overflow-auto p-8 bg-gray-50">
           {children}
         </main>
@@ -529,6 +543,7 @@ export default function DashboardLayout({
 ## Blog Layouts
 
 ### Blog Layout with Categories
+
 ```typescript
 // app/blog/layout.tsx
 import Link from 'next/link'
@@ -548,7 +563,7 @@ export default async function BlogLayout({
   children: React.ReactNode
 }) {
   const categories = await getCategories()
-  
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -560,7 +575,7 @@ export default async function BlogLayout({
           </p>
         </div>
       </header>
-      
+
       <div className="container mx-auto px-4 py-12">
         <div className="flex gap-12">
           {/* Sidebar */}
@@ -579,7 +594,7 @@ export default async function BlogLayout({
                   </Link>
                 ))}
               </nav>
-              
+
               <div className="mt-8">
                 <h3 className="font-semibold mb-4">Newsletter</h3>
                 <form className="space-y-2">
@@ -595,7 +610,7 @@ export default async function BlogLayout({
               </div>
             </div>
           </aside>
-          
+
           {/* Main content */}
           <main className="flex-1">
             {children}
@@ -608,6 +623,7 @@ export default async function BlogLayout({
 ```
 
 ### Blog Post Layout with Table of Contents
+
 ```typescript
 // app/blog/[slug]/layout.tsx
 export default function PostLayout({
@@ -622,7 +638,7 @@ export default function PostLayout({
         <div className="flex-1">
           {children}
         </div>
-        
+
         {/* Table of Contents - sticky */}
         <aside className="w-64 flex-shrink-0">
           <div className="sticky top-8">
@@ -643,6 +659,7 @@ export default function PostLayout({
 ## E-commerce Layouts
 
 ### Shop Layout with Filters
+
 ```typescript
 // app/shop/layout.tsx
 import Filters from './filters'
@@ -655,13 +672,13 @@ export default function ShopLayout({
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">Shop</h1>
-      
+
       <div className="flex gap-8">
         {/* Filters sidebar */}
         <aside className="w-64 flex-shrink-0">
           <Filters />
         </aside>
-        
+
         {/* Products grid */}
         <main className="flex-1">
           {children}
@@ -679,13 +696,13 @@ import { useSearchParams, useRouter } from 'next/navigation'
 export default function Filters() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  
+
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString())
     params.set(key, value)
     router.push(`/shop?${params.toString()}`)
   }
-  
+
   return (
     <div className="space-y-6">
       {/* Category filter */}
@@ -706,7 +723,7 @@ export default function Filters() {
           </label>
         </div>
       </div>
-      
+
       {/* Price range */}
       <div>
         <h3 className="font-semibold mb-3">Price Range</h3>
@@ -725,7 +742,7 @@ export default function Filters() {
           </label>
         </div>
       </div>
-      
+
       {/* Brand */}
       <div>
         <h3 className="font-semibold mb-3">Brand</h3>
@@ -750,6 +767,7 @@ export default function Filters() {
 ## Multiple Root Layouts
 
 ### Marketing vs App Layout
+
 ```
 app/
 ├── (marketing)/
@@ -762,6 +780,7 @@ app/
     └── dashboard/
         └── page.tsx
 ```
+
 ```typescript
 // app/(marketing)/layout.tsx
 export default function MarketingLayout({
@@ -785,9 +804,9 @@ export default function MarketingLayout({
             </div>
           </div>
         </nav>
-        
+
         <main>{children}</main>
-        
+
         <footer className="bg-gray-900 text-white py-12">
           <div className="container mx-auto px-4">
             <p>© 2024 Company. All rights reserved.</p>
@@ -826,6 +845,7 @@ export default function AppLayout({
 ## Parallel Routes Layouts
 
 ### Dashboard with Parallel Slots
+
 ```
 app/dashboard/
 ├── layout.tsx
@@ -835,6 +855,7 @@ app/dashboard/
 │   └── page.tsx
 └── page.tsx
 ```
+
 ```typescript
 // app/dashboard/layout.tsx
 export default function DashboardLayout({
@@ -849,19 +870,19 @@ export default function DashboardLayout({
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-      
+
       <div className="grid grid-cols-2 gap-8 mb-8">
         {/* Analytics slot */}
         <div className="bg-white p-6 rounded-lg shadow">
           {analytics}
         </div>
-        
+
         {/* Team slot */}
         <div className="bg-white p-6 rounded-lg shadow">
           {team}
         </div>
       </div>
-      
+
       {/* Main content */}
       <div className="bg-white p-6 rounded-lg shadow">
         {children}
@@ -873,7 +894,7 @@ export default function DashboardLayout({
 // app/dashboard/@analytics/page.tsx
 export default async function AnalyticsSlot() {
   const stats = await getAnalytics()
-  
+
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Analytics</h2>
@@ -889,15 +910,15 @@ export default async function AnalyticsSlot() {
 // app/dashboard/@team/page.tsx
 export default async function TeamSlot() {
   const team = await getTeamMembers()
-  
+
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Team</h2>
       <ul className="space-y-2">
         {team.map((member) => (
           <li key={member.id} className="flex items-center gap-2">
-            <img 
-              src={member.avatar} 
+            <img
+              src={member.avatar}
               alt={member.name}
               className="w-8 h-8 rounded-full"
             />
@@ -915,6 +936,7 @@ export default async function TeamSlot() {
 ## Quick Reference
 
 ### Layout Checklist
+
 ```typescript
 // Root Layout (required)
 ✓ Must have <html> and <body>
@@ -942,6 +964,7 @@ export default async function TeamSlot() {
 ---
 
 **Related Documentation:**
+
 - [Project Structure](../reference/01-project-structure.md)
 - [Routing & Pages](../reference/02-routing-pages.md)
 - [Page Examples](./pages.md)

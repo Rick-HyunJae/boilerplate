@@ -27,8 +27,8 @@ src/static/language/
 import { useTranslation } from 'react-i18next';
 
 const Header = () => {
-  const { t } = useTranslation('studio');
-  return <h1>{t('title')}</h1>;
+    const { t } = useTranslation('studio');
+    return <h1>{t('title')}</h1>;
 };
 ```
 
@@ -38,8 +38,8 @@ const Header = () => {
 import { useLooseTranslation } from '~hooks/useLooseTranslation';
 
 const Snackbar = ({ msg }: { msg: string }) => {
-  const { looseT } = useLooseTranslation();
-  return <p>{looseT(msg)}</p>;
+    const { looseT } = useLooseTranslation();
+    return <p>{looseT(msg)}</p>;
 };
 ```
 
@@ -47,13 +47,15 @@ const Snackbar = ({ msg }: { msg: string }) => {
 
 ```ts
 export const TABS = [
-  { id: 1, labelKey: 'studio:tabs.layer' },
-  { id: 2, labelKey: 'studio:tabs.asset' }
+    { id: 1, labelKey: 'studio:tabs.layer' },
+    { id: 2, labelKey: 'studio:tabs.asset' },
 ] as const;
 ```
 
 ```tsx
-{TABS.map(tab => <button key={tab.id}>{t(tab.labelKey)}</button>)}
+{
+    TABS.map((tab) => <button key={tab.id}>{t(tab.labelKey)}</button>);
+}
 ```
 
 ### D. React 외부
@@ -61,17 +63,16 @@ export const TABS = [
 ```ts
 import i18n from '~language/i18n';
 
-export const formatError = (code: string) =>
-  i18n.t(`common:errors.${code}`);
+export const formatError = (code: string) => i18n.t(`common:errors.${code}`);
 ```
 
 ## 4. 새 키 추가 워크플로우
 
 1. `src/static/language/ko/<ns>.ts` 에 키 추가.
 2. 작업 종료 직전:
-   ```bash
-   python ~/.claude/skills/i18n-setup/scripts/sync_keys.py .
-   ```
+    ```bash
+    python ~/.claude/skills/i18n-setup/scripts/sync_keys.py .
+    ```
 3. en/ja 에 자동으로 누락 키와 한국어 원문 주석이 추가된다.
 
 ## 5. 새 NS 추가

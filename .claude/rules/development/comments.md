@@ -1,7 +1,7 @@
 ---
 paths:
-  - "src/**/*.{ts,tsx}"
-  - "config/**/*.ts"
+    - 'src/**/*.{ts,tsx}'
+    - 'config/**/*.ts'
 ---
 
 # 주석(Comment) 작성 규칙

@@ -4,25 +4,25 @@
 
 ## 복사 대상
 
-| 출처 | 대상 | 비고 |
-|---|---|---|
-| `src/static/language/i18n.ts` | 동일 경로 | 진입점 |
-| `src/static/language/ko/common.ts` | 동일 경로 | 시드 NS |
-| `src/static/language/en/common.ts` | 동일 경로 | 미번역 placeholder |
-| `src/static/language/ja/common.ts` | 동일 경로 | 미번역 placeholder |
-| `src/@types/i18next.d.ts` | 동일 경로 | 타입 augmentation |
-| `src/hooks/useLooseTranslation.ts` | 동일 경로 | 동적 키 wrapper |
-| `.vscode/settings.json` | 동일 경로 | i18n-ally 설정 (기존과 머지) |
-| `docs/I18n-Convention.md` | 동일 경로 | 컨벤션 문서 |
+| 출처                               | 대상      | 비고                         |
+| ---------------------------------- | --------- | ---------------------------- |
+| `src/static/language/i18n.ts`      | 동일 경로 | 진입점                       |
+| `src/static/language/ko/common.ts` | 동일 경로 | 시드 NS                      |
+| `src/static/language/en/common.ts` | 동일 경로 | 미번역 placeholder           |
+| `src/static/language/ja/common.ts` | 동일 경로 | 미번역 placeholder           |
+| `src/@types/i18next.d.ts`          | 동일 경로 | 타입 augmentation            |
+| `src/hooks/useLooseTranslation.ts` | 동일 경로 | 동적 키 wrapper              |
+| `.vscode/settings.json`            | 동일 경로 | i18n-ally 설정 (기존과 머지) |
+| `docs/I18n-Convention.md`          | 동일 경로 | 컨벤션 문서                  |
 
 ## 머지 대상 (덮어쓰지 말고 사용자 tsconfig/번들러 설정에 추가)
 
-| 출처 | 대상 |
-|---|---|
-| `tsconfig.paths.snippet.json` | `tsconfig.json` 의 `compilerOptions.paths` |
-| `webpack.alias.snippet.js` | webpack config 의 `resolve.alias` (webpack 사용 시) |
-| `vite.alias.snippet.ts` | vite config 의 `resolve.alias` (vite 사용 시) |
-| `package.deps.json` | `package.json` 의 `dependencies` |
+| 출처                          | 대상                                                |
+| ----------------------------- | --------------------------------------------------- |
+| `tsconfig.paths.snippet.json` | `tsconfig.json` 의 `compilerOptions.paths`          |
+| `webpack.alias.snippet.js`    | webpack config 의 `resolve.alias` (webpack 사용 시) |
+| `vite.alias.snippet.ts`       | vite config 의 `resolve.alias` (vite 사용 시)       |
+| `package.deps.json`           | `package.json` 의 `dependencies`                    |
 
 ## 진입점 import 추가
 

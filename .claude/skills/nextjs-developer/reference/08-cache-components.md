@@ -34,13 +34,13 @@ Traditional approaches force a choice:
 
 ```typescript
 // ❌ Fully static - Fast but stale
-export const dynamic = 'force-static'
+export const dynamic = 'force-static';
 
 // ❌ Fully dynamic - Fresh but slow
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 // ❌ Client-side - Smaller server load, larger bundles
-'use client'
+('use client');
 ```
 
 ### The Solution
@@ -52,10 +52,10 @@ export default function Page() {
     <>
       {/* Static - Prerendered at build */}
       <header><h1>My App</h1></header>
-      
+
       {/* Cached dynamic - Included in static shell */}
       <CachedPosts />
-      
+
       {/* Runtime dynamic - Streams at request */}
       <Suspense fallback={<Skeleton />}>
         <UserContent />
@@ -73,23 +73,23 @@ Add the `cacheComponents` flag to your Next.js config:
 
 ```typescript
 // next.config.ts
-import type { NextConfig } from 'next'
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
-}
+    cacheComponents: true,
+};
 
-export default nextConfig
+export default nextConfig;
 ```
 
 ```javascript
 // next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  cacheComponents: true,
-}
+    cacheComponents: true,
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
 ```
 
 ---
@@ -114,7 +114,7 @@ export default async function Page() {
   // ✅ Runs at build time
   const config = fs.readFileSync('./config.json', 'utf-8')
   const data = JSON.parse(config)
-  
+
   return <div>{data.title}</div>
 }
 ```
@@ -139,7 +139,7 @@ export default async function Page() {
   // ✅ Automatically prerendered
   const items = [1, 2, 3].map(x => x * 2)
   const total = items.reduce((a, b) => a + b, 0)
-  
+
   return <div>Total: {total}</div>
 }
 ```
@@ -182,7 +182,7 @@ async function DynamicContent() {
   // ❌ Can't prerender - needs request time
   const data = await fetch('https://api.example.com/data')
   const users = await db.query('SELECT * FROM users')
-  
+
   return <div>Dynamic Data</div>
 }
 
@@ -212,7 +212,7 @@ async function RuntimeData({ searchParams }) {
   const cookieStore = await cookies()
   const headerStore = await headers()
   const search = await searchParams
-  
+
   return <div>Runtime Data</div>
 }
 
@@ -239,11 +239,11 @@ import { Suspense } from 'react'
 async function UniqueContent() {
   // Signal: defer to request time
   await connection()
-  
+
   // ✅ Now runs per request
   const random = Math.random()
   const now = Date.now()
-  
+
   return <div>{random} - {now}</div>
 }
 
@@ -270,7 +270,7 @@ import { cacheLife } from 'next/cache'
 
 export default async function Page() {
   cacheLife('hours')
-  
+
   const posts = await db.posts.findMany()
   return <PostList posts={posts} />
 }
@@ -327,12 +327,12 @@ Inside `use cache`, non-deterministic operations run **once** during prerenderin
 ```typescript
 export default async function Page() {
   'use cache'
-  
+
   // ✅ Runs once, cached for all requests
   const random = Math.random()
   const now = Date.now()
   const uuid = crypto.randomUUID()
-  
+
   return <div>{random} - {now} - {uuid}</div>
 }
 ```
@@ -346,28 +346,29 @@ All users see the **same** values until cache revalidates.
 ### Predefined Profiles
 
 ```typescript
-import { cacheLife } from 'next/cache'
+import { cacheLife } from 'next/cache';
 
 // Profile names
-cacheLife('seconds')  // 1 second
-cacheLife('minutes')  // 5 minutes
-cacheLife('hours')    // 1 hour
-cacheLife('days')     // 1 day
-cacheLife('weeks')    // 1 week
-cacheLife('max')      // Forever (until revalidated)
+cacheLife('seconds'); // 1 second
+cacheLife('minutes'); // 5 minutes
+cacheLife('hours'); // 1 hour
+cacheLife('days'); // 1 day
+cacheLife('weeks'); // 1 week
+cacheLife('max'); // Forever (until revalidated)
 ```
 
 ### Custom Configuration
 
 ```typescript
 cacheLife({
-  stale: 3600,      // 1 hour until stale
-  revalidate: 7200, // 2 hours until revalidated
-  expire: 86400,    // 1 day until expired
-})
+    stale: 3600, // 1 hour until stale
+    revalidate: 7200, // 2 hours until revalidated
+    expire: 86400, // 1 day until expired
+});
 ```
 
 **Behavior:**
+
 - `stale`: Data is fresh, served immediately
 - `revalidate`: Data is stale, served while revalidating in background
 - `expire`: Data is expired, must revalidate before serving
@@ -379,13 +380,13 @@ cacheLife({
 ### Tagging Cached Data
 
 ```typescript
-import { cacheTag } from 'next/cache'
+import { cacheTag } from 'next/cache';
 
 export async function getProducts() {
-  'use cache'
-  cacheTag('products')
-  
-  return await db.products.findMany()
+    'use cache';
+    cacheTag('products');
+
+    return await db.products.findMany();
 }
 ```
 
@@ -402,10 +403,10 @@ import { redirect } from 'next/navigation'
 
 export async function createPost(formData: FormData) {
   const post = await db.posts.create({...})
-  
+
   // ✅ Immediately expire cache
   updateTag('posts')
-  
+
   redirect(`/posts/${post.id}`)
 }
 ```
@@ -420,7 +421,7 @@ import { revalidateTag } from 'next/cache'
 
 export async function updatePost() {
   await db.posts.update({...})
-  
+
   // ✅ Serve stale, revalidate in background
   revalidateTag('posts', 'max')
 }
@@ -441,10 +442,10 @@ export default function BlogPage() {
     <>
       {/* Static */}
       <header><h1>Blog</h1></header>
-      
+
       {/* Cached dynamic */}
       <BlogPosts />
-      
+
       {/* Runtime dynamic */}
       <Suspense fallback={<div>Loading...</div>}>
         <UserPreferences />
@@ -458,7 +459,7 @@ async function BlogPosts() {
   'use cache'
   cacheLife('hours')
   cacheTag('posts')
-  
+
   const posts = await db.posts.findMany()
   return <PostList posts={posts} />
 }
@@ -475,17 +476,17 @@ async function UserPreferences() {
 ```typescript
 export default async function ProductPage({ params }) {
   const { id } = await params
-  
+
   return (
     <>
       {/* Cached product info */}
       <ProductInfo id={id} />
-      
+
       {/* Runtime inventory */}
       <Suspense fallback={<div>Checking stock...</div>}>
         <InventoryStatus id={id} />
       </Suspense>
-      
+
       {/* Runtime user cart */}
       <Suspense fallback={<div>Loading cart...</div>}>
         <UserCart />
@@ -498,7 +499,7 @@ async function ProductInfo({ id }) {
   'use cache'
   cacheLife('hours')
   cacheTag('products', `product-${id}`)
-  
+
   const product = await db.products.findUnique({ where: { id } })
   return <ProductDetails product={product} />
 }
@@ -512,10 +513,10 @@ export default function DashboardPage() {
     <>
       {/* Static shell */}
       <header><h1>Dashboard</h1></header>
-      
+
       {/* Cached analytics */}
       <Analytics />
-      
+
       {/* Real-time notifications */}
       <Suspense fallback={<div>Loading...</div>}>
         <Notifications />
@@ -527,7 +528,7 @@ export default function DashboardPage() {
 async function Analytics() {
   'use cache'
   cacheLife('minutes')
-  
+
   const stats = await db.analytics.aggregate({...})
   return <AnalyticsChart stats={stats} />
 }
@@ -550,13 +551,13 @@ async function Notifications() {
 
 ```typescript
 // ❌ Old way
-export const dynamic = 'force-static'
+export const dynamic = 'force-static';
 
 // ✅ New way
 export default async function Page() {
-  'use cache'
-  cacheLife('max')
-  // ...
+    'use cache';
+    cacheLife('max');
+    // ...
 }
 ```
 
@@ -564,13 +565,13 @@ export default async function Page() {
 
 ```typescript
 // ❌ Old way
-export const revalidate = 3600
+export const revalidate = 3600;
 
 // ✅ New way
 export default async function Page() {
-  'use cache'
-  cacheLife('hours')
-  // ...
+    'use cache';
+    cacheLife('hours');
+    // ...
 }
 ```
 
@@ -578,7 +579,7 @@ export default async function Page() {
 
 ```typescript
 // ❌ Old way
-export const fetchCache = 'force-cache'
+export const fetchCache = 'force-cache';
 
 // ✅ New way - not needed
 // All fetches inside 'use cache' are automatically cached
@@ -592,7 +593,7 @@ export const fetchCache = 'force-cache'
 
 ```typescript
 // next.config.ts
-export default { cacheComponents: true }
+export default { cacheComponents: true };
 ```
 
 ### Patterns
@@ -619,6 +620,7 @@ revalidateTag('data', 'max') // Stale-while-revalidate
 ---
 
 **Related Documentation:**
+
 - [Server Actions](06-server-actions.md)
 - [Fetching Data](10-fetching-data.md)
 - [Caching Guide](12-caching-revalidating.md)

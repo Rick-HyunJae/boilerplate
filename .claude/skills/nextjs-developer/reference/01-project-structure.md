@@ -18,6 +18,7 @@
 ---
 
 ## Top-Level Folders
+
 ```
 my-nextjs-app/
 ├── app/            # App Router (recommended)
@@ -27,7 +28,9 @@ my-nextjs-app/
 ```
 
 ### app/
+
 App Router directory. All routes, layouts, and pages go here.
+
 ```
 app/
 ├── layout.tsx      # Root layout (required)
@@ -40,7 +43,9 @@ app/
 ```
 
 ### public/
+
 Static files served from root URL.
+
 ```
 public/
 ├── images/
@@ -50,7 +55,9 @@ public/
 ```
 
 ### src/
+
 Optional. Move `app/` inside for cleaner root.
+
 ```
 src/
 └── app/            # Routes here instead of root
@@ -66,31 +73,33 @@ src/
 
 ### Essential Files
 
-| File | Purpose |
-|------|---------|
-| `next.config.js` | Next.js configuration |
-| `package.json` | Dependencies and scripts |
-| `.env.local` | Local environment variables (gitignored) |
-| `.env.production` | Production environment variables |
-| `tsconfig.json` | TypeScript configuration |
-| `.gitignore` | Git ignore patterns |
+| File              | Purpose                                  |
+| ----------------- | ---------------------------------------- |
+| `next.config.js`  | Next.js configuration                    |
+| `package.json`    | Dependencies and scripts                 |
+| `.env.local`      | Local environment variables (gitignored) |
+| `.env.production` | Production environment variables         |
+| `tsconfig.json`   | TypeScript configuration                 |
+| `.gitignore`      | Git ignore patterns                      |
 
 ### Example next.config.js
+
 ```javascript
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    domains: ['example.com'],
-  },
-  experimental: {
-    typedRoutes: true,
-  },
-}
+    images: {
+        domains: ['example.com'],
+    },
+    experimental: {
+        typedRoutes: true,
+    },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
 ```
 
 ### Environment Variables
+
 ```bash
 # .env.local (gitignored, local development only)
 DATABASE_URL=postgresql://localhost:5432/mydb
@@ -102,6 +111,7 @@ API_SECRET=production-secret
 ```
 
 **Public variables:** Prefix with `NEXT_PUBLIC_`
+
 ```bash
 NEXT_PUBLIC_API_URL=https://api.example.com
 ```
@@ -112,20 +122,22 @@ NEXT_PUBLIC_API_URL=https://api.example.com
 
 ### Core Files
 
-| File | Purpose | When Route Becomes Public |
-|------|---------|---------------------------|
-| `page.tsx` | Page UI | ✅ Creates public route |
-| `layout.tsx` | Shared wrapper | ❌ No public route (wraps children) |
-| `loading.tsx` | Loading fallback | ❌ No public route |
-| `error.tsx` | Error boundary | ❌ No public route |
-| `not-found.tsx` | 404 page | ❌ No public route |
-| `route.ts` | API endpoint | ✅ Creates public route |
+| File            | Purpose          | When Route Becomes Public           |
+| --------------- | ---------------- | ----------------------------------- |
+| `page.tsx`      | Page UI          | ✅ Creates public route             |
+| `layout.tsx`    | Shared wrapper   | ❌ No public route (wraps children) |
+| `loading.tsx`   | Loading fallback | ❌ No public route                  |
+| `error.tsx`     | Error boundary   | ❌ No public route                  |
+| `not-found.tsx` | 404 page         | ❌ No public route                  |
+| `route.ts`      | API endpoint     | ✅ Creates public route             |
 
 ### File Extensions
+
 - Pages/Layouts: `.js`, `.jsx`, `.tsx`
 - API Routes: `.js`, `.ts`
 
 ### Example Structure
+
 ```
 app/
 ├── layout.tsx          # Root layout (wraps all)
@@ -148,6 +160,7 @@ app/
 ## Route Patterns
 
 ### Static Routes
+
 ```
 app/about/page.tsx          → /about
 app/blog/page.tsx           → /blog
@@ -155,12 +168,14 @@ app/products/list/page.tsx  → /products/list
 ```
 
 ### Dynamic Routes
+
 ```
 app/blog/[slug]/page.tsx              → /blog/hello, /blog/world
 app/shop/[category]/[id]/page.tsx     → /shop/shoes/123
 ```
 
 **Access params:**
+
 ```typescript
 export default async function Page(props: PageProps<'/blog/[slug]'>) {
   const { slug } = await props.params
@@ -169,11 +184,13 @@ export default async function Page(props: PageProps<'/blog/[slug]'>) {
 ```
 
 ### Catch-All Routes
+
 ```
 app/docs/[...slug]/page.tsx   → /docs/a, /docs/a/b, /docs/a/b/c
 ```
 
 **NOT matched:** `/docs` (requires at least one segment)
+
 ```typescript
 export default async function Page(
   props: PageProps<'/docs/[...slug]'>
@@ -184,6 +201,7 @@ export default async function Page(
 ```
 
 ### Optional Catch-All Routes
+
 ```
 app/docs/[[...slug]]/page.tsx → /docs, /docs/a, /docs/a/b
 ```
@@ -197,6 +215,7 @@ app/docs/[[...slug]]/page.tsx → /docs, /docs/a, /docs/a/b
 ### Route Groups `(name)`
 
 Organize without affecting URL.
+
 ```
 app/
 ├── (marketing)/
@@ -208,11 +227,13 @@ app/
 ```
 
 **Use cases:**
+
 - Organize by feature/team
 - Multiple layouts at same level
 - Multiple root layouts
 
 **Multiple Root Layouts:**
+
 ```
 app/
 ├── (marketing)/
@@ -226,6 +247,7 @@ app/
 ### Private Folders `_name`
 
 Not routable. Safe for utilities.
+
 ```
 app/
 ├── blog/
@@ -243,6 +265,7 @@ app/
 ### Parallel Routes `@slot`
 
 Multiple pages in same layout.
+
 ```
 app/
 ├── layout.tsx
@@ -254,6 +277,7 @@ app/
 ```
 
 **Access in layout:**
+
 ```typescript
 export default function Layout({
   children,
@@ -278,14 +302,15 @@ export default function Layout({
 
 Show route in current context (modal over list).
 
-| Pattern | Intercepts |
-|---------|------------|
-| `(.)folder` | Same level |
-| `(..)folder` | Parent level |
+| Pattern          | Intercepts    |
+| ---------------- | ------------- |
+| `(.)folder`      | Same level    |
+| `(..)folder`     | Parent level  |
 | `(..)(..)folder` | Two levels up |
-| `(...)folder` | From root |
+| `(...)folder`    | From root     |
 
 **Example: Photo modal**
+
 ```
 app/
 ├── photos/
@@ -301,6 +326,7 @@ app/
 ## Metadata Files
 
 ### App Icons
+
 ```
 app/
 ├── favicon.ico              # Favicon
@@ -309,6 +335,7 @@ app/
 ```
 
 **Or generate:**
+
 ```typescript
 // app/icon.tsx
 import { ImageResponse } from 'next/og'
@@ -322,6 +349,7 @@ export default function Icon() {
 ```
 
 ### SEO Files
+
 ```
 app/
 ├── sitemap.xml              # Static sitemap
@@ -331,15 +359,16 @@ app/
 ```
 
 **Or generate:**
+
 ```typescript
 // app/sitemap.ts
 export default function sitemap() {
-  return [
-    {
-      url: 'https://example.com',
-      lastModified: new Date(),
-    },
-  ]
+    return [
+        {
+            url: 'https://example.com',
+            lastModified: new Date(),
+        },
+    ];
 }
 ```
 
@@ -357,6 +386,7 @@ Components render in this order:
 6. `page.tsx` or nested `layout.tsx`
 
 **Visual:**
+
 ```
 layout.tsx
   └─ template.tsx
@@ -367,6 +397,7 @@ layout.tsx
 ```
 
 **Nested routes inherit:**
+
 ```
 app/layout.tsx (root)
   └─ app/blog/layout.tsx (blog)
@@ -378,6 +409,7 @@ app/layout.tsx (root)
 ## Organization Strategies
 
 ### Strategy 1: Project Files Outside app/
+
 ```
 my-app/
 ├── components/         # Shared components
@@ -391,6 +423,7 @@ my-app/
 **Cons:** Import paths longer
 
 ### Strategy 2: Top-Level Folders Inside app/
+
 ```
 my-app/
 └── app/
@@ -404,6 +437,7 @@ my-app/
 **Cons:** app/ gets crowded
 
 ### Strategy 3: Split by Feature
+
 ```
 my-app/
 └── app/
@@ -424,11 +458,13 @@ my-app/
 ### Recommendation
 
 **Use Strategy 3 for medium/large apps:**
+
 - Feature folders with `_` prefix for internals
 - Shared components at `app/components/`
 - Shared utilities at `app/lib/`
 
 **Use Strategy 1 for small apps:**
+
 - Simple structure
 - Easy to understand
 
@@ -437,6 +473,7 @@ my-app/
 ## Colocation Rules
 
 **Key principle:** Folders create routes, files don't.
+
 ```
 app/
 ├── blog/
@@ -449,11 +486,13 @@ app/
 ```
 
 **Only these filenames create routes:**
+
 - `page.tsx` → Public page
 - `route.ts` → Public API endpoint
 - Everything else → Not routable
 
 **Safe to colocate:**
+
 - Components
 - Utilities
 - Styles
@@ -465,30 +504,35 @@ app/
 ## Quick Reference
 
 ### Make Route Public
+
 ```bash
 # Create page.tsx
 touch app/about/page.tsx
 ```
 
 ### Make Route Private (Utilities)
+
 ```bash
 # Use _ prefix
 mkdir app/blog/_components
 ```
 
 ### Organize Without URL Change
+
 ```bash
 # Use () group
 mkdir app/(marketing)
 ```
 
 ### Create API Route
+
 ```bash
 # Create route.ts
 touch app/api/posts/route.ts
 ```
 
 ### Dynamic Segment
+
 ```bash
 # Use []
 mkdir app/blog/[slug]
@@ -500,6 +544,7 @@ touch app/blog/[slug]/page.tsx
 ## Common Patterns
 
 ### Blog Structure
+
 ```
 app/
 ├── blog/
@@ -516,6 +561,7 @@ app/
 ```
 
 ### Dashboard with Layout Groups
+
 ```
 app/
 ├── (marketing)/
@@ -529,6 +575,7 @@ app/
 ```
 
 ### E-commerce Structure
+
 ```
 app/
 ├── (shop)/
@@ -546,6 +593,7 @@ app/
 ---
 
 **Related Documentation:**
+
 - [Routing & Pages](02-routing-pages.md)
 - [Navigation](03-navigation.md)
 - [TypeScript Patterns](05-typescript.md)

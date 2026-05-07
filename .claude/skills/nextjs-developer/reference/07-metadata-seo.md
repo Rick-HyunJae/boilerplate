@@ -41,8 +41,7 @@ Next.js automatically generates the relevant `<head>` tags for your page.
 Two default `meta` tags are **always added** even if a route doesn't define metadata:
 
 ```html
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
 - **charset** - Sets character encoding for the website
@@ -121,16 +120,16 @@ export default function Page() {
 ```typescript
 // app/layout.tsx
 export const metadata: Metadata = {
-  title: {
-    template: '%s | My Site',
-    default: 'My Site',
-  },
-}
+    title: {
+        template: '%s | My Site',
+        default: 'My Site',
+    },
+};
 
 // app/blog/page.tsx
 export const metadata: Metadata = {
-  title: 'Blog',  // Becomes "Blog | My Site"
-}
+    title: 'Blog', // Becomes "Blog | My Site"
+};
 ```
 
 ---
@@ -151,11 +150,11 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  
+
   // Fetch post information
   const post = await fetch(`https://api.example.com/blog/${slug}`)
     .then((res) => res.json())
-  
+
   return {
     title: post.title,
     description: post.description,
@@ -166,7 +165,7 @@ export default async function Page({ params }: Props) {
   const { slug } = await params
   const post = await fetch(`https://api.example.com/blog/${slug}`)
     .then((res) => res.json())
-  
+
   return <article>{post.title}</article>
 }
 ```
@@ -174,25 +173,21 @@ export default async function Page({ params }: Props) {
 ### With Parent Metadata
 
 ```typescript
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next';
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const { slug } = await params
-  const post = await fetch(`https://api.example.com/blog/${slug}`)
-    .then((res) => res.json())
-  
-  // Access parent metadata
-  const previousImages = (await parent).openGraph?.images || []
-  
-  return {
-    title: post.title,
-    openGraph: {
-      images: [post.coverImage, ...previousImages],
-    },
-  }
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+    const { slug } = await params;
+    const post = await fetch(`https://api.example.com/blog/${slug}`).then((res) => res.json());
+
+    // Access parent metadata
+    const previousImages = (await parent).openGraph?.images || [];
+
+    return {
+        title: post.title,
+        openGraph: {
+            images: [post.coverImage, ...previousImages],
+        },
+    };
 }
 ```
 
@@ -212,18 +207,18 @@ For dynamically rendered pages, Next.js **streams metadata separately**, injecti
 
 ```typescript
 // next.config.ts
-import type { NextConfig } from 'next'
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  experimental: {
-    htmlLimitedBots: {
-      // Customize or disable streaming metadata
-      disabled: false,  // Set to true to disable
+    experimental: {
+        htmlLimitedBots: {
+            // Customize or disable streaming metadata
+            disabled: false, // Set to true to disable
+        },
     },
-  },
-}
+};
 
-export default nextConfig
+export default nextConfig;
 ```
 
 **Note:** Statically rendered pages don't use streaming since metadata is resolved at build time.
@@ -238,14 +233,14 @@ To avoid duplicate requests when fetching the **same data** for both metadata an
 
 ```typescript
 // app/lib/data.ts
-import { cache } from 'react'
-import { db } from '@/lib/db'
+import { cache } from 'react';
+import { db } from '@/lib/db';
 
 // getPost will be used twice, but execute only once
 export const getPost = cache(async (slug: string) => {
-  const post = await db.post.findUnique({ where: { slug } })
-  return post
-})
+    const post = await db.post.findUnique({ where: { slug } });
+    return post;
+});
 ```
 
 ```typescript
@@ -255,7 +250,7 @@ import { getPost } from '@/lib/data'
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params
   const post = await getPost(slug)  // First call
-  
+
   return {
     title: post.title,
     description: post.description,
@@ -265,7 +260,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function Page({ params }: Props) {
   const { slug } = await params
   const post = await getPost(slug)  // Memoized, doesn't fetch again
-  
+
   return <article>{post.title}</article>
 }
 ```
@@ -303,11 +298,11 @@ app/
 ```typescript
 // app/layout.tsx
 export const metadata: Metadata = {
-  icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-icon.png',
-  },
-}
+    icons: {
+        icon: '/favicon.ico',
+        apple: '/apple-icon.png',
+    },
+};
 ```
 
 ### Programmatic Favicon
@@ -388,7 +383,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
   const { slug } = await params
   const post = await fetch(`https://api.example.com/blog/${slug}`)
     .then((res) => res.json())
-  
+
   return new ImageResponse(
     (
       <div
@@ -422,7 +417,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
   const { slug } = await params
   const post = await fetch(`https://api.example.com/blog/${slug}`)
     .then((res) => res.json())
-  
+
   return new ImageResponse(
     (
       <div
@@ -466,6 +461,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
 **Supported CSS properties:** Flexbox, absolute positioning, custom fonts, text wrapping, centering, nested images. See [full list of supported CSS properties](https://nextjs.org/docs/app/api-reference/functions/image-response).
 
 **Resources:**
+
 - [Vercel OG Playground](https://og-playground.vercel.app/)
 - Uses `@vercel/og`, `satori`, and `resvg` to convert HTML/CSS to PNG
 
@@ -483,7 +479,7 @@ import { getPost } from '@/lib/data'
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = await getPost(slug)
-  
+
   return {
     title: post.title,
     description: post.excerpt,
@@ -507,7 +503,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { slug } = await params
   const post = await getPost(slug)
-  
+
   return <article>{post.content}</article>
 }
 ```
@@ -516,26 +512,26 @@ export default async function Page({ params }: Props) {
 
 ```typescript
 // app/products/[id]/page.tsx
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params
-  const product = await getProduct(id)
-  
-  return {
-    title: product.name,
-    description: product.description,
-    openGraph: {
-      title: product.name,
-      description: product.description,
-      images: product.images,
-      type: 'product',
-    },
-    other: {
-      'product:price:amount': product.price,
-      'product:price:currency': 'USD',
-    },
-  }
+    const { id } = await params;
+    const product = await getProduct(id);
+
+    return {
+        title: product.name,
+        description: product.description,
+        openGraph: {
+            title: product.name,
+            description: product.description,
+            images: product.images,
+            type: 'product',
+        },
+        other: {
+            'product:price:amount': product.price,
+            'product:price:currency': 'USD',
+        },
+    };
 }
 ```
 
@@ -543,24 +539,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 ```typescript
 // app/robots.ts
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/admin/', '/api/'],
-      },
-      {
-        userAgent: 'Googlebot',
-        allow: '/',
-        disallow: ['/admin/'],
-      },
-    ],
-    sitemap: 'https://example.com/sitemap.xml',
-  }
+    return {
+        rules: [
+            {
+                userAgent: '*',
+                allow: '/',
+                disallow: ['/admin/', '/api/'],
+            },
+            {
+                userAgent: 'Googlebot',
+                allow: '/',
+                disallow: ['/admin/'],
+            },
+        ],
+        sitemap: 'https://example.com/sitemap.xml',
+    };
 }
 ```
 
@@ -568,34 +564,34 @@ export default function robots(): MetadataRoute.Robots {
 
 ```typescript
 // app/sitemap.ts
-import { MetadataRoute } from 'next'
-import { db } from '@/lib/db'
+import { MetadataRoute } from 'next';
+import { db } from '@/lib/db';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = await db.post.findMany()
-  
-  const postUrls = posts.map((post) => ({
-    url: `https://example.com/blog/${post.slug}`,
-    lastModified: post.updatedAt,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
-  
-  return [
-    {
-      url: 'https://example.com',
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 1,
-    },
-    {
-      url: 'https://example.com/blog',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    ...postUrls,
-  ]
+    const posts = await db.post.findMany();
+
+    const postUrls = posts.map((post) => ({
+        url: `https://example.com/blog/${post.slug}`,
+        lastModified: post.updatedAt,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+    }));
+
+    return [
+        {
+            url: 'https://example.com',
+            lastModified: new Date(),
+            changeFrequency: 'yearly',
+            priority: 1,
+        },
+        {
+            url: 'https://example.com/blog',
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.9,
+        },
+        ...postUrls,
+    ];
 }
 ```
 
@@ -606,7 +602,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 export default async function Page({ params }: Props) {
   const { slug } = await params
   const post = await getPost(slug)
-  
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -621,7 +617,7 @@ export default async function Page({ params }: Props) {
       url: post.author.website,
     },
   }
-  
+
   return (
     <>
       <script
@@ -646,15 +642,15 @@ export default async function Page({ params }: Props) {
 ```typescript
 // ✅ GOOD - Descriptive and unique
 export const metadata: Metadata = {
-  title: 'How to Build a Next.js App - Complete Guide',
-  description: 'Learn how to build a production-ready Next.js application with this step-by-step guide covering routing, data fetching, and deployment.',
-}
+    title: 'How to Build a Next.js App - Complete Guide',
+    description: 'Learn how to build a production-ready Next.js application with this step-by-step guide covering routing, data fetching, and deployment.',
+};
 
 // ❌ BAD - Generic and vague
 export const metadata: Metadata = {
-  title: 'Blog Post',
-  description: 'Read this blog post.',
-}
+    title: 'Blog Post',
+    description: 'Read this blog post.',
+};
 ```
 
 ### 2. Optimize OG Images
@@ -662,15 +658,15 @@ export const metadata: Metadata = {
 ```typescript
 // ✅ GOOD - Correct dimensions
 export const size = {
-  width: 1200,
-  height: 630,  // 1.91:1 aspect ratio
-}
+    width: 1200,
+    height: 630, // 1.91:1 aspect ratio
+};
 
 // ❌ BAD - Wrong dimensions
 export const size = {
-  width: 800,
-  height: 800,
-}
+    width: 800,
+    height: 800,
+};
 ```
 
 ### 3. Use React cache for Data Reuse
@@ -703,17 +699,17 @@ export default async function Page({ params }) {
 
 ```typescript
 export const metadata: Metadata = {
-  title: 'My Page',
-  description: 'Page description',
-}
+    title: 'My Page',
+    description: 'Page description',
+};
 ```
 
 ### Dynamic Metadata
 
 ```typescript
 export async function generateMetadata({ params }): Promise<Metadata> {
-  const data = await fetchData(params)
-  return { title: data.title }
+    const data = await fetchData(params);
+    return { title: data.title };
 }
 ```
 
@@ -749,6 +745,7 @@ export default function Image() {
 ---
 
 **Related Documentation:**
+
 - [generateMetadata API](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
 - [ImageResponse API](https://nextjs.org/docs/app/api-reference/functions/image-response)
 - [Metadata Files](https://nextjs.org/docs/app/api-reference/file-conventions/metadata)

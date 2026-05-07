@@ -32,6 +32,7 @@ Next.js optimizes navigation through four key mechanisms:
 Routes are Server Components by default and render on the server.
 
 **Static Rendering (Build Time):**
+
 ```typescript
 // app/about/page.tsx
 export default function Page() {
@@ -41,6 +42,7 @@ export default function Page() {
 ```
 
 **Dynamic Rendering (Request Time):**
+
 ```typescript
 // app/dashboard/page.tsx
 export default async function Page() {
@@ -52,6 +54,7 @@ export default async function Page() {
 ### Prefetching
 
 `<Link>` automatically prefetches routes when they enter the viewport.
+
 ```typescript
 import Link from 'next/link'
 
@@ -60,7 +63,7 @@ export default function Nav() {
     <nav>
       {/* Prefetched when visible */}
       <Link href="/blog">Blog</Link>
-      
+
       {/* No prefetching */}
       <a href="/contact">Contact</a>
     </nav>
@@ -69,6 +72,7 @@ export default function Nav() {
 ```
 
 **How much is prefetched:**
+
 - **Static routes**: Full route prefetched
 - **Dynamic routes**: Prefetching skipped OR partial (if loading.tsx exists)
 
@@ -77,12 +81,14 @@ export default function Nav() {
 Streaming sends parts of a route as they're ready, instead of waiting for everything.
 
 **Without streaming:**
+
 ```
 Server renders everything → Client waits → Page appears
 [████████████████] Wait... → Shows
 ```
 
 **With streaming:**
+
 ```
 Server sends layout → Shows immediately
 [███░░░░░] → Layout visible
@@ -93,6 +99,7 @@ Server sends layout → Shows immediately
 ### Client-side Transitions
 
 `<Link>` performs client-side navigation:
+
 - Preserves scroll position
 - Keeps shared layouts mounted
 - Updates only changed content
@@ -103,6 +110,7 @@ Server sends layout → Shows immediately
 ## Using Link Component
 
 ### Basic Usage
+
 ```typescript
 import Link from 'next/link'
 
@@ -118,6 +126,7 @@ export default function Nav() {
 ```
 
 ### Dynamic Links
+
 ```typescript
 export default function BlogList({ posts }) {
   return (
@@ -135,6 +144,7 @@ export default function BlogList({ posts }) {
 ```
 
 ### Links with Search Params
+
 ```typescript
 // String syntax
 <Link href="/shop?category=shoes&sort=asc">
@@ -144,9 +154,9 @@ export default function BlogList({ posts }) {
 // Object syntax (cleaner)
 <Link href={{
   pathname: '/shop',
-  query: { 
+  query: {
     category: 'shoes',
-    sort: 'asc' 
+    sort: 'asc'
   },
 }}>
   Shoes (A-Z)
@@ -154,6 +164,7 @@ export default function BlogList({ posts }) {
 ```
 
 ### Active Link Styling
+
 ```typescript
 'use client'
 
@@ -162,11 +173,11 @@ import { usePathname } from 'next/navigation'
 
 export default function Nav() {
   const pathname = usePathname()
-  
+
   return (
     <nav>
-      <Link 
-        href="/blog" 
+      <Link
+        href="/blog"
         className={pathname === '/blog' ? 'active' : ''}
       >
         Blog
@@ -181,17 +192,20 @@ export default function Nav() {
 ## Prefetching Strategies
 
 ### Default Prefetching
+
 ```typescript
 // Automatically prefetches when link enters viewport
 <Link href="/blog">Blog</Link>
 ```
 
 **Behavior:**
+
 - **Static route**: Entire route prefetched
 - **Dynamic route without loading.tsx**: No prefetch
 - **Dynamic route with loading.tsx**: Partial prefetch (layout + loading)
 
 ### Disable Prefetching
+
 ```typescript
 // No prefetching at all
 <Link href="/blog" prefetch={false}>
@@ -200,11 +214,13 @@ export default function Nav() {
 ```
 
 **When to disable:**
+
 - Large lists of links (e.g., infinite scroll)
 - Links to external sites
 - Resource-constrained environments
 
 ### Prefetch on Hover Only
+
 ```typescript
 'use client'
 
@@ -213,7 +229,7 @@ import { useState } from 'react'
 
 export default function HoverPrefetchLink({ href, children }) {
   const [prefetch, setPrefetch] = useState(false)
-  
+
   return (
     <Link
       href={href}
@@ -227,6 +243,7 @@ export default function HoverPrefetchLink({ href, children }) {
 ```
 
 **Benefits:**
+
 - Reduces unnecessary prefetching
 - Prefetches only likely-to-visit routes
 - Better resource usage
@@ -240,18 +257,21 @@ export default function HoverPrefetchLink({ href, children }) {
 Without `loading.tsx`, dynamic routes wait for server response before showing anything.
 
 **Problem:**
+
 ```
 User clicks link → Waits... → Page appears
 ❌ Feels slow, no visual feedback
 ```
 
 **Solution with loading.tsx:**
+
 ```
 User clicks link → Loading state immediately → Page appears
 ✅ Instant feedback, feels responsive
 ```
 
 ### Basic Loading State
+
 ```typescript
 // app/blog/loading.tsx
 export default function Loading() {
@@ -271,12 +291,14 @@ export default async function Page() {
 ```
 
 **What happens:**
+
 1. User clicks link to `/blog`
 2. Loading skeleton shows instantly
 3. Server renders page in background
 4. Loading swapped for actual content
 
 ### Route-Specific Loading
+
 ```
 app/dashboard/
 ├── loading.tsx              # For entire /dashboard
@@ -285,6 +307,7 @@ app/dashboard/
     ├── loading.tsx          # Only for /dashboard (overview route)
     └── page.tsx
 ```
+
 ```typescript
 // app/dashboard/(overview)/loading.tsx
 export default function Loading() {
@@ -295,6 +318,7 @@ export default function Loading() {
 ```
 
 ### Suspense for Granular Loading
+
 ```typescript
 import { Suspense } from 'react'
 
@@ -315,7 +339,7 @@ export default function Page() {
       <Suspense fallback={<p>Loading fast...</p>}>
         <FastComponent />
       </Suspense>
-      
+
       {/* Shows when ready */}
       <Suspense fallback={<p>Loading slow...</p>}>
         <SlowComponent />
@@ -334,6 +358,7 @@ export default function Page() {
 On slow networks, prefetch may not finish before user clicks.
 
 **Symptoms:**
+
 - Click feels unresponsive
 - No immediate visual feedback
 - Loading state doesn't appear
@@ -341,6 +366,7 @@ On slow networks, prefetch may not finish before user clicks.
 ### Solution 1: useLinkStatus Hook
 
 Show loading indicator while transition is in progress.
+
 ```typescript
 // app/components/loading-indicator.tsx
 'use client'
@@ -349,9 +375,9 @@ import { useLinkStatus } from 'next/link'
 
 export default function LoadingIndicator() {
   const { pending } = useLinkStatus()
-  
+
   return (
-    <div 
+    <div
       className={`loading-bar ${pending ? 'active' : ''}`}
       aria-hidden
     />
@@ -360,24 +386,30 @@ export default function LoadingIndicator() {
 ```
 
 **CSS with delay (prevents flash):**
+
 ```css
 .loading-bar {
-  opacity: 0;
-  animation-delay: 100ms; /* Show only if >100ms */
+    opacity: 0;
+    animation-delay: 100ms; /* Show only if >100ms */
 }
 
 .loading-bar.active {
-  opacity: 1;
-  animation: progress 2s ease-out;
+    opacity: 1;
+    animation: progress 2s ease-out;
 }
 
 @keyframes progress {
-  0% { width: 0%; }
-  100% { width: 100%; }
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
 }
 ```
 
 ### Solution 2: Always Use loading.tsx
+
 ```typescript
 // app/blog/[slug]/loading.tsx
 export default function Loading() {
@@ -386,11 +418,13 @@ export default function Loading() {
 ```
 
 **Benefits:**
+
 - Enables partial prefetch (layout + loading)
 - Shows instant feedback
 - Better perceived performance
 
 ### Solution 3: Static Generation
+
 ```typescript
 // app/blog/[slug]/page.tsx
 export async function generateStaticParams() {
@@ -406,6 +440,7 @@ export default async function Page(props: PageProps<'/blog/[slug]'>) {
 ```
 
 **Result:**
+
 - Pages pre-rendered at build time
 - No server wait on navigation
 - Instant load
@@ -415,6 +450,7 @@ export default async function Page(props: PageProps<'/blog/[slug]'>) {
 ## Performance Optimization
 
 ### Checklist for Fast Navigation
+
 ```
 Dynamic Routes:
 ✓ Add loading.tsx for instant feedback
@@ -440,12 +476,14 @@ Large Link Lists:
 ### Avoid Common Pitfalls
 
 ❌ **No loading.tsx for dynamic routes**
+
 ```typescript
 // Bad: No visual feedback
 // app/blog/[slug]/page.tsx only
 ```
 
 ✅ **Add loading.tsx**
+
 ```typescript
 // Good: Instant feedback
 // app/blog/[slug]/loading.tsx
@@ -455,24 +493,27 @@ Large Link Lists:
 ---
 
 ❌ **Missing generateStaticParams**
+
 ```typescript
 // Bad: Falls back to dynamic rendering
 export default async function Page(props: PageProps<'/blog/[slug]'>) {
-  // Runtime rendering on each visit
+    // Runtime rendering on each visit
 }
 ```
 
 ✅ **Add generateStaticParams**
+
 ```typescript
 // Good: Pre-rendered at build time
 export async function generateStaticParams() {
-  return await getPosts().map(p => ({ slug: p.slug }))
+    return await getPosts().map((p) => ({ slug: p.slug }));
 }
 ```
 
 ---
 
 ❌ **Prefetch all links in large lists**
+
 ```typescript
 // Bad: 1000 prefetch requests
 {posts.map(post => (
@@ -481,6 +522,7 @@ export async function generateStaticParams() {
 ```
 
 ✅ **Disable or limit prefetch**
+
 ```typescript
 // Good: No unnecessary prefetches
 {posts.map(post => (
@@ -495,6 +537,7 @@ export async function generateStaticParams() {
 ## Programmatic Navigation
 
 ### useRouter Hook
+
 ```typescript
 'use client'
 
@@ -502,56 +545,59 @@ import { useRouter } from 'next/navigation'
 
 export default function Form() {
   const router = useRouter()
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     await saveData()
     router.push('/dashboard')
   }
-  
+
   return <form onSubmit={handleSubmit}>...</form>
 }
 ```
 
 ### Navigation Methods
+
 ```typescript
-const router = useRouter()
+const router = useRouter();
 
 // Navigate to route
-router.push('/dashboard')
+router.push('/dashboard');
 
 // Replace current route (no back button)
-router.replace('/login')
+router.replace('/login');
 
 // Go back
-router.back()
+router.back();
 
 // Go forward
-router.forward()
+router.forward();
 
 // Refresh current route
-router.refresh()
+router.refresh();
 
 // Prefetch route
-router.prefetch('/blog')
+router.prefetch('/blog');
 ```
 
 ### Redirect (Server Component)
+
 ```typescript
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
   const session = await getSession()
-  
+
   if (!session) {
     redirect('/login')
   }
-  
+
   return <Dashboard />
 }
 ```
 
 ### Conditional Navigation
+
 ```typescript
 'use client'
 
@@ -559,13 +605,13 @@ import { useRouter } from 'next/navigation'
 
 export default function ConditionalNav() {
   const router = useRouter()
-  
+
   const handleClick = () => {
     if (confirm('Are you sure?')) {
       router.push('/delete')
     }
   }
-  
+
   return <button onClick={handleClick}>Delete</button>
 }
 ```
@@ -579,6 +625,7 @@ Next.js integrates with browser History API for advanced use cases.
 ### window.history.pushState
 
 Add new entry to history stack (user can go back).
+
 ```typescript
 'use client'
 
@@ -586,13 +633,13 @@ import { useSearchParams } from 'next/navigation'
 
 export default function SortProducts() {
   const searchParams = useSearchParams()
-  
+
   function updateSorting(sortOrder: string) {
     const params = new URLSearchParams(searchParams.toString())
     params.set('sort', sortOrder)
     window.history.pushState(null, '', `?${params.toString()}`)
   }
-  
+
   return (
     <>
       <button onClick={() => updateSorting('asc')}>
@@ -607,6 +654,7 @@ export default function SortProducts() {
 ```
 
 **Result:**
+
 - URL updates: `/products?sort=asc`
 - User can click back button
 - `useSearchParams` automatically syncs
@@ -614,6 +662,7 @@ export default function SortProducts() {
 ### window.history.replaceState
 
 Replace current entry (user cannot go back).
+
 ```typescript
 'use client'
 
@@ -621,12 +670,12 @@ import { usePathname } from 'next/navigation'
 
 export default function LocaleSwitcher() {
   const pathname = usePathname()
-  
+
   function switchLocale(locale: string) {
     const newPath = `/${locale}${pathname}`
     window.history.replaceState(null, '', newPath)
   }
-  
+
   return (
     <>
       <button onClick={() => switchLocale('en')}>English</button>
@@ -637,22 +686,24 @@ export default function LocaleSwitcher() {
 ```
 
 **Result:**
+
 - URL updates: `/ko/about`
 - No back button entry
 - Seamless locale switch
 
 ### Use Cases
 
-| API | Use Case | Back Button |
-|-----|----------|-------------|
-| `pushState` | Filters, sorting, pagination | ✅ Works |
-| `replaceState` | Locale, theme, temporary state | ❌ Skipped |
+| API            | Use Case                       | Back Button |
+| -------------- | ------------------------------ | ----------- |
+| `pushState`    | Filters, sorting, pagination   | ✅ Works    |
+| `replaceState` | Locale, theme, temporary state | ❌ Skipped  |
 
 ---
 
 ## Performance Patterns
 
 ### Pattern 1: Instant Navigation with Loading
+
 ```typescript
 // app/blog/loading.tsx
 export default function Loading() {
@@ -667,6 +718,7 @@ export default async function Page() {
 ```
 
 ### Pattern 2: Progressive Enhancement
+
 ```typescript
 // Works without JS (form submission)
 <form action="/search" method="get">
@@ -681,13 +733,13 @@ import { useRouter } from 'next/navigation'
 
 export default function SearchForm() {
   const router = useRouter()
-  
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const q = new FormData(e.target).get('q')
     router.push(`/search?q=${q}`)
   }
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <input name="q" />
@@ -698,6 +750,7 @@ export default function SearchForm() {
 ```
 
 ### Pattern 3: Optimistic UI
+
 ```typescript
 'use client'
 
@@ -708,11 +761,11 @@ export default function LikeButton({ postId, initialLikes }) {
   const router = useRouter()
   const [likes, setLikes] = useState(initialLikes)
   const [pending, setPending] = useState(false)
-  
+
   const handleLike = async () => {
     setPending(true)
     setLikes(likes + 1) // Optimistic update
-    
+
     try {
       await likePost(postId)
       router.refresh() // Sync with server
@@ -722,7 +775,7 @@ export default function LikeButton({ postId, initialLikes }) {
       setPending(false)
     }
   }
-  
+
   return (
     <button onClick={handleLike} disabled={pending}>
       ❤️ {likes}
@@ -736,6 +789,7 @@ export default function LikeButton({ postId, initialLikes }) {
 ## Quick Reference
 
 ### Navigation Methods
+
 ```typescript
 // Link component (preferred)
 <Link href="/blog">Blog</Link>
@@ -755,6 +809,7 @@ redirect('/login')
 ```
 
 ### Prefetch Control
+
 ```typescript
 // Default (auto prefetch)
 <Link href="/blog">Blog</Link>
@@ -767,6 +822,7 @@ router.prefetch('/blog')
 ```
 
 ### Loading States
+
 ```typescript
 // Route-level
 // app/blog/loading.tsx
@@ -783,6 +839,7 @@ const { pending } = useLinkStatus()
 ---
 
 **Related Documentation:**
+
 - [Project Structure](01-project-structure.md)
 - [Routing & Pages](02-routing-pages.md)
 - [Server/Client Components](04-server-client.md)

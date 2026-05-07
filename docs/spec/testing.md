@@ -1,9 +1,9 @@
 ---
-trigger_keywords: ['vitest', '테스트', 'coverage', '커버리지', '@testing-library']
-trigger_globs: ['**/*.test.tsx', '**/*.test.ts', 'src/shared/test/**']
+title: 테스팅 전략
+description: Vitest 환경, 커버리지 기준, 공통 유틸 사용 규칙
 ---
 
-# Testing Strategy
+# 테스팅 전략
 
 ## 프레임워크
 
@@ -26,7 +26,7 @@ pnpm test:coverage   # 커버리지 포함 실행 + 임계치 검사
 - `**/*.config.*` — 설정 파일
 - `**/*.d.ts` — 타입 선언 파일
 
-로직은 반드시 segment 파일 (`ui/`, `model/`, `api/`, `lib/`) 에 작성해야 커버리지에 포함됨.
+로직은 반드시 segment 파일 (`ui/`, `model/`, `api/`, `lib/`) 에 작성해야 커버리지에 포함된다.
 
 ## 공통 유틸
 
@@ -49,25 +49,25 @@ import { render } from '@testing-library/react';
 ## 테스트 실행
 
 ```bash
-pnpm test                                   # watch mode
-pnpm test:ui                                # Vitest UI
-pnpm vitest --config config/vite/vitest.config.ts run <파일경로>   # 단일 파일
-pnpm vitest --config config/vite/vitest.config.ts run -t "test name"  # 이름 매칭
+pnpm test                                                                # watch mode
+pnpm test:ui                                                             # Vitest UI
+pnpm vitest --config config/vite/vitest.config.ts run <파일경로>           # 단일 파일
+pnpm vitest --config config/vite/vitest.config.ts run -t "test name"      # 이름 매칭
 ```
 
 ## 구조 (AAA 패턴)
 
 ```ts
 test('설명적인 테스트 이름', () => {
-  // Arrange
-  const props = { userId: '1', isActive: true }
+    // Arrange
+    const props = { userId: '1', isActive: true };
 
-  // Act
-  const { getByText } = render(<UserCard {...props} />)
+    // Act
+    const { getByText } = render(<UserCard {...props} />);
 
-  // Assert
-  expect(getByText('Active')).toBeInTheDocument()
-})
+    // Assert
+    expect(getByText('Active')).toBeInTheDocument();
+});
 ```
 
 ## TDD 흐름

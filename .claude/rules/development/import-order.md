@@ -1,6 +1,6 @@
 ---
 paths:
-  - "src/**/*.{ts,tsx}"
+    - 'src/**/*.{ts,tsx}'
 ---
 
 # Import Order Rules
@@ -8,7 +8,7 @@ paths:
 ## 그룹 순서 (그룹 사이 빈 줄 1개)
 
 1. **외부 라이브러리** — React 관련도 높을수록 위
-2. **UI import** — FSD 상위 → 하위 (pages → widgets → features → entities → shared)
+2. **UI import** — FSD 상위 → 하위 (pages → widgets → features → shared)
 3. **유틸 import** — FSD 상위 → 하위
 4. **타입 import** — `import type` 만
 5. **스타일 import** — `import styles from './styles.module.css'`
@@ -25,7 +25,7 @@ import { Button } from '@/shared/ui';
 import { ENV } from '@/shared/config/env';
 import { apiClient } from '@/shared/api';
 
-import type { User } from '@/entities/user';
+import type { LoginPayload } from '@/features/auth';
 
 import styles from './styles.module.css';
 ```

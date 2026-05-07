@@ -30,23 +30,23 @@ src/static/language/         (React)  또는  src/i18n/  (Vue/Vanilla)
 ```typescript
 // ko/common.ts
 export default {
-  button: {
-    confirm: '확인',
-    cancel: '취소',
-    save: '저장'
-  },
-  basicText: {
-    required: '필수',
-    optional: '선택'
-  },
-  unit: {
-    count: '개',
-    case: '건'
-  },
-  messages: {
-    saveSuccess: '성공적으로 저장되었습니다.'
-  }
-} as const;  // 자동완성·타입체크용. 선택이지만 권장.
+    button: {
+        confirm: '확인',
+        cancel: '취소',
+        save: '저장',
+    },
+    basicText: {
+        required: '필수',
+        optional: '선택',
+    },
+    unit: {
+        count: '개',
+        case: '건',
+    },
+    messages: {
+        saveSuccess: '성공적으로 저장되었습니다.',
+    },
+} as const; // 자동완성·타입체크용. 선택이지만 권장.
 ```
 
 - en/ja 파일은 동일 키 구조를 유지하고, 키 위에 `// 한국어 원문: "..."` 주석을 둔다 (sync_keys.py 가 자동 삽입).
@@ -54,12 +54,12 @@ export default {
 ```typescript
 // en/common.ts
 export default {
-  button: {
-    // 한국어 원문: "확인"
-    confirm: 'OK',
-    // 한국어 원문: "취소"
-    cancel: 'Cancel'
-  }
+    button: {
+        // 한국어 원문: "확인"
+        confirm: 'OK',
+        // 한국어 원문: "취소"
+        cancel: 'Cancel',
+    },
 } as const;
 ```
 
@@ -124,10 +124,10 @@ import 'i18next';
 import { resources } from '~language/i18n';
 
 declare module 'i18next' {
-  interface CustomTypeOptions {
-    defaultNS: 'common';
-    resources: (typeof resources)['ko']; // ko 구조를 기준으로 추론
-  }
+    interface CustomTypeOptions {
+        defaultNS: 'common';
+        resources: (typeof resources)['ko']; // ko 구조를 기준으로 추론
+    }
 }
 ```
 
@@ -139,18 +139,15 @@ declare module 'i18next' {
 
 ```json
 {
-  "i18n-ally.localesPaths": ["src/static/language"],
-  "i18n-ally.sourceLanguage": "ko",
-  "i18n-ally.displayLanguage": "ko",
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.enabledParsers": ["js", "ts", "json"],
-  "i18n-ally.namespace": true,
-  "i18n-ally.pathMatcher": "{locale}/{namespace}.ts",
-  "i18n-ally.readonly": true,
-  "i18n-ally.regex.usageMatch": [
-    "\\bt\\(['\"]({key})['\"]\\)",
-    "['\"`]([\\w\\-]+:(?!\\/)[\\w\\.\\-]+)['\"`]"
-  ]
+    "i18n-ally.localesPaths": ["src/static/language"],
+    "i18n-ally.sourceLanguage": "ko",
+    "i18n-ally.displayLanguage": "ko",
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.enabledParsers": ["js", "ts", "json"],
+    "i18n-ally.namespace": true,
+    "i18n-ally.pathMatcher": "{locale}/{namespace}.ts",
+    "i18n-ally.readonly": true,
+    "i18n-ally.regex.usageMatch": ["\\bt\\(['\"]({key})['\"]\\)", "['\"`]([\\w\\-]+:(?!\\/)[\\w\\.\\-]+)['\"`]"]
 }
 ```
 
