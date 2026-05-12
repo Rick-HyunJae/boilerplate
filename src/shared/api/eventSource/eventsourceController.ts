@@ -10,14 +10,11 @@ import type {
 } from './types';
 
 export const eventSourceController = (url: string, options?: IEventSourcePolyfillOption): IEventSourcePolyfill => {
-    const { wehago_sign, transactionId, Authorization, timestamp, cno } = createRequestHeader(url);
+    const { transactionId, timestamp } = createRequestHeader();
     const requestHeaders = {
         Accept: '*/*',
-        Authorization,
-        'wehago-sign': wehago_sign,
         'transaction-id': transactionId,
         timestamp,
-        'company-no': cno,
         'Content-Type': 'application/json',
         ...options?.headers,
     };

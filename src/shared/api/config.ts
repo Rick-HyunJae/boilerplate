@@ -3,35 +3,15 @@ import { ENV } from '@/shared/config/env';
 
 const isLive = ENV.BUILD_TYPE === 'live';
 
-function generateGWUrl() {
+function generateApiUrl() {
     switch (ENV.SERVICE_TYPE) {
-        case 'wehagom':
-            return 'https://api.wehagom.com';
-        case 'wehagov':
-            return 'https://api.wehagov.com';
-        case 'aws':
-            return 'https://api.insightofus.ai';
+        case 'alt':
+            return 'https://api.alt.example.com';
         default:
-            return 'https://api.wehago.com';
+            return 'https://api.example.com';
     }
 }
 
-function generateUnCertUrl() {
-    switch (ENV.SERVICE_TYPE) {
-        case 'wehagom':
-            return 'https://api0.wehagom.com';
-        case 'wehagov':
-            return 'https://api0.wehagov.com';
-        case 'aws':
-            return 'https://api0.insightofus.ai';
-        default:
-            return 'https://api0.wehago.com';
-    }
-}
+const apiUrl = isLive ? generateApiUrl() : 'https://dev.api.example.com';
 
-const apiUrl = isLive ? generateGWUrl() : 'http://dev.api.wehago.com';
-const unCertUrl = isLive ? generateUnCertUrl() : 'http://dev.api0.wehago.com';
-const objectStorageUrl = apiUrl + '/ObjectStorageCommon/services/common';
-const dwUrl = 'https://dwapi.wehago.com';
-
-export { apiUrl, unCertUrl, objectStorageUrl, dwUrl };
+export { apiUrl };

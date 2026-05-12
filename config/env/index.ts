@@ -13,7 +13,7 @@ export const envSchema = z.object({
     VITE_ENABLE_HTTPS: z.enum(['true', 'false']).default('false'),
     VITE_ENABLE_MOCK: z.enum(['true', 'false']).default('false'),
     VITE_BUILD_TYPE: z.enum(['dev', 'live']),
-    VITE_SERVICE_TYPE: z.enum(['wehago', 'wehagom', 'wehagov', 'aws']),
+    VITE_SERVICE_TYPE: z.enum(['default', 'alt']),
 });
 
 export type AppEnv = z.infer<typeof envSchema>;

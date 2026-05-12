@@ -15,10 +15,10 @@ describe('getTransactionId Test', () => {
 
 describe('getLocation Test', () => {
 	it('추가 정보가 없는 도메인 테스트', () => {
-		expect(getLocation('https://test.wehago.com:3000')).toStrictEqual({
+		expect(getLocation('https://test.example.com:3000')).toStrictEqual({
 			hash: '',
-			host: 'test.wehago.com:3000',
-			hostname: 'test.wehago.com',
+			host: 'test.example.com:3000',
+			hostname: 'test.example.com',
 			pathname: '',
 			port: '3000',
 			protocol: 'https:',
@@ -27,10 +27,10 @@ describe('getLocation Test', () => {
 	});
 
 	it('Hash가 포함된 도메인 테스트', () => {
-		expect(getLocation('https://test.wehago.com:3000/#/dashboards/1')).toStrictEqual({
+		expect(getLocation('https://test.example.com:3000/#/dashboards/1')).toStrictEqual({
 			hash: '#/dashboards/1',
-			host: 'test.wehago.com:3000',
-			hostname: 'test.wehago.com',
+			host: 'test.example.com:3000',
+			hostname: 'test.example.com',
 			pathname: '/',
 			port: '3000',
 			protocol: 'https:',
@@ -39,20 +39,20 @@ describe('getLocation Test', () => {
 	});
 
 	it('추가 param이 존재하는 도메인 테스트', () => {
-		expect(getLocation('https://test.wehago.com:3000/dashboards')).toStrictEqual({
+		expect(getLocation('https://test.example.com:3000/dashboards')).toStrictEqual({
 			hash: '',
-			host: 'test.wehago.com:3000',
-			hostname: 'test.wehago.com',
+			host: 'test.example.com:3000',
+			hostname: 'test.example.com',
 			pathname: '/dashboards',
 			port: '3000',
 			protocol: 'https:',
 			search: ''
 		});
 
-		expect(getLocation('https://test.wehago.com:3000/dashboards/1')).toStrictEqual({
+		expect(getLocation('https://test.example.com:3000/dashboards/1')).toStrictEqual({
 			hash: '',
-			host: 'test.wehago.com:3000',
-			hostname: 'test.wehago.com',
+			host: 'test.example.com:3000',
+			hostname: 'test.example.com',
 			pathname: '/dashboards/1',
 			port: '3000',
 			protocol: 'https:',
@@ -61,20 +61,20 @@ describe('getLocation Test', () => {
 	});
 
 	it('search가 존재하는 도메인 테스트', () => {
-		expect(getLocation('https://test.wehago.com:3000/dashboards/1?id=1&password=123')).toStrictEqual({
+		expect(getLocation('https://test.example.com:3000/dashboards/1?id=1&password=123')).toStrictEqual({
 			hash: '',
-			host: 'test.wehago.com:3000',
-			hostname: 'test.wehago.com',
+			host: 'test.example.com:3000',
+			hostname: 'test.example.com',
 			pathname: '/dashboards/1',
 			port: '3000',
 			protocol: 'https:',
 			search: '?id=1&password=123'
 		});
 
-		expect(getLocation('https://test.wehago.com:3000/#/dashboards/1?id=1&password=123')).toStrictEqual({
+		expect(getLocation('https://test.example.com:3000/#/dashboards/1?id=1&password=123')).toStrictEqual({
 			hash: '#/dashboards/1?id=1&password=123',
-			host: 'test.wehago.com:3000',
-			hostname: 'test.wehago.com',
+			host: 'test.example.com:3000',
+			hostname: 'test.example.com',
 			pathname: '/',
 			port: '3000',
 			protocol: 'https:',

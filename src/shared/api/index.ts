@@ -12,12 +12,6 @@ export type {
     IEventSourcePolyfillOption,
 } from './eventSource';
 
-export { apiUrl, unCertUrl, objectStorageUrl, dwUrl } from './config';
-export type { TController, TRequestHeader } from './types';
-export {
-    createRequestHeader,
-    createUncertSignature,
-    downloadFileFromS3,
-    wrapPromise,
-    createEncryptServiceKey,
-} from './util';
+export { apiUrl } from './config';
+export type { TController } from './types';
+export { createRequestHeader } from './util';

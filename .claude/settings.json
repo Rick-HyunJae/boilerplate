@@ -1,4 +1,17 @@
 {
+    "permissions": {
+        "allow": [
+            "Bash(git show*)",
+            "Bash(git log*)",
+            "Bash(git diff*)",
+            "Bash(git status*)",
+            "Bash(git blame*)",
+            "Bash(pnpm tsc*)",
+            "Bash(pnpm lint*)",
+            "Bash(pnpm test*)",
+            "Bash(pnpm run test*)"
+        ]
+    },
     "enabledMcpjsonServers": ["sequential-thinking"],
     "enabledPlugins": {
         "context7@claude-plugins-official": true,
