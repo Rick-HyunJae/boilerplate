@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import apiUtil from '../http';
 
-const { getLocation, getTimestamp, getTransactionId } = apiUtil;
+const { getLocation, getTransactionId } = apiUtil;
 
 describe('getTransactionId Test', () => {
 	it('- 기호 삭제 필수', () => {
