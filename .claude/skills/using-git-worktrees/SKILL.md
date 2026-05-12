@@ -46,7 +46,42 @@ Has the user already indicated their worktree preference in your instructions? I
 
 > "Would you like me to set up an isolated worktree? It protects your current branch from changes."
 
-Honor any existing declared preference without asking. If the user declines consent, work in place and skip to Step 3.
+Honor any existing declared **directory** preference without asking. **Branch name is always determined in Step 0.5 — do not skip it.** If the user declines consent, work in place and skip to Step 3.
+
+## Step 0.5: Determine Branch Strategy
+
+**Step 0과 Step 1 사이에 반드시 실행한다.** 이미 linked worktree 안이면(Step 0에서 skip 판정) 이 단계도 skip.
+
+**현재 브랜치 검사:**
+
+```bash
+CURRENT_BRANCH=$(git branch --show-current)
+```
+
+**분기:**
+
+| 조건 | 동작 |
+|------|------|
+| `CURRENT_BRANCH ∈ {main, master, develop}` | 신규 브랜치명 결정 절차로 진행 (아래) |
+| 그 외 (이미 작업 브랜치) | `BRANCH_NAME=$CURRENT_BRANCH` — 새 브랜치 생성 금지, Step 1로 진행 |
+
+**신규 브랜치명 결정 절차 (main/master/develop에서 시작할 때):**
+
+1. 컨텍스트(plan 파일, spec, 사용자 instructions)에서 작업 성격 추론
+2. `.claude/rules/git-workflow.md`의 type 목록(`feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`, `style`, `revert`)에서 매칭
+3. 후보 형식: `<type>/<kebab-case-description>`
+4. 사용자에게 확인:
+
+   ```
+   plan 분석 결과 작업 성격: <type>
+   추천 브랜치명: <type>/<description>
+
+   사용하시려면 Enter, 다른 이름을 원하시면 입력해주세요:
+   ```
+
+5. 확정된 이름을 `BRANCH_NAME`으로 설정 후 진행 방식에 따라 분기:
+   - **worktree를 생성할 예정이면:** `git branch $BRANCH_NAME` (브랜치만 생성, checkout 없음 — worktree 생성 시 자동 checkout됨)
+   - **worktree 없이 직접 작업하면:** `git checkout -b $BRANCH_NAME`
 
 ## Step 1: Create Isolated Workspace
 
@@ -97,7 +132,11 @@ git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/d
 # Determine path based on chosen location
 # For project-local: path="$LOCATION/$BRANCH_NAME"
 
-git worktree add "$path" -b "$BRANCH_NAME"
+# BRANCH_NAME must have been set in Step 0.5 — do not proceed without it
+[ -z "$BRANCH_NAME" ] && { echo "Error: BRANCH_NAME not set — Step 0.5 required"; exit 1; }
+
+# Step 0.5에서 이미 checkout한 브랜치이면 -b 없이 기존 브랜치로 worktree 생성
+git worktree add "$path" "$BRANCH_NAME"
 cd "$path"
 ```
 
@@ -149,6 +188,8 @@ Ready to implement <feature-name>
 |-----------|--------|
 | Already in linked worktree | Skip creation (Step 0) → go to Step 2 |
 | In a submodule | Treat as normal repo (Step 0 guard) |
+| On main/master/develop | Step 0.5: infer type → propose name → user confirms → checkout |
+| On feature/fix/refactor branch | Step 0.5: reuse current branch (BRANCH_NAME=current) |
 | Native worktree tool available | Use it (Step 1a) |
 | No native tool | Git worktree fallback (Step 1b) |
 | `.worktrees/` exists | Use it (verify ignored) |
@@ -199,6 +240,9 @@ Ready to implement <feature-name>
 - Create a worktree when Step 0 detects existing isolation
 - Use `git worktree add` when you have a native worktree tool (e.g., `EnterWorktree`). This is the #1 mistake — if you have it, use it.
 - Skip Step 1a by jumping straight to Step 1b's git commands
+- Skip Step 0.5 — BRANCH_NAME must always be determined before worktree creation
+- Create a new branch when already on a feature/fix/refactor branch (Step 0.5: reuse)
+- Auto-infer branch name without user confirmation when on main/master/develop
 - Create worktree without verifying it's ignored (project-local)
 - Skip baseline test verification
 - Proceed with failing tests without asking

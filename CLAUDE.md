@@ -28,7 +28,15 @@ plan 파일이 준비되면 아래 둘 중 선택한다.
 | `subagent-driven-development` | 현재 세션 | task가 독립적이고 빠른 반복이 필요할 때 (권장) |
 | `executing-plans`             | 별도 세션 | 별도 컨텍스트에서 실행하고 싶을 때             |
 
-구현이 끝나면 반드시 `finishing-a-development-branch`로 마무리한다 (테스트 확인 → merge/PR/보류 선택).
+**시작 전 필수 단계:**
+1. plan 분석 → 작업 성격(type) 결정
+2. `using-git-worktrees` 스킬 Step 0.5에서 브랜치명 사용자 확인 후 자동 checkout
+3. worktree 생성 후 subagent dispatch
+
+구현이 끝나면 반드시 `finishing-a-development-branch`로 마무리한다.
+
+**종료 시 디폴트 동작:** worktree만 정리, 브랜치 보존.
+push / PR 생성 / merge는 사용자가 명시적으로 선택할 때만 실행한다.
 
 ### TDD
 

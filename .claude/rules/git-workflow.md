@@ -85,6 +85,22 @@ Worktree 설정 절차는 `@using-git-worktrees` 스킬 실행.
 | 공개 브랜치 force push        | `git revert` 사용                  |
 | 장기 브랜치 (수주)            | 단기 브랜치 + 자주 merge           |
 
+## 서브에이전트 작업 가드
+
+다음은 서브에이전트가 사용자 명시 요청 없이 실행하면 안 되는 동작이다:
+
+- `git push` (모든 형태 — `-u`, `--force` 포함)
+- `gh pr create` / GitHub API를 통한 PR 생성
+- `git checkout -b` (main/master/develop 브랜치 위에서)
+
+위 동작은 반드시 사용자에게 다음을 사전 확인한 후 진행한다:
+
+1. 어떤 브랜치에서 어떤 동작을 실행할지
+2. remote 영향 범위 (origin 변경 여부)
+3. 결과적으로 남는 git 상태
+
+사전 확인이 없는 자동 실행은 본 규칙 위반이다.
+
 ## 관련 문서
 
 - `@git-workflow` — 세부 방법론 (Merge/Rebase, 충돌 해결, Branch 관리)

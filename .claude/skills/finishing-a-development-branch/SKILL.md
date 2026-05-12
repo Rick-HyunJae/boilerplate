@@ -54,9 +54,9 @@ This determines which menu to show and how cleanup works:
 
 | State | Menu | Cleanup |
 |-------|------|---------|
-| `GIT_DIR == GIT_COMMON` (normal repo) | Standard 4 options | No worktree to clean up |
-| `GIT_DIR != GIT_COMMON`, named branch | Standard 4 options | Provenance-based (see Step 6) |
-| `GIT_DIR != GIT_COMMON`, detached HEAD | Reduced 3 options (no merge) | No cleanup (externally managed) |
+| `GIT_DIR == GIT_COMMON` (normal repo) | Standard 6 options | No worktree to clean up |
+| `GIT_DIR != GIT_COMMON`, named branch | Standard 6 options | Provenance-based (see Step 6) |
+| `GIT_DIR != GIT_COMMON`, detached HEAD | Reduced 4 options (no merge/keep-branch) | No cleanup (externally managed) |
 
 ### Step 3: Determine Base Branch
 
@@ -112,36 +112,52 @@ $COMMITS"
 
 ### Step 4: Present Options
 
-**Normal repo and named-branch worktree — present exactly these 4 options:**
+**Normal repo and named-branch worktree — present exactly these 6 options:**
 
 ```
 Implementation complete. What would you like to do?
 
-1. Merge back to <base-branch> locally
-2. Push and create a Pull Request
-3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
+1. Cleanup worktree, keep branch (default)
+2. Merge back to <base-branch> locally
+3. Push branch (no PR)
+4. Create Pull Request
+5. Keep everything as-is
+6. Discard this work
 
-Which option?
+Which option? [1]
 ```
 
-**Detached HEAD — present exactly these 3 options:**
+**Detached HEAD — present exactly these 4 options:**
 
 ```
 Implementation complete. You're on a detached HEAD (externally managed workspace).
 
-1. Push as new branch and create a Pull Request
-2. Keep as-is (I'll handle it later)
-3. Discard this work
+1. Push as new branch (no PR)
+2. Create Pull Request (new branch + push + gh pr create)
+3. Keep as-is (I'll handle it later)
+4. Discard this work
 
 Which option?
 ```
 
 **Don't add explanation** - keep options concise.
 
+**디폴트:** 옵션 입력이 비어있으면 Option 1(Cleanup worktree, keep branch)을 실행한다.
+
 ### Step 5: Execute Choice
 
-#### Option 1: Merge Locally
+#### Option 1: Cleanup Worktree, Keep Branch (Default)
+
+```bash
+MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
+cd "$MAIN_ROOT"
+```
+
+Cleanup worktree (Step 6). 브랜치는 보존한다.
+
+Report: `Worktree cleaned. Branch <name> preserved locally. Push or merge when ready.`
+
+#### Option 2: Merge Locally
 
 ```bash
 # Get main repo root for CWD safety
@@ -165,13 +181,29 @@ Then: Cleanup worktree (Step 6), then delete branch:
 git branch -d <feature-branch>
 ```
 
-#### Option 2: Push and Create PR
+#### Option 3: Push Branch (No PR)
 
 ```bash
-# Push branch
 git push -u origin <feature-branch>
+```
 
-# Create PR
+`gh pr create`는 호출하지 않는다.
+
+Report: `Pushed <branch> to origin. Use Option 4 or 'gh pr create' to open a PR.`
+
+**Do NOT clean up worktree.**
+
+#### Option 4: Create Pull Request
+
+upstream이 없으면 먼저 push한다:
+
+```bash
+git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || git push -u origin <feature-branch>
+```
+
+그 다음 PR을 생성한다:
+
+```bash
 gh pr create --title "<title>" --body "$(cat <<'EOF'
 ## Summary
 <2-3 bullets of what changed>
@@ -184,13 +216,13 @@ EOF
 
 **Do NOT clean up worktree** — user needs it alive to iterate on PR feedback.
 
-#### Option 3: Keep As-Is
+#### Option 5: Keep Everything As-Is
 
 Report: "Keeping branch <name>. Worktree preserved at <path>."
 
 **Don't cleanup worktree.**
 
-#### Option 4: Discard
+#### Option 6: Discard
 
 **Confirm first:**
 ```
@@ -217,7 +249,7 @@ git branch -D <feature-branch>
 
 ### Step 6: Cleanup Workspace
 
-**Only runs for Options 1 and 4.** Options 2 and 3 always preserve the worktree.
+**Only runs for Options 1, 2, and 6.** Options 3, 4, 5 always preserve the worktree.
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
@@ -240,12 +272,14 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 ## Quick Reference
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
-|--------|-------|------|---------------|----------------|
-| 1. Merge locally | yes | - | - | yes |
-| 2. Create PR | - | yes | yes | - |
-| 3. Keep as-is | - | - | yes | - |
-| 4. Discard | - | - | - | yes (force) |
+| Option | Merge | Push | PR | Keep Worktree | Cleanup Branch |
+|--------|-------|------|----|---------------|----------------|
+| 1. Cleanup worktree, keep branch (default) | - | - | - | - | - |
+| 2. Merge locally | yes | - | - | - | yes |
+| 3. Push branch (no PR) | - | yes | - | yes | - |
+| 4. Create Pull Request | - | if needed | yes | yes | - |
+| 5. Keep everything as-is | - | - | - | yes | - |
+| 6. Discard | - | - | - | - | yes (force) |
 
 ## Common Mistakes
 
@@ -255,11 +289,11 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 **Open-ended questions**
 - **Problem:** "What should I do next?" is ambiguous
-- **Fix:** Present exactly 4 structured options (or 3 for detached HEAD)
+- **Fix:** Present exactly 6 structured options (or 4 for detached HEAD)
 
-**Cleaning up worktree for Option 2**
+**Cleaning up worktree for Options 3 or 4**
 - **Problem:** Remove worktree user needs for PR iteration
-- **Fix:** Only cleanup for Options 1 and 4
+- **Fix:** Only cleanup for Options 1, 2, and 6
 
 **Deleting branch before removing worktree**
 - **Problem:** `git branch -d` fails because worktree still references the branch
@@ -300,8 +334,9 @@ PR 생성 또는 merge 완료 후, 아래 스킬로 이어진다:
 **Always:**
 - Verify tests before offering options
 - Detect environment before presenting menu
-- Present exactly 4 options (or 3 for detached HEAD)
-- Get typed confirmation for Option 4
-- Clean up worktree for Options 1 & 4 only
+- Present exactly 6 options (or 4 for detached HEAD)
+- Default to Option 1 when input is empty
+- Get typed confirmation for Option 6
+- Clean up worktree for Options 1, 2, and 6 only
 - `cd` to main repo root before worktree removal
 - Run `git worktree prune` after removal
