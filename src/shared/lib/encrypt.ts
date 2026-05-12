@@ -33,7 +33,7 @@ const aesDecrypt = (encryptedValue: string, encryptKey: string): string | undefi
 		const decrypt = CryptoJS.AES.decrypt(decodeValue, encryptKey, {}).toString(CryptoJS.enc.Utf8);
 		return decrypt;
 	} catch {
-		return undefined;
+		return '';
 	}
 };
 
