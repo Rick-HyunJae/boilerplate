@@ -8,4 +8,4 @@ export const koreanReg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
 
 export const englishReg = /[a-zA-Z]/g;
 
-export const invalidStringNumericReg = /[^0-9.\-]/;
+export const invalidStringNumericReg = /[^0-9.-]/;

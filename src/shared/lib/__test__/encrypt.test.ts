@@ -5,6 +5,7 @@ const { aesEncrypt, aesDecrypt } = encryptUtil;
 const testEncryptKey = 'test';
 
 describe('encryptUtil Test', () => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let result: any = null;
 
 	it('암호화 성공 테스트', () => {
@@ -17,7 +18,7 @@ describe('encryptUtil Test', () => {
 	it('암호화 실패 테스트', () => {
 		expect(aesEncrypt('', testEncryptKey)).toBeUndefined(); // 빈 문자열 테스트
 
-		//@ts-ignore - 문자열 이외 테스트
+		// @ts-expect-error - 문자열 이외 테스트
 		expect(aesEncrypt(1)).toBeUndefined();
 	});
 

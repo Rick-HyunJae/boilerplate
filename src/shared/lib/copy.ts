@@ -76,7 +76,7 @@ export async function copyToClipboard(options: TCopyOptions): Promise<void> {
 		} else {
 			fallbackCopy();
 		}
-	} catch (error) {
+	} catch {
 		fallbackCopy();
 	}
 }

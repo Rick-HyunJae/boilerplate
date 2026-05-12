@@ -2,10 +2,11 @@
  * 위 controller와 apiHandler에서 제공하는 handler를 사용하여 서비스마다 interceptor 정의하여 사용
  * 아래 예시에 따라 interceptor를 정의
  */
-import axios, { CreateAxiosDefaults } from 'axios';
+import axios from 'axios';
+import type { CreateAxiosDefaults } from 'axios';
 
 import { apiUrl, unCertUrl, objectStorageUrl, dwUrl } from '../config';
-import { TController } from '../types';
+import type { TController } from '../types';
 
 // GW - 내부 서비스 접근
 const serviceAPIController = (options: CreateAxiosDefaults) =>

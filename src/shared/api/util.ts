@@ -75,7 +75,7 @@ export const createEncryptServiceKey = (serviceCode: string, serviceKey: string)
         });
 
         return encodeURIComponent(encryptedValue.ciphertext.toString(CryptoJS.enc.Base64));
-    } catch (error) {
+    } catch {
         return undefined;
     }
 };
@@ -99,6 +99,7 @@ const downloadFileFromS3 = (
     const convertFileName = fileName.replace(/\s/g, '_');
 
     const xhr = new XMLHttpRequest();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     callbacks?.beforeLoadCallback && callbacks.beforeLoadCallback();
 
     xhr.open('GET', storageUrl, true);
@@ -144,14 +145,18 @@ const downloadFileFromS3 = (
  * Suspense 적용 시, api 호출 상태에 대해 idle이 적용된 Promise 반환
  * @param promise
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const wrapPromise = (promise: Promise<any>) => {
     let status = 'pending';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let result: any;
-    let suspender = promise.then(
+    const suspender = promise.then(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (res: any) => {
             status = 'success';
             result = res;
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (err: any) => {
             status = 'error';
             result = err;

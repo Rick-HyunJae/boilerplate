@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 
 declare global {
 	interface Document {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		documentMode: any; // browser detect 모드
 	}
 }
@@ -19,11 +20,11 @@ const openWindowPopup = (url: string, name?: string, width?: number, height?: nu
  * @description 접근 브라우저 확인
  */
 const detectBrowser = (): 'Opera' | 'Chrome' | 'Safari' | 'Firefox' | 'IE' | 'Unknown' => {
-	if ((navigator.userAgent.indexOf('Opera') || navigator.userAgent.indexOf('OPR')) != -1) return 'Opera';
-	if (navigator.userAgent.indexOf('Chrome') != -1) return 'Chrome';
-	if (navigator.userAgent.indexOf('Safari') != -1) return 'Safari';
-	if (navigator.userAgent.indexOf('Firefox') != -1) return 'Firefox';
-	if (navigator.userAgent.indexOf('MSIE') != -1 || !!document.documentMode == true) return 'IE'; //crap
+	if ((navigator.userAgent.indexOf('Opera') || navigator.userAgent.indexOf('OPR')) !== -1) return 'Opera';
+	if (navigator.userAgent.indexOf('Chrome') !== -1) return 'Chrome';
+	if (navigator.userAgent.indexOf('Safari') !== -1) return 'Safari';
+	if (navigator.userAgent.indexOf('Firefox') !== -1) return 'Firefox';
+	if (navigator.userAgent.indexOf('MSIE') !== -1 || !!document.documentMode === true) return 'IE'; //crap
 
 	return 'Unknown';
 };

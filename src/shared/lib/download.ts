@@ -18,6 +18,7 @@ const createAnchorAndDownload = (fileUrl: string, fileName?: string) => {
 	anchor.href = fileUrl;
 	anchor.target = '_blank';
 	anchor.rel = 'noopener noreferrer';
+	// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 	fileName && (anchor.download = fileName);
 
 	anchor.click();

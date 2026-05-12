@@ -14,6 +14,7 @@ export interface IEventSourcePolyfillOption {
 export interface IEventSourcePolyfillOpenEvent extends Event {
     status?: number;
     statusText?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
 
@@ -21,6 +22,7 @@ export interface IEventSourcePolyfillOpenEvent extends Event {
  * @description EventSourcePolyfill onmessage 이벤트
  */
 export interface IEventSourcePolyfillMessageEvent extends MessageEvent {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
 
@@ -32,6 +34,7 @@ export interface IEventSourcePolyfillErrorEvent extends Event {
     statusText?: string;
     isJsonResponse?: boolean;
     data?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
 
