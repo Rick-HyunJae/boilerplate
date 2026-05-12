@@ -6,7 +6,7 @@ import { addCommaReg, specialTextForNumberReg, koreanReg, englishReg, invalidStr
  */
 const convertPriceToCommaUsingReg = (value: number): string => {
 	const isNegative = value < 0;
-	const filter = isNegative ? value.toString().substr(1) : value.toString();
+	const filter = isNegative ? value.toString().slice(1) : value.toString();
 
 	const splitFilter = filter.split('.');
 	const integer = splitFilter[0];

@@ -38,7 +38,7 @@ const baseRequestHandler = (request: InternalFetchRequestConfig): TFetchRequestC
  * @param request
  */
 const objectStorageRequestHandler = (request: InternalFetchRequestConfig): TFetchRequestConfig => {
-    const fullURL = request.baseURL!;
+    const fullURL = `${request.baseURL}${request.url || ''}`;
 
     const requestHeaders = new Headers(request.headers);
     const existingAuth = requestHeaders.get('Authorization');
@@ -75,7 +75,8 @@ const uncertRequestHandler = async (request: InternalFetchRequestConfig): Promis
     const signature = await createUncertSignature(request.url!);
 
     const requestHeader = new Headers(request.headers ?? {});
-    requestHeader.set('signature', signature);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    signature && requestHeader.set('signature', signature);
 
     return { ...request, headers: Object.fromEntries(requestHeader) };
 };

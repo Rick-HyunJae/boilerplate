@@ -24,9 +24,9 @@ const aesEncrypt = (value: string, encryptKey: string): { salt: string; value: s
  * @param encryptedValue 복호화할 암호화 문자열
  * @param encryptKey 암호화에 사용한 key
  */
-const aesDecrypt = (encryptedValue: string, encryptKey: string): string | undefined => {
-	if (encryptKey === undefined) return undefined;
-	if (typeof encryptedValue !== 'string' || encryptedValue === '') return undefined;
+const aesDecrypt = (encryptedValue: string, encryptKey: string): string => {
+	if (encryptKey === undefined) return '';
+	if (typeof encryptedValue !== 'string' || encryptedValue === '') return '';
 
 	try {
 		const decodeValue = decodeURIComponent(encryptedValue);
