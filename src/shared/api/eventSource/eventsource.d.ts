@@ -1,0 +1,1 @@
+export const EventSourcePolyfill: any;
