@@ -182,13 +182,13 @@ shared(1) → features(2) → widgets(3) → pages(4) → app(5)
 
 ## 참조 파일
 
-필요 시 `docs/spec/fsd-architecture/` 파일을 Read 툴로 읽는다.
+필요 시 `docs/development/fsd-architecture/` 파일을 Read 툴로 읽는다.
 
 | 상황                   | 읽을 파일                                           |
 | ---------------------- | --------------------------------------------------- |
-| 레이어 역할 재확인     | `docs/spec/fsd-architecture/01-layers.md`           |
-| 의존성 규칙 상세 확인  | `docs/spec/fsd-architecture/02-dependency-rules.md` |
-| 슬라이스/세그먼트 기준 | `docs/spec/fsd-architecture/03-slices-segments.md`  |
-| Public API 패턴 확인   | `docs/spec/fsd-architecture/04-public-api.md`       |
-| 배치 결정 예시         | `docs/spec/fsd-architecture/05-placement-guide.md`  |
-| 안티패턴 상세 확인     | `docs/spec/fsd-architecture/06-antipatterns.md`     |
+| 레이어 역할 재확인     | `docs/development/fsd-architecture/01-layers.md`           |
+| 의존성 규칙 상세 확인  | `docs/development/fsd-architecture/02-dependency-rules.md` |
+| 슬라이스/세그먼트 기준 | `docs/development/fsd-architecture/03-slices-segments.md`  |
+| Public API 패턴 확인   | `docs/development/fsd-architecture/04-public-api.md`       |
+| 배치 결정 예시         | `docs/development/fsd-architecture/05-placement-guide.md`  |
+| 안티패턴 상세 확인     | `docs/development/fsd-architecture/06-antipatterns.md`     |

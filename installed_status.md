@@ -17,13 +17,13 @@
 
 ### 📊 비교 요약
 
-| 구분 | User Scope | Project Scope |
-|------|-----------|---------------|
-| **Enabled Plugins** | 7개 | 2개 |
-| **Disabled Plugins** | - | 3개 |
-| **MCPs** | - | 1개 |
-| **Skill Overrides** | 15개 | - |
-| **Known Marketplaces** | 3개 | - |
+| 구분                   | User Scope | Project Scope |
+| ---------------------- | ---------- | ------------- |
+| **Enabled Plugins**    | 7개        | 2개           |
+| **Disabled Plugins**   | -          | 5개           |
+| **MCPs**               | -          | 1개           |
+| **Skill Overrides**    | 15개       | -             |
+| **Known Marketplaces** | 3개        | -             |
 
 ---
 
@@ -33,15 +33,15 @@
 
 ### Enabled Plugins (7개)
 
-| Plugin | 출처 | 역할 |
-|--------|------|------|
-| codex@openai-codex | OpenAI | 코드 리뷰 및 분석 |
-| superpowers@superpowers-marketplace | 커뮤니티 | 플랜/TDD 등 개발 워크플로우 |
-| skill-creator@claude-plugins-official | Anthropic | 스킬 생성/수정 |
-| find-skills | - | 스킬 검색 및 설치 |
-| session-report@claude-plugins-official | Anthropic | 세션 보고서 |
-| serena@claude-plugins-official | Anthropic | 코드 분석 및 수정 도구 |
-| hookify@claude-plugins-official | Anthropic | Hook 설정 관리 |
+| Plugin                                 | 출처      | 역할                        |
+| -------------------------------------- | --------- | --------------------------- |
+| codex@openai-codex                     | OpenAI    | 코드 리뷰 및 분석           |
+| superpowers@superpowers-marketplace    | 커뮤니티  | 플랜/TDD 등 개발 워크플로우 |
+| skill-creator@claude-plugins-official  | Anthropic | 스킬 생성/수정              |
+| find-skills                            | -         | 스킬 검색 및 설치           |
+| session-report@claude-plugins-official | Anthropic | 세션 보고서                 |
+| serena@claude-plugins-official         | Anthropic | 코드 분석 및 수정 도구      |
+| hookify@claude-plugins-official        | Anthropic | Hook 설정 관리              |
 
 ### Skill Overrides (15개 - name-only 설정)
 
@@ -87,12 +87,12 @@
 
 ### Enabled Plugins (2개)
 
-| Plugin | 역할 |
-|--------|------|
-| context7@claude-plugins-official | 라이브러리 문서 조회 |
-| claude-md-management@claude-plugins-official | CLAUDE.md 관리 |
+| Plugin                                       | 역할                 |
+| -------------------------------------------- | -------------------- |
+| context7@claude-plugins-official             | 라이브러리 문서 조회 |
+| claude-md-management@claude-plugins-official | CLAUDE.md 관리       |
 
-### Disabled Plugins (3개)
+### Disabled Plugins (5개)
 
 다음 플러그인들은 프로젝트에서 **명시적으로 비활성화**됨:
 
@@ -100,6 +100,8 @@
 ✗ code-review@claude-plugins-official
 ✗ frontend-design@claude-plugins-official
 ✗ commit-commands@claude-plugins-official
+✗ superpowers@claude-plugins-official
+✗ superpowers@superpowers-marketplace
 ```
 
 > **주의**: User Scope에서는 활성화되어 있으나, 프로젝트에서는 사용하지 않음
@@ -137,60 +139,60 @@ nano ~/.claude/settings.json
 
 ```json
 {
-  "permissions": {
-    "allow": ["Bash(npm install:*)"]
-  },
-  "skillOverrides": {
-    "superpowers:code-reviewer": "name-only",
-    "superpowers:requesting-code-review": "name-only",
-    "superpowers:using-git-worktrees": "name-only",
-    "superpowers:using-superpowers": "name-only",
-    "superpowers:systematic-debugging": "name-only",
-    "superpowers:dispatching-parallel-agents": "name-only",
-    "superpowers:executing-plans": "name-only",
-    "superpowers:test-driven-development": "name-only",
-    "superpowers:subagent-driven-development": "name-only",
-    "superpowers:brainstorming": "name-only",
-    "superpowers:finishing-a-development-branch": "name-only",
-    "superpowers:writing-plans": "name-only",
-    "superpowers:writing-skills": "name-only",
-    "superpowers:receiving-code-review": "name-only",
-    "superpowers:verification-before-completion": "name-only"
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "bash /Users/{YOUR_USERNAME}/.claude/statusline-command.sh"
-  },
-  "enabledPlugins": {
-    "codex@openai-codex": true,
-    "superpowers@superpowers-marketplace": true,
-    "skill-creator@claude-plugins-official": true,
-    "find-skills": true,
-    "session-report@claude-plugins-official": true,
-    "serena@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "anthropic-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "anthropics/skills"
-      }
+    "permissions": {
+        "allow": ["Bash(npm install:*)"]
     },
-    "openai-codex": {
-      "source": {
-        "source": "github",
-        "repo": "openai/codex-plugin-cc"
-      }
+    "skillOverrides": {
+        "superpowers:code-reviewer": "name-only",
+        "superpowers:requesting-code-review": "name-only",
+        "superpowers:using-git-worktrees": "name-only",
+        "superpowers:using-superpowers": "name-only",
+        "superpowers:systematic-debugging": "name-only",
+        "superpowers:dispatching-parallel-agents": "name-only",
+        "superpowers:executing-plans": "name-only",
+        "superpowers:test-driven-development": "name-only",
+        "superpowers:subagent-driven-development": "name-only",
+        "superpowers:brainstorming": "name-only",
+        "superpowers:finishing-a-development-branch": "name-only",
+        "superpowers:writing-plans": "name-only",
+        "superpowers:writing-skills": "name-only",
+        "superpowers:receiving-code-review": "name-only",
+        "superpowers:verification-before-completion": "name-only"
     },
-    "superpowers-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "obra/superpowers-marketplace"
-      }
-    }
-  },
-  "effortLevel": "medium"
+    "statusLine": {
+        "type": "command",
+        "command": "bash /Users/{YOUR_USERNAME}/.claude/statusline-command.sh"
+    },
+    "enabledPlugins": {
+        "codex@openai-codex": true,
+        "superpowers@superpowers-marketplace": true,
+        "skill-creator@claude-plugins-official": true,
+        "find-skills": true,
+        "session-report@claude-plugins-official": true,
+        "serena@claude-plugins-official": true,
+        "hookify@claude-plugins-official": true
+    },
+    "extraKnownMarketplaces": {
+        "anthropic-agent-skills": {
+            "source": {
+                "source": "github",
+                "repo": "anthropics/skills"
+            }
+        },
+        "openai-codex": {
+            "source": {
+                "source": "github",
+                "repo": "openai/codex-plugin-cc"
+            }
+        },
+        "superpowers-marketplace": {
+            "source": {
+                "source": "github",
+                "repo": "obra/superpowers-marketplace"
+            }
+        }
+    },
+    "effortLevel": "medium"
 }
 ```
 
@@ -215,7 +217,9 @@ touch .claude/settings.json
         "claude-md-management@claude-plugins-official": true,
         "code-review@claude-plugins-official": false,
         "frontend-design@claude-plugins-official": false,
-        "commit-commands@claude-plugins-official": false
+        "commit-commands@claude-plugins-official": false,
+        "superpowers@claude-plugins-official": false,
+        "superpowers@superpowers-marketplace": false
     }
 }
 ```
@@ -227,34 +231,37 @@ touch .claude/settings.json
 ### 신규 팀원
 
 1. **Claude Code 설치**
-   ```bash
-   npm install -g @anthropic-ai/claude-code
-   ```
+
+    ```bash
+    npm install -g @anthropic-ai/claude-code
+    ```
 
 2. **User Scope 설정** (`~/.claude/settings.json`)
-   - 위의 필요한 구성 내용을 파일에 복사
-   - `{YOUR_USERNAME}` 부분을 실제 사용자명으로 변경
+    - 위의 필요한 구성 내용을 파일에 복사
+    - `{YOUR_USERNAME}` 부분을 실제 사용자명으로 변경
 
 3. **프로젝트 클론**
-   ```bash
-   git clone <repository-url>
-   cd csr-boilerplate
-   ```
+
+    ```bash
+    git clone <repository-url>
+    cd csr-boilerplate
+    ```
 
 4. **Project Scope 설정** (`.claude/settings.json`)
-   - 리포지토리의 `.claude/settings.json` 파일 확인
-   - 필요한 경우 위의 구성으로 업데이트
+    - 리포지토리의 `.claude/settings.json` 파일 확인
+    - 필요한 경우 위의 구성으로 업데이트
 
 5. **플러그인 설치** (필요시)
-   ```
-   /reload-plugins
-   ```
+
+    ```
+    /reload-plugins
+    ```
 
 6. **환경 확인**
-   ```
-   /skills
-   /plugin
-   ```
+    ```
+    /skills
+    /plugin
+    ```
 
 ---
 
@@ -264,62 +271,60 @@ touch .claude/settings.json
 
 ```json
 {
-  "permissions": {
-    "allow": [
-      "Bash(npm install:*)"
-    ]
-  },
-  "skillOverrides": {
-    "superpowers:code-reviewer": "name-only",
-    "superpowers:requesting-code-review": "name-only",
-    "superpowers:using-git-worktrees": "name-only",
-    "superpowers:using-superpowers": "name-only",
-    "superpowers:systematic-debugging": "name-only",
-    "superpowers:dispatching-parallel-agents": "name-only",
-    "superpowers:executing-plans": "name-only",
-    "superpowers:test-driven-development": "name-only",
-    "superpowers:subagent-driven-development": "name-only",
-    "superpowers:brainstorming": "name-only",
-    "superpowers:finishing-a-development-branch": "name-only",
-    "superpowers:writing-plans": "name-only",
-    "superpowers:writing-skills": "name-only",
-    "superpowers:receiving-code-review": "name-only",
-    "superpowers:verification-before-completion": "name-only"
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "bash /Users/{YOUR_USERNAME}/.claude/statusline-command.sh"
-  },
-  "enabledPlugins": {
-    "codex@openai-codex": true,
-    "superpowers@superpowers-marketplace": true,
-    "skill-creator@claude-plugins-official": true,
-    "find-skills": true,
-    "session-report@claude-plugins-official": true,
-    "serena@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "anthropic-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "anthropics/skills"
-      }
+    "permissions": {
+        "allow": ["Bash(npm install:*)"]
     },
-    "openai-codex": {
-      "source": {
-        "source": "github",
-        "repo": "openai/codex-plugin-cc"
-      }
+    "skillOverrides": {
+        "superpowers:code-reviewer": "name-only",
+        "superpowers:requesting-code-review": "name-only",
+        "superpowers:using-git-worktrees": "name-only",
+        "superpowers:using-superpowers": "name-only",
+        "superpowers:systematic-debugging": "name-only",
+        "superpowers:dispatching-parallel-agents": "name-only",
+        "superpowers:executing-plans": "name-only",
+        "superpowers:test-driven-development": "name-only",
+        "superpowers:subagent-driven-development": "name-only",
+        "superpowers:brainstorming": "name-only",
+        "superpowers:finishing-a-development-branch": "name-only",
+        "superpowers:writing-plans": "name-only",
+        "superpowers:writing-skills": "name-only",
+        "superpowers:receiving-code-review": "name-only",
+        "superpowers:verification-before-completion": "name-only"
     },
-    "superpowers-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "obra/superpowers-marketplace"
-      }
-    }
-  },
-  "effortLevel": "medium"
+    "statusLine": {
+        "type": "command",
+        "command": "bash /Users/{YOUR_USERNAME}/.claude/statusline-command.sh"
+    },
+    "enabledPlugins": {
+        "codex@openai-codex": true,
+        "superpowers@superpowers-marketplace": true,
+        "skill-creator@claude-plugins-official": true,
+        "find-skills": true,
+        "session-report@claude-plugins-official": true,
+        "serena@claude-plugins-official": true,
+        "hookify@claude-plugins-official": true
+    },
+    "extraKnownMarketplaces": {
+        "anthropic-agent-skills": {
+            "source": {
+                "source": "github",
+                "repo": "anthropics/skills"
+            }
+        },
+        "openai-codex": {
+            "source": {
+                "source": "github",
+                "repo": "openai/codex-plugin-cc"
+            }
+        },
+        "superpowers-marketplace": {
+            "source": {
+                "source": "github",
+                "repo": "obra/superpowers-marketplace"
+            }
+        }
+    },
+    "effortLevel": "medium"
 }
 ```
 
@@ -333,7 +338,9 @@ touch .claude/settings.json
         "claude-md-management@claude-plugins-official": true,
         "code-review@claude-plugins-official": false,
         "frontend-design@claude-plugins-official": false,
-        "commit-commands@claude-plugins-official": false
+        "commit-commands@claude-plugins-official": false,
+        "superpowers@claude-plugins-official": false,
+        "superpowers@superpowers-marketplace": false
     }
 }
 ```
@@ -378,22 +385,22 @@ touch .claude/settings.json
 ## ⚠️ 주의사항
 
 1. **User Scope 설정**
-   - 홈 디렉토리(`~/.claude/`)에 위치
-   - 모든 프로젝트에 영향
-   - 경로(statusLine command)에 사용자명 포함 시 주의
+    - 홈 디렉토리(`~/.claude/`)에 위치
+    - 모든 프로젝트에 영향
+    - 경로(statusLine command)에 사용자명 포함 시 주의
 
 2. **Project Scope 설정**
-   - `.claude/` 디렉토리에 위치 (프로젝트 루트)
-   - 해당 프로젝트에만 영향
-   - User Scope 설정을 **오버라이드**함
+    - `.claude/` 디렉토리에 위치 (프로젝트 루트)
+    - 해당 프로젝트에만 영향
+    - User Scope 설정을 **오버라이드**함
 
 3. **플러그인 설치**
-   - 인터넷 연결 필요
-   - 마켓플레이스가 접근 가능해야 함
+    - 인터넷 연결 필요
+    - 마켓플레이스가 접근 가능해야 함
 
 4. **환경 변수**
-   - 일부 기능은 환경 변수 필요 가능
-   - 프로젝트의 `.env.dev`, `.env.prod` 파일 확인
+    - 일부 기능은 환경 변수 필요 가능
+    - 프로젝트의 `.env.dev`, `.env.prod` 파일 확인
 
 ---
 

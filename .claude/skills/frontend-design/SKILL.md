@@ -8,6 +8,15 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 
 The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
 
+## 입력 (선행 산출물)
+
+- `extract-web-design` 산출물: `./design-extract-output/*-design-language.md`, `*-tailwind.config.js`, `*-variables.css` 등을 우선 참조
+- 또는 사용자 직접 제공 디자인 명세 / Figma 링크 / 스크린샷
+
+## frontend-lead 연계
+
+React 컴포넌트로 구현이 필요한 경우 `writing-plans` 스킬에서 `Agent Type: frontend-lead` 를 plan 파일에 기입하여 SDD가 적절한 에이전트로 디스패치하도록 안내한다.
+
 ## Design Thinking
 
 Before coding, understand the context and commit to a BOLD aesthetic direction:

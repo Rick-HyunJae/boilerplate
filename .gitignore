@@ -11,3 +11,7 @@ config/env/.env.*.local
 
 # Claude Code — local-only
 .claude/settings.local.json
+
+# Git worktrees
+.worktrees/
+!.worktrees/.gitkeep

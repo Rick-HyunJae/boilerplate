@@ -1,7 +1,6 @@
 ---
 name: finishing-a-development-branch
 description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
-origin: superpowers
 ---
 
 # Finishing a Development Branch
@@ -277,6 +276,12 @@ git worktree prune  # Self-healing: clean up any stale registrations
 **No confirmation for discard**
 - **Problem:** Accidentally delete work
 - **Fix:** Require typed "discard" confirmation
+
+## 다음 단계
+
+PR 생성 또는 merge 완료 후, 아래 스킬로 이어진다:
+1. `verification-before-completion` — 최종 체크리스트 검증
+2. `requesting-code-review` — 코드 리뷰 요청 (PR URL 포함)
 
 ## Red Flags
 

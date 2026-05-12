@@ -14,8 +14,7 @@ const importOrderRule = {
         },
         schema: [],
         messages: {
-            outOfOrder:
-                'Import order must be: external packages, aliased imports, type-only imports, then style imports.',
+            outOfOrder: 'Import order must be: external packages, aliased imports, type-only imports, then style imports.',
         },
     },
     create(context) {

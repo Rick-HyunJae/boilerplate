@@ -6,7 +6,31 @@ origin: ECC
 
 # Git Workflow Patterns
 
+## 호출 시점
+
+이 스킬은 **참조용**이다. 직접 호출보다는 다른 스킬(`using-git-worktrees`, `finishing-a-development-branch`)에서 브랜칭/머지 전략을 확인할 때 참조한다. 사용자가 명시적으로 git workflow 가이드를 요청한 경우에만 직접 진입한다.
+
 Best practices for Git version control, branching strategies, and collaborative development.
+
+## Project Conventions (boilerplate)
+
+> Full rules in `.claude/rules/git-workflow.md`. This section summarizes the project-specific decisions.
+
+### Commit Message Format
+
+```
+<type>: <description>
+
+<optional body>
+```
+
+**Allowed types:** `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`, `style`, `revert`
+
+> Attribution is disabled globally via `~/.claude/settings.json` — do not append `Co-Authored-By` lines.
+
+### PR Process
+
+Before committing, see `docs/development/development-workflow.md` for the full pipeline (research → plan → TDD → code review → git).
 
 ## When to Activate
 

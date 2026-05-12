@@ -7,7 +7,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 ## Project Rules & Memory
 
 Rules: `.claude/rules/` 와 `.codex/rules/` 디렉토리
-Specs: `docs/spec/fsd-architecture/`
+Specs: `docs/development/fsd-architecture/`
 
 ## Workflow Notes
 

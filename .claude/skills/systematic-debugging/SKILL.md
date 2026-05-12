@@ -1,10 +1,21 @@
 ---
 name: systematic-debugging
 description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
-origin: superpowers
 ---
 
 # Systematic Debugging
+
+## Entry Checklist
+
+- [ ] 재현 가능한 버그 / 실패 테스트 보유
+- [ ] 에러 메시지 / 스택 트레이스 / 비정상 동작 기록 확보
+- [ ] 변경 범위 또는 최근 커밋(`git log -20`) 확인 가능
+
+## React/FSD 프로젝트 디버깅 컨텍스트
+
+- React 렌더링 이슈는 `react-developer-v19` 의 패턴 위반 여부 우선 확인
+- 모듈 import 에러는 FSD 레이어 위반 가능성 점검 (`fsd-development`)
+- 상태 관리 이슈는 `react-state` 가이드 참조
 
 ## Overview
 
@@ -177,7 +188,7 @@ You MUST complete each phase before proceeding to the next.
    - Automated test if possible
    - One-off test script if no framework
    - MUST have before fixing
-   - Use the `superpowers:test-driven-development` skill for writing proper failing tests
+   - Use the `test-driven-development` skill for writing proper failing tests
 
 2. **Implement Single Fix**
    - Address the root cause identified
@@ -285,8 +296,8 @@ These techniques are part of systematic debugging and available in this director
 - **`condition-based-waiting.md`** - Replace arbitrary timeouts with condition polling
 
 **Related skills:**
-- **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
-- **superpowers:verification-before-completion** - Verify fix worked before claiming success
+- **test-driven-development** - For creating failing test case (Phase 4, Step 1)
+- **verification-before-completion** - Verify fix worked before claiming success
 
 ## Real-World Impact
 

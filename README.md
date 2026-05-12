@@ -263,6 +263,37 @@ import { addToCart } from '@/features/cart';
 
 ---
 
+## 5. 개발 워크플로우
+
+Claude Code와 함께하는 기능 개발은 스킬 파이프라인을 따른다. 각 스킬은 선행 산출물 없이도 단독 호출이 가능하다.
+
+### 5.1 파이프라인
+
+```
+[기획·구조화]
+deep-interview → brainstorming → writing-plans → review-plan-by-persona (optional)
+
+[구현 실행]
+using-git-worktrees → subagent-driven-development (권장) / executing-plans
+                      └─ 각 태스크마다 test-driven-development 적용
+
+[마무리]
+finishing-a-development-branch
+```
+
+### 5.2 산출물 위치
+
+| 스킬                        | 저장 경로                                        |
+| --------------------------- | ------------------------------------------------ |
+| `deep-interview`            | `.claude/plans/interviews/YYYY-MM-DD-<topic>.md` |
+| `brainstorming`             | `.claude/plans/specs/YYYY-MM-DD-<topic>.md`      |
+| `writing-plans` / Plan Mode | `.claude/plans/YYYY-MM-DD-<topic>.md`            |
+| `review-plan-by-persona`    | `.claude/plans/reviews/<plan-slug>-<persona>.md` |
+
+세부 규칙은 `.claude/plans/README.md` 참조.
+
+---
+
 ## 4. 코딩 컨벤션 요약
 
 - **Immutability**: 객체 변형 금지, 항상 spread/새 객체 반환

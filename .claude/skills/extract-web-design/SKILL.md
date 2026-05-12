@@ -89,3 +89,7 @@ cat design-extract-output/*-design-language.md
 | `--screenshots`      | Capture component screenshots (buttons, cards, nav)   |
 | `--wait <ms>`        | Wait time after page load for SPAs                    |
 | `--framework <type>` | Generate only specific theme (`react` or `shadcn`)    |
+
+## 다음 단계
+
+산출물이 `./design-extract-output/` 에 저장된 후 `frontend-design` 스킬을 호출하여 실제 컴포넌트로 구현한다.

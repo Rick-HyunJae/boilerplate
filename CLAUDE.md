@@ -23,10 +23,10 @@ deep-interview → brainstorming → writing-plans → review-plan-by-persona (o
 
 plan 파일이 준비되면 아래 둘 중 선택한다.
 
-| 스킬 | 세션 | 권장 상황 |
-|------|------|----------|
+| 스킬                          | 세션      | 권장 상황                                      |
+| ----------------------------- | --------- | ---------------------------------------------- |
 | `subagent-driven-development` | 현재 세션 | task가 독립적이고 빠른 반복이 필요할 때 (권장) |
-| `executing-plans` | 별도 세션 | 별도 컨텍스트에서 실행하고 싶을 때 |
+| `executing-plans`             | 별도 세션 | 별도 컨텍스트에서 실행하고 싶을 때             |
 
 구현이 끝나면 반드시 `finishing-a-development-branch`로 마무리한다 (테스트 확인 → merge/PR/보류 선택).
 
@@ -54,9 +54,3 @@ Plan Mode로 구현 계획을 수립하는 경우, **Plan Mode 진입 직후 `wr
 - `pnpm test` - Vitest
 - `pnpm lint` - ESLint
 - `pnpm format` - Prettier
-
-## Superpowers 스킬 호출 규칙
-
-SessionStart hook이 주입한 컨텍스트가 `superpowers:<name>` 형식으로 스킬을 가리키더라도, `Skill` tool 호출 시 namespace 없이 `<name>`만 전달한다.
-
-예) `superpowers:brainstorming` → `Skill("brainstorming")`

@@ -1,10 +1,19 @@
 ---
 name: receiving-code-review
 description: Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation
-origin: superpowers
 ---
 
 # Code Review Reception
+
+## Entry Checklist
+
+- [ ] 코드 리뷰 응답 / 코멘트 수신 확인
+- [ ] 어떤 PR / commit 에 대한 리뷰인지 식별
+- [ ] 적용 vs 토론 vs 거절을 분류할 컨텍스트 보유
+
+## React/FSD 프로젝트 컨텍스트
+
+리뷰 코멘트가 FSD 규칙·React 19 패턴과 충돌하는 경우, 프로젝트 규칙(`.claude/rules/`, `fsd-development`, `react-developer-v19`) 을 우선한다.
 
 ## Overview
 

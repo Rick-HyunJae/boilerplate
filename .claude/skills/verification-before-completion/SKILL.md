@@ -1,10 +1,21 @@
 ---
 name: verification-before-completion
 description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
-origin: superpowers
 ---
 
 # Verification Before Completion
+
+## Entry Checklist
+
+- [ ] 구현 / 수정 완료 여부 확인
+- [ ] 현재 브랜치와 변경 범위 파악 (`git status`, `git diff main..HEAD`)
+- [ ] 검증 명령어 식별 (pnpm test, pnpm lint, pnpm build 등)
+
+## React/FSD 프로젝트 추가 검증
+
+- [ ] FSD 레이어 의존성 위반 없음 (`fsd-development` 규칙 준수)
+- [ ] React 19 패턴 준수 (`react-developer-v19` 가이드)
+- [ ] `pnpm lint` / `pnpm test` 통과
 
 ## Overview
 
@@ -115,6 +126,15 @@ From 24 failure memories:
 - Time wasted on false completion → redirect → rework
 - Violates: "Honesty is a core value. If you lie, you'll be replaced."
 
+## Standalone Invocation
+
+plan 파일 없이 직접 호출된 경우 fallback 컨텍스트:
+- `git diff main..HEAD` 로 변경 범위 파악
+- 최근 커밋 메시지 (`git log -10 --oneline`)
+- 관련 PR description (있다면)
+
+이 정보로 검증 대상 commands를 식별한다.
+
 ## When To Apply
 
 **ALWAYS before:**
@@ -138,3 +158,8 @@ From 24 failure memories:
 Run the command. Read the output. THEN claim the result.
 
 This is non-negotiable.
+
+## 다음 단계
+
+검증 통과 후 → `requesting-code-review` 스킬로 이어진다.
+검증 실패 시 → `systematic-debugging` 으로 분기한다.
