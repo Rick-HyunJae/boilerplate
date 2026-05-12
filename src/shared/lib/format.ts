@@ -36,9 +36,11 @@ const convertPriceToComma = (value: number): string => {
  */
 const convertCommaToPrice = (value: string): number => {
 	if (value.length === 0) return 0;
-	if (koreanReg.test(value) || englishReg.test(value) || invalidStringNumericReg.test(value)) return 0;
+	// Strip commas first (they are the purpose of this function) before validation
+	const withoutCommas = value.replace(/,/g, '');
+	if (koreanReg.test(withoutCommas) || englishReg.test(withoutCommas) || invalidStringNumericReg.test(withoutCommas)) return 0;
 
-	const filteredValue = value.replace(koreanReg, '').replace(englishReg, '').replace(specialTextForNumberReg, '');
+	const filteredValue = withoutCommas.replace(koreanReg, '').replace(englishReg, '').replace(specialTextForNumberReg, '');
 
 	if (filteredValue.length === 1 && (filteredValue.indexOf('-') || filteredValue.indexOf('.'))) return 0;
 	if (filteredValue.indexOf('-') !== filteredValue.lastIndexOf('-')) return 0;
