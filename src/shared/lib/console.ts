@@ -6,6 +6,7 @@ type TConsole = 'log' | 'warn' | 'info' | 'error';
  */
 const removeConsoles = (typeList: TConsole[]) => {
 	typeList.forEach((logType: TConsole) => {
+		// eslint-disable-next-line no-console
 		console[logType] = function () {};
 	});
 };

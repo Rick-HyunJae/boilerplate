@@ -43,6 +43,7 @@ export class HttpFetchClient {
      * @param params - 쿼리 파라미터 객체
      * @returns 완성된 URL 문자열
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private buildURL(url: string, params?: Record<string, any>): string {
         const baseURL = this.config.baseURL || '';
         const fullURL = baseURL ? `${baseURL.replace(/\/$/, '')}/${url.replace(/^\//, '')}` : url;
@@ -71,6 +72,7 @@ export class HttpFetchClient {
      * @param headers - 헤더 객체 (Content-Type 자동 설정을 위해 참조로 전달)
      * @returns 처리된 요청 본문 또는 null
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private processRequestData(data: any, headers: Headers): BodyInit | null {
         if (!data) return null;
 
@@ -97,6 +99,7 @@ export class HttpFetchClient {
      * @param response - Fetch Response 객체
      * @returns
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private async processResponseData(url: string, requestOptions: RequestInit): Promise<any> {
         return await fetch(url, requestOptions);
     }
@@ -179,6 +182,7 @@ export class HttpFetchClient {
             credentials: this.config.withCredentials ? 'include' : 'same-origin',
         };
 
+        /* eslint-disable no-useless-catch */
         try {
             return this.processResponseData(url, requestOptions);
         } catch (error) {
@@ -192,6 +196,7 @@ export class HttpFetchClient {
         } finally {
             timeoutController.abort();
         }
+        /* eslint-enable no-useless-catch */
     }
 
     /* ------------------------------ HTTP 메서드별 함수 ------------------------------ */
@@ -210,6 +215,7 @@ export class HttpFetchClient {
      * @param data
      * @param config
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     post(url: string, data?: any, config?: Omit<TFetchRequestConfig, 'url' | 'method' | 'data'>): Promise<Response> {
         return this.request({ ...config, url, method: 'POST', data });
     }
@@ -220,6 +226,7 @@ export class HttpFetchClient {
      * @param data
      * @param config
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     put(url: string, data?: any, config?: Omit<TFetchRequestConfig, 'url' | 'method' | 'data'>): Promise<Response> {
         return this.request({ ...config, url, method: 'PUT', data });
     }
@@ -239,6 +246,7 @@ export class HttpFetchClient {
      * @param data
      * @param config
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     patch(url: string, data?: any, config?: Omit<TFetchRequestConfig, 'url' | 'method' | 'data'>): Promise<Response> {
         return this.request({ ...config, url, method: 'PATCH', data });
     }

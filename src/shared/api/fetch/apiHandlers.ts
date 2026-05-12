@@ -27,6 +27,7 @@ const baseRequestHandler = (request: InternalFetchRequestConfig): TFetchRequestC
      * - Not Null: Authorization
      * - Nullable: Content-Type, service, client-id, method (필요 시, 서비스 API Controller에서 추가)
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !existingAuth && requestHeaders.set('Authorization', Authorization);
 
     return { ...request, headers: Object.fromEntries(requestHeaders) };
@@ -58,7 +59,9 @@ const objectStorageRequestHandler = (request: InternalFetchRequestConfig): TFetc
      * - Not Null: Authorization, Content-Type
      * - Nullable: service, client-id, method (필요 시, 서비스 API Controller에서 추가)
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !existingAuth && requestHeaders.set('Authorization', Authorization);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !existingContentType && requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
 
     return { ...request, headers: Object.fromEntries(requestHeaders) };
@@ -91,6 +94,7 @@ const dwRequestHandler = (request: InternalFetchRequestConfig): TFetchRequestCon
  * 요청 에러에 대한 핸들러 - 필요에 따라 서비스 내에서 커스텀해서 사용
  * @param error
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const requestErrorHandler = (error: any): Promise<never> => {
     return Promise.reject(error);
 };

@@ -1,8 +1,12 @@
 import type { RequestInterceptor } from './types';
 
-interface InterceptorHandler<T = any> {
+interface InterceptorHandler<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    T = any
+> {
     id: number;
     fulfilled?: T;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rejected?: (error: any) => any;
 }
 
@@ -15,6 +19,7 @@ interface InterceptorHandler<T = any> {
  * - 순차적 실행 보장
  * - 메모리 관리
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class InterceptorManager<T = any> {
     private handlers: Map<number, InterceptorHandler<T>> = new Map();
     private nextId: number = 0;
@@ -38,6 +43,7 @@ export class InterceptorManager<T = any> {
      *   }
      * );
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     use(fulfilled?: T, rejected?: (error: any) => any): number {
         const id = this.nextId++;
 

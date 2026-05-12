@@ -61,7 +61,7 @@ const convertEncodingTextToText = (value: string | null): string => {
 				.replace(/&nbsp;/g, ' ') // '' (공백)
 				.replace(/&quot;/g, '"') // " (큰 따옴표 하나)
 				.replace(/&amp;/g, '&') // &
-				.replace(/\&[a-zA-Z]+;/g, ' ') // 그 외
+				.replace(/&[a-zA-Z]+;/g, ' ') // 그 외
 		: '-';
 };
 

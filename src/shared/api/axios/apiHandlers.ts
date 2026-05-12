@@ -1,4 +1,5 @@
-import { AxiosError, AxiosResponse, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
+import { AxiosHeaders } from 'axios';
+import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 import { createRequestHeader, createUncertSignature } from '../util';
 
@@ -27,6 +28,7 @@ const baseRequestHandler = (request: InternalAxiosRequestConfig): InternalAxiosR
      * - Not Null: Authorization
      * - Nullable: Content-Type, service, client-id, method (필요 시, 서비스 API Controller에서 추가)
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !existingAuth && requestHeaders.set('Authorization', Authorization);
 
     return { ...request, headers: requestHeaders };
@@ -58,7 +60,9 @@ const objectStorageRequestHandler = (request: InternalAxiosRequestConfig): Inter
      * - Not Null: Authorization, Content-Type
      * - Nullable: service, client-id, method (필요 시, 서비스 API Controller에서 추가)
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !existingAuth && requestHeaders.set('Authorization', Authorization);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !existingContentType && requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
 
     return { ...request, headers: requestHeaders };
@@ -72,6 +76,7 @@ const uncertRequestHandler = async (request: InternalAxiosRequestConfig): Promis
     const signature = await createUncertSignature(request.url!);
 
     const requestHeaders = new AxiosHeaders(request.headers);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     signature && requestHeaders.set('signature', signature);
 
     return { ...request, headers: requestHeaders };

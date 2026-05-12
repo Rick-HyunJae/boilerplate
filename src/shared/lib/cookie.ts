@@ -5,6 +5,7 @@
  * @param day 만료 일자
  * @param domain 적용할 도메인
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const setCookie = (name: string, value: any, day: number, domain: string) => {
 	const date = new Date();
 	date.setTime(date.getTime() + day * 24 * 60 * 60 * 1000);

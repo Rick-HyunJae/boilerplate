@@ -1,4 +1,4 @@
-import { AxiosRequestHeaders } from 'axios';
+import type { AxiosRequestHeaders } from 'axios';
 
 declare global {
     interface Navigator {
