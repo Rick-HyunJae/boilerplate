@@ -10,6 +10,20 @@ description: API 컨트롤러(axios·fetch·EventSource) 및 공통 유틸리티
 
 ---
 
+## 구현체 선택 가이드
+
+세 가지 구현체 중 **하나만** 선택해 사용한다.
+
+| 구현체 | 사용 시점 |
+| --- | --- |
+| `axios` | **기본 선택.** 인터셉터, retry, axios-mock-adapter(테스트) 지원 |
+| `fetch` | axios 없이 경량 HTTP가 필요할 때. 브라우저 내장 fetch 래퍼 |
+| `eventSource` | SSE(Server-Sent Events) 스트리밍 전용. REST 요청에는 사용하지 않는다 |
+
+> 선택 후 나머지 두 구현체 디렉토리는 삭제해도 된다. `src/shared/api/examples/`의 해당 예시를 features 레이어로 복사해 시작점으로 사용한다.
+
+---
+
 ## 디렉토리 구조
 
 ```

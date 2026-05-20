@@ -13,6 +13,7 @@ description: |
     - "setup vue-i18n", "i18next vanilla", "react i18n"
 
     SKIP for trivial value-only edits to existing translations (typo fixes in a single locale file).
+    SKIP when the task is purely React-specific i18n implementation (use `react-i18n` instead).
 ---
 
 # i18n-setup

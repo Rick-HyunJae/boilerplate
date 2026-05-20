@@ -8,7 +8,7 @@ React 19 + TypeScript CSR template using Feature-Sliced Design (FSD).
 
 - FSD facts live in `docs/development/fsd-architecture/`
 - Detailed guides live in `docs/development/` (coding-style, testing, patterns, security, performance, design-quality, code-review, development-workflow, api-controllers)
-- Rules live in `.claude/rules/` — `karpathy-guideline.md` (behavior), `env.md` (env vars), `performance.md` (model selection)
+- Rules live in `.claude/rules/` — `karpathy-guideline.md` (behavior), `env.md` (env vars), `model-selection.md` (model selection)
 - Package manager: pnpm (Node `24.15.0` pinned via Volta)
 
 ## 작업 프로세스 파이프라인

@@ -79,6 +79,8 @@ export const envSchema = z.object({
     VITE_OBFUSCATE: z.enum(['true', 'false']).default('false'),
     VITE_ENABLE_HTTPS: z.enum(['true', 'false']).default('false'),
     VITE_ENABLE_MOCK: z.enum(['true', 'false']).default('false'),
+    VITE_BUILD_TYPE: z.enum(['dev', 'live']),
+    VITE_SERVICE_TYPE: z.enum(['default', 'alt']),
 });
 
 // src/shared/config/env.ts — 런타임 접근 객체
@@ -124,6 +126,15 @@ import { HomePage } from '@/pages/home';
 - 공통 렌더 유틸은 `src/shared/test/utils.tsx`에 위치합니다.
 - 커버리지 임계치는 lines / functions / branches / statements **80%**로 강제됩니다.
 
+### 1.9 AI 에이전트 지원
+
+| 에이전트   | 진입점      | 규칙/스킬 경로 |
+| ---------- | ----------- | -------------- |
+| Claude Code | `CLAUDE.md` | `.claude/`     |
+| Codex       | `AGENTS.md` | `.codex/`      |
+
+`.claude/`와 `.codex/`는 동일 규칙의 미러다 — 각 에이전트에서 같은 컨벤션을 따른다.
+
 ---
 
 ## 2. 폴더 구조 (Feature-Sliced Design)
@@ -164,6 +175,7 @@ import { HomePage } from '@/pages/home';
         ├── api/     # axios 클라이언트, 인터셉터
         ├── config/  # ENV 런타임 접근 객체
         ├── lib/     # 도메인 비종속 유틸리티
+        ├── styles/  # 전역 스타일 (CSS 변수, reset 등)
         ├── test/    # 테스트 셋업/유틸
         ├── types/   # 글로벌 타입
         └── ui/      # 디자인 시스템 / 공용 컴포넌트
@@ -263,11 +275,11 @@ import { addToCart } from '@/features/cart';
 
 ---
 
-## 5. 개발 워크플로우
+## 4. 개발 워크플로우
 
 Claude Code와 함께하는 기능 개발은 스킬 파이프라인을 따른다. 각 스킬은 선행 산출물 없이도 단독 호출이 가능하다.
 
-### 5.1 파이프라인
+### 4.1 파이프라인
 
 ```
 [기획·구조화]
@@ -281,7 +293,7 @@ using-git-worktrees → subagent-driven-development (권장) / executing-plans
 finishing-a-development-branch
 ```
 
-### 5.2 산출물 위치
+### 4.2 산출물 위치
 
 | 스킬                        | 저장 경로                                        |
 | --------------------------- | ------------------------------------------------ |
@@ -294,7 +306,7 @@ finishing-a-development-branch
 
 ---
 
-## 4. 코딩 컨벤션 요약
+## 5. 코딩 컨벤션 요약
 
 - **Immutability**: 객체 변형 금지, 항상 spread/새 객체 반환
 - **Naming**: `camelCase`(변수/함수), `PascalCase`(타입/컴포넌트), `UPPER_SNAKE_CASE`(상수), `use*`(훅)
