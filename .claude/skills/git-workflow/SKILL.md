@@ -14,23 +14,10 @@ Best practices for Git version control, branching strategies, and collaborative 
 
 ## Project Conventions (boilerplate)
 
-> Full rules in `.claude/rules/git-workflow.md`. This section summarizes the project-specific decisions.
+> 이 프로젝트의 확정된 전략과 안전 규칙은 `.claude/rules/git-workflow.md` 참조.
+> 아래 섹션들은 범용 패턴 가이드다 — 프로젝트 결정 사항은 Rule이 우선한다.
 
-### Commit Message Format
-
-```
-<type>: <description>
-
-<optional body>
-```
-
-**Allowed types:** `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`, `style`, `revert`
-
-> Attribution is disabled globally via `~/.claude/settings.json` — do not append `Co-Authored-By` lines.
-
-### PR Process
-
-Before committing, see `docs/development/development-workflow.md` for the full pipeline (research → plan → TDD → code review → git).
+전체 개발 파이프라인(research → plan → TDD → code review → git)은 `docs/development/development-workflow.md` 참조.
 
 ## When to Activate
 

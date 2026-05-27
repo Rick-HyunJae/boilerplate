@@ -35,38 +35,7 @@ main (항상 배포 가능)
 
 **Title:** `<type>(<scope>): <description>`
 
-**Description 템플릿:**
-
-```markdown
-## What
-
-변경 사항 간단 설명
-
-## Why
-
-동기 및 컨텍스트 설명
-
-## How
-
-주요 구현 세부사항
-
-## Testing
-
-- [ ] 단위 테스트 추가/수정
-- [ ] 통합 테스트 추가/수정
-- [ ] 수동 테스트 완료
-
-## Checklist
-
-- [ ] 코드 스타일 가이드 준수
-- [ ] 자체 리뷰 완료
-- [ ] 복잡한 로직에 주석 추가
-- [ ] 문서 업데이트
-- [ ] 테스트 로컬에서 통과
-- [ ] 관련 이슈 링크
-
-Closes #123
-```
+Description 템플릿 및 리뷰 체크리스트 → `@git-workflow` 스킬 참조.
 
 ## Worktree 설정
 
